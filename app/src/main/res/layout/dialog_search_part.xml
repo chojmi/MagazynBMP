@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/searchingPartNumberCheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/NumberLabel"/>
+
+            <EditText
+                android:id="@+id/searchingPartNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/DefaultPartPrefix"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/searchingPartDescriptionCheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/DescriptionLabel"/>
+
+            <EditText
+                android:id="@+id/searchingPartDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/DescriptionText"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/DialogSearchTypeCheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/TypeLabel"/>
+
+            <EditText
+                android:id="@+id/DialogSearchTypeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/TypeText"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/DialogSearchProducerCheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ProducerLabel"/>
+
+            <EditText
+                android:id="@+id/DialogSearchProducerText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ProducerText"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

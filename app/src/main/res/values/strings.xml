@@ -1,0 +1,49 @@
+<resources>
+    <string name="AppName">BMP Warehouse</string>
+    <string name="NoChosenFileLabel">No file chosen</string>
+    <string name="DefaultPartPrefix" translatable="false">Y</string>
+    <string name="DefaultSheetName" translatable="false">Automatyka</string>
+    <string name="DefaultNumberColumn" translatable="false">2</string>
+    <string name="DefaultTypeColumn" translatable="false">6</string>
+    <string name="DefaultDescriptionColumn" translatable="false">4</string>
+    <string name="DefaultProducerColumn" translatable="false" >14</string>
+    <string name="DefaultLocationColumn" translatable="false">0</string>
+    <string name="NumberOfSparePartsInDbLabel">Number of spare parts:</string>
+    <string name="ChooseFileButtonLabel">Choose file</string>
+    <string name="NameOfSheetLabel">Name of sheet:</string>
+    <string name="ColumnOfNumberLabel">Column of part number:</string>
+    <string name="ColumnOfTypeLabel">Column of type:</string>
+    <string name="ColumnOfDescriptionLabel">Column of description:</string>
+    <string name="ColumnOfProducerLabel">Column of producer:</string>
+    <string name="ColumnOfLocationLabel">Column of location:</string>
+    <string name="NumberLabel">Part number:</string>
+    <string name="DescriptionLabel">Description:</string>
+    <string name="TypeLabel">Type:</string>
+    <string name="ProducerLabel">Producer:</string>
+    <string name="AddExcelFileTitle">Add excel file</string>
+    <string name="ClearDatabaseTitle">Clear Database</string>
+    <string name="SearchInDatabaseTitle">Search In Database</string>
+    <string name="PartPrefixLabel">Part prefix:</string>
+    <string name="ErrorLabel">Error!</string>
+    <string name="NoFileFoundLabel">No file found.</string>
+    <string name="NoSheetFound">No sheet of typed name found. Please check the name.</string>
+    <string name="NoDataLabel">No data</string>
+    <string name="OkLabel">OK</string>
+    <string name="ChooseExcelFileLabel">Choose Excel file:</string>
+    <string name="ResetToDefaultLabel">Reset to default</string>
+    <string name="CancelLabel">Cancel</string>
+    <string name="YouNeedChooseXlsFile">You need to choose file with xls extension!</string>
+    <string name="XlsExtension" translatable="false">.xls</string>
+    <string name="LoadingLabel">Loading</string>
+    <string name="WaitWhileLoadingLabel">Wait while loading...</string>
+    <string name="LoadedLabel">Loaded:</string>
+    <string name="SparePartsLabel">" spare parts"</string>
+    <string name="SearchLabel">Search:</string>
+    <string name="ClearLabel">Clear</string>
+    <string name="NoSparePartFoundLabel">No spare part found.</string>
+    <string name="TypeText">type</string>
+    <string name="DescriptionText">description</string>
+    <string name="ProducerText">producer</string>
+    <string name="LocationLabel">Location:</string>
+    <string name="AreYouSureLabel">Are you sure? All spare parts in database will be deleted.</string>
+</resources>

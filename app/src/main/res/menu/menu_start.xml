@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context=".controllers.excelControllers.activities.MainActivity">
+
+    <item
+        android:id="@+id/MenuAddExcelFile"
+        android:icon="@android:drawable/ic_menu_add"
+        android:orderInCategory="2"
+        android:title="@string/AddExcelFileTitle"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/MenuClearDatabase"
+        android:icon="@android:drawable/ic_notification_clear_all"
+        android:orderInCategory="1"
+        android:title="@string/ClearDatabaseTitle"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/MenuSearchInDatabase"
+        android:icon="@android:drawable/ic_menu_search"
+        android:orderInCategory="3"
+        android:title="@string/SearchInDatabaseTitle"
+        app:showAsAction="ifRoom"/>
+</menu>

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/DialogChooseFileButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ChooseFileButtonLabel"/>
+
+            <TextView
+                android:id="@+id/DialogChosenFileNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/NoChosenFileLabel"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/NameOfSheetLabel"/>
+
+            <EditText
+                android:id="@+id/DialogChooseSheetNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/DefaultSheetName"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/PartPrefixLabel"/>
+
+            <EditText
+                android:id="@+id/DialogChoosePartPrefixText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/DefaultPartPrefix"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ColumnOfNumberLabel"/>
+
+            <EditText
+                android:id="@+id/DialogChooseNumberColumnText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:text="@string/DefaultNumberColumn"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/DialogChooseTypeColumnCheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/ColumnOfTypeLabel"/>
+
+            <EditText
+                android:id="@+id/DialogChooseTypeColumnText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:text="@string/DefaultTypeColumn"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/DialogChooseDescriptionColumnCheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/ColumnOfDescriptionLabel"/>
+
+            <EditText
+                android:id="@+id/DialogChooseDescriptionColumnText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:text="@string/DefaultDescriptionColumn"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/DialogChooseProducerColumnCheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/ColumnOfProducerLabel"/>
+
+            <EditText
+                android:id="@+id/DialogChooseProducerColumnText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:text="@string/DefaultProducerColumn"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/DialogChooseLocationColumnCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/ColumnOfLocationLabel"/>
+
+            <EditText
+                android:id="@+id/DialogChooseLocationColumnText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:text="@string/DefaultLocationColumn"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
