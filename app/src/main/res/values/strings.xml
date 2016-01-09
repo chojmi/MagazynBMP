@@ -1,5 +1,5 @@
 <resources>
-    <string name="AppName">BMP Warehouse</string>
+    <string name="AppName">Spare Parts Warehouse</string>
     <string name="NoChosenFileLabel">No file chosen</string>
     <string name="DefaultPartPrefix" translatable="false">Y</string>
     <string name="DefaultSheetName" translatable="false">Automatyka</string>
@@ -22,7 +22,7 @@
     <string name="ProducerLabel">Producer:</string>
     <string name="AddExcelFileTitle">Add excel file</string>
     <string name="ClearDatabaseTitle">Clear Database</string>
-    <string name="SearchInDatabaseTitle">Search In Database</string>
+    <string name="SimpleSearchInDatabaseTitle">Search In Database</string>
     <string name="PartPrefixLabel">Part prefix:</string>
     <string name="ErrorLabel">Error!</string>
     <string name="NoFileFoundLabel">No file found.</string>
@@ -46,4 +46,6 @@
     <string name="ProducerText">producer</string>
     <string name="LocationLabel">Location:</string>
     <string name="AreYouSureLabel">Are you sure? All spare parts in database will be deleted.</string>
+    <string name="SimpleSearchText">type your text</string>
+    <string name="SearchInDatabaseTitle">Detailed Search</string>
 </resources>

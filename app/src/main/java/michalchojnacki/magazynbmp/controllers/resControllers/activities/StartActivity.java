@@ -17,6 +17,7 @@ import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.ClearDataba
 import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.DialogFragmentUpdater;
 import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.FileChooserDialog;
 import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.SearchDialog;
+import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.SimpleSearchDialog;
 
 
 public class StartActivity extends AppCompatActivity implements DialogFragmentUpdater, UiOwner, ClearDatabaseDialog.ClearDatabaseListener {
@@ -24,6 +25,7 @@ public class StartActivity extends AppCompatActivity implements DialogFragmentUp
     private final SparePartsDbController mSparePartsDbController = new SparePartsDbController(this);
     @Bind(R.id.StartActivityItemsQuantity) TextView mItemsQuantity;
     private SearchDialog mSearchDialog = new SearchDialog();
+    private SimpleSearchDialog mSimpleSearchDialog = new SimpleSearchDialog();
     private ChooseFileSettingsDialog mChooseFileSettingsDialog = new ChooseFileSettingsDialog();
 
     @Override
@@ -38,6 +40,7 @@ public class StartActivity extends AppCompatActivity implements DialogFragmentUp
     private void findMenuItems(Menu menu) {
         findAddExcelFileItem(menu);
         findSearchInDatabaseItem(menu);
+        findSimpleSearchInDatabaseItem(menu);
         findClearDatabaseItem(menu);
     }
 
@@ -58,6 +61,17 @@ public class StartActivity extends AppCompatActivity implements DialogFragmentUp
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 mSearchDialog.show(getSupportFragmentManager(), "fragment_search_for_part");
+                return false;
+            }
+        });
+    }
+
+    private void findSimpleSearchInDatabaseItem(Menu menu) {
+        MenuItem simpleSearchForPart = menu.findItem(R.id.MenuSimpleSearchInDatabase);
+        simpleSearchForPart.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                mSimpleSearchDialog.show(getSupportFragmentManager(), "fragment_simple_search_for_part");
                 return false;
             }
         });
@@ -93,6 +107,8 @@ public class StartActivity extends AppCompatActivity implements DialogFragmentUp
             mChooseFileSettingsDialog = (ChooseFileSettingsDialog) dialogFragment;
         } else if (dialogFragment instanceof SearchDialog) {
             mSearchDialog = (SearchDialog) dialogFragment;
+        } else if (dialogFragment instanceof SimpleSearchDialog) {
+            mSimpleSearchDialog = (SimpleSearchDialog) dialogFragment;
         }
     }
 
@@ -105,6 +121,7 @@ public class StartActivity extends AppCompatActivity implements DialogFragmentUp
 
         mChooseFileSettingsDialog.setSparePartsDbController(mSparePartsDbController);
         mSearchDialog.setSparePartsDbController(mSparePartsDbController);
+        mSimpleSearchDialog.setSparePartsDbController(mSparePartsDbController);
         updateUi(R.id.StartActivityItemsQuantity);
     }
 
