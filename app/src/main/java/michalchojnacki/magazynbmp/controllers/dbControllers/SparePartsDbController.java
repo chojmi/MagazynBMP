@@ -103,6 +103,7 @@ public final class SparePartsDbController {
     }
 
     public SparePart[] findSparePart(String searchedText) {
+
         ArrayList<SparePart> spareParts = new ArrayList<>();
         SQLiteDatabase db = mFavDbHelper.getReadableDatabase();
 

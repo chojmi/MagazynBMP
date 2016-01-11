@@ -8,6 +8,7 @@
         android:id="@+id/DialogSimpleSearchText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/SimpleSearchText"
+        android:hint="@string/SimpleSearchText"
+        android:selectAllOnFocus="true"
         android:textSize="@dimen/SimpleSearchDialogTextSize"/>
 </LinearLayout>

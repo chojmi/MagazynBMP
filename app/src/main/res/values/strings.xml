@@ -2,12 +2,12 @@
     <string name="AppName">Spare Parts Warehouse</string>
     <string name="NoChosenFileLabel">No file chosen</string>
     <string name="DefaultPartPrefix" translatable="false">Y</string>
-    <string name="DefaultSheetName" translatable="false">Automatyka</string>
-    <string name="DefaultNumberColumn" translatable="false">2</string>
-    <string name="DefaultTypeColumn" translatable="false">6</string>
-    <string name="DefaultDescriptionColumn" translatable="false">4</string>
-    <string name="DefaultProducerColumn" translatable="false" >14</string>
-    <string name="DefaultLocationColumn" translatable="false">0</string>
+    <string name="DefaultSheetName" translatable="false">Sheet1</string>
+    <string name="DefaultNumberColumn" translatable="false">0</string>
+    <string name="DefaultTypeColumn" translatable="false">8</string>
+    <string name="DefaultDescriptionColumn" translatable="false">1</string>
+    <string name="DefaultProducerColumn" translatable="false">2</string>
+    <string name="DefaultLocationColumn" translatable="false">7</string>
     <string name="NumberOfSparePartsInDbLabel">Number of spare parts:</string>
     <string name="ChooseFileButtonLabel">Choose file</string>
     <string name="NameOfSheetLabel">Name of sheet:</string>
@@ -28,9 +28,9 @@
     <string name="NoFileFoundLabel">No file found.</string>
     <string name="NoSheetFound">No sheet of typed name found. Please check the name.</string>
     <string name="NoDataLabel">No data</string>
-    <string name="OkLabel">OK</string>
+    <string name="OkLabel" translatable="false">OK</string>
     <string name="ChooseExcelFileLabel">Choose Excel file:</string>
-    <string name="ResetToDefaultLabel">Reset to default</string>
+    <string name="ResetToDefaultLabel">Reset\nto default</string>
     <string name="CancelLabel">Cancel</string>
     <string name="YouNeedChooseXlsFile">You need to choose file with xls extension!</string>
     <string name="XlsExtension" translatable="false">.xls</string>
@@ -41,11 +41,12 @@
     <string name="SearchLabel">Search:</string>
     <string name="ClearLabel">Clear</string>
     <string name="NoSparePartFoundLabel">No spare part found.</string>
-    <string name="TypeText">type</string>
-    <string name="DescriptionText">description</string>
-    <string name="ProducerText">producer</string>
+    <string name="TypeHint">type</string>
+    <string name="DescriptionHint">description</string>
+    <string name="ProducerHint">producer</string>
     <string name="LocationLabel">Location:</string>
     <string name="AreYouSureLabel">Are you sure? All spare parts in database will be deleted.</string>
     <string name="SimpleSearchText">type your text</string>
     <string name="SearchInDatabaseTitle">Detailed Search</string>
+    <string name="partNumberHint">part number</string>
 </resources>

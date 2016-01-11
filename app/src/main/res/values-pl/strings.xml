@@ -22,7 +22,7 @@
     <string name="NoSheetFound">Nie znaleziono arkusza o wybranej nazwie.</string>
     <string name="NoDataLabel">Brak danych</string>
     <string name="ChooseExcelFileLabel">Wybierz plik Excela:</string>
-    <string name="ResetToDefaultLabel">Resetuj do domyślnych ustawień</string>
+    <string name="ResetToDefaultLabel">Przywróć\ndomyślne</string>
     <string name="CancelLabel">Anuluj</string>
     <string name="YouNeedChooseXlsFile">Musisz wybrać plik z rozszerzeniem .xls!</string>
     <string name="LoadingLabel">Ładowanie</string>
@@ -32,11 +32,12 @@
     <string name="SearchLabel">Szukaj:</string>
     <string name="ClearLabel">Wyczyść</string>
     <string name="NoSparePartFoundLabel">Nie znaleziono części.</string>
-    <string name="TypeText">typ</string>
-    <string name="DescriptionText">opis</string>
-    <string name="ProducerText">producent</string>
+    <string name="TypeHint">typ</string>
+    <string name="DescriptionHint">opis</string>
+    <string name="ProducerHint">producent</string>
     <string name="LocationLabel">Lokalizacja:</string>
     <string name="AreYouSureLabel">Jesteś pewien? Wszyskie części zapasowe w bazie zostaną usunięte.</string>
     <string name="SimpleSearchText">wpisz tekst</string>
     <string name="SearchInDatabaseTitle">Szczegółowe szukanie</string>
+    <string name="partNumberHint">numer części</string>
 </resources>

@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import michalchojnacki.magazynbmp.R;
@@ -53,7 +54,11 @@ public class ChooseFileSettingsDialog extends DialogFragment {
 
         chooseFileButtonInitialization(view);
         readingSavedData(savedInstanceState);
-        return initializeAlertDialog(view);
+
+        Dialog dialog = initializeAlertDialog(view);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
+        return dialog;
     }
 
     private void chooseFileButtonInitialization(View view) {

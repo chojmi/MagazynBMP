@@ -41,6 +41,7 @@
                 android:id="@+id/DialogChooseSheetNameText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:selectAllOnFocus="true"
                 android:text="@string/DefaultSheetName"/>
         </LinearLayout>
 
@@ -58,6 +59,7 @@
                 android:id="@+id/DialogChoosePartPrefixText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:selectAllOnFocus="true"
                 android:text="@string/DefaultPartPrefix"/>
         </LinearLayout>
 
@@ -66,7 +68,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-        <TextView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ColumnOfNumberLabel"/>
@@ -76,6 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
+                android:selectAllOnFocus="true"
                 android:text="@string/DefaultNumberColumn"/>
         </LinearLayout>
 
@@ -96,6 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
+                android:selectAllOnFocus="true"
                 android:text="@string/DefaultTypeColumn"/>
         </LinearLayout>
 
@@ -116,6 +120,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
+                android:selectAllOnFocus="true"
                 android:text="@string/DefaultDescriptionColumn"/>
         </LinearLayout>
 
@@ -136,6 +141,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
+                android:selectAllOnFocus="true"
                 android:text="@string/DefaultProducerColumn"/>
         </LinearLayout>
 
@@ -156,6 +162,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
+                android:selectAllOnFocus="true"
                 android:text="@string/DefaultLocationColumn"/>
         </LinearLayout>
 

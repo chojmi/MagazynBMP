@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
+import android.view.WindowManager;
 
 import michalchojnacki.magazynbmp.R;
 import michalchojnacki.magazynbmp.controllers.dbControllers.SparePartsDbController;
@@ -43,8 +44,10 @@ public class SimpleSearchDialog extends DialogFragment {
         mSimpleSearchDialogSPref = new SimpleSearchDialogSPref(mSimpleSearchDialogModel);
 
         readingSavedData(savedInstanceState);
+        Dialog dialog = initializeAlertDialog(view);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
-        return initializeAlertDialog(view);
+        return dialog;
     }
 
     private void readingSavedData(Bundle savedInstanceState) {

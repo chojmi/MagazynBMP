@@ -1,6 +1,5 @@
 package michalchojnacki.magazynbmp.model;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -24,18 +23,6 @@ public class SearchDialogModel {
                 (CheckBox) view.findViewById(R.id.searchingPartDescriptionCheckbox));
         mPartProducer = new CheckableTextView((EditText) view.findViewById(R.id.DialogSearchProducerText),
                 (CheckBox) view.findViewById(R.id.DialogSearchProducerCheckbox));
-    }
-
-    public void setDefaultValues(Context context) {
-
-        setPartNumberChecked(false);
-        setPartNumber(context.getString(R.string.DefaultPartPrefix));
-        setPartTypeChecked(false);
-        setPartType(context.getString(R.string.TypeText));
-        setPartDescriptionChecked(false);
-        setPartDescription(context.getString(R.string.DescriptionText));
-        setPartProducerChecked(false);
-        setPartProducer(context.getString(R.string.ProducerText));
     }
 
     public String getPartDescription() {
@@ -127,5 +114,17 @@ public class SearchDialogModel {
 
     public void setPartTypeChecked(boolean value) {
         mPartType.setChecked(value);
+    }
+
+    public void setDefaultValues() {
+
+        setPartNumberChecked(false);
+        setPartNumber("");
+        setPartTypeChecked(false);
+        setPartType("");
+        setPartDescriptionChecked(false);
+        setPartDescription("");
+        setPartProducerChecked(false);
+        setPartProducer("");
     }
 }

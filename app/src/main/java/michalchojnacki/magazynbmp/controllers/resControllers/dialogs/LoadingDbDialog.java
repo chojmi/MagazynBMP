@@ -3,11 +3,10 @@ package michalchojnacki.magazynbmp.controllers.resControllers.dialogs;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.support.v4.app.DialogFragment;
 
 import michalchojnacki.magazynbmp.R;
 
-public class LoadingDbDialog extends DialogFragment {
+public class LoadingDbDialog {
 
     private static ProgressDialog mProgressDialog;
     private static Context mContext;
