@@ -144,7 +144,7 @@ public class ChooseFileSettingsDialog extends DialogFragment {
                     mChooseFileDialogSPref.saveToSPref(mContext);
                 }
                 dismiss();
-                ((Activity)mContext).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+                ((Activity) mContext).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                 return true;
             }
         });

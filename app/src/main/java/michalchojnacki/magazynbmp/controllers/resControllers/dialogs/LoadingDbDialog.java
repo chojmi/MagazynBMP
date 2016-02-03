@@ -28,12 +28,14 @@ public class LoadingDbDialog {
     }
 
     public void nextValueSaved() {
-        ((Activity) mContext).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mProgressDialog.setMessage(mContext.getString(R.string.LoadedLabel) + ++valuesSaved + mContext.getString(R.string.SparePartsLabel));
-            }
-        });
+        if (mContext instanceof Activity) {
+            ((Activity) mContext).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mProgressDialog.setMessage(mContext.getString(R.string.LoadedLabel) + ++valuesSaved + mContext.getString(R.string.SparePartsLabel));
+                }
+            });
+        }
     }
 
     public void stop() {

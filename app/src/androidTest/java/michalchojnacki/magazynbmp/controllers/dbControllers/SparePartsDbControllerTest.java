@@ -14,8 +14,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 
-;
-
 @RunWith(AndroidJUnit4.class)
 public class SparePartsDbControllerTest {
 
@@ -24,7 +22,13 @@ public class SparePartsDbControllerTest {
     @Before
     public void initSparePartsDbController() {
         sparePartsDbController = new SparePartsDbController(InstrumentationRegistry.getTargetContext());
-        SparePart sparePart = new SparePart.Builder().number("YA2020").build();
+        SparePart sparePart = new SparePart.Builder()
+                .number("YA2020")
+                .description("desc")
+                .producer("producer")
+                .type("type")
+                .location("00-00-00")
+                .build();
         sparePartsDbController.saveSparePart(sparePart);
     }
 
@@ -41,14 +45,6 @@ public class SparePartsDbControllerTest {
         sparePartsDbController.saveSparePart(sparePart);
 
         assertThat(sparePartsDbController.getCountOfSpareParts(), equalTo(2));
-    }
-
-    @Test
-    public void testFindSparePartByString() {
-        SparePart[] spareParts = sparePartsDbController.findSparePart("YA2020");
-
-        assertFalse(spareParts.length != 1);
-        assertThat(spareParts[0].getNumber(), equalTo("YA2020"));
     }
 
     @Test

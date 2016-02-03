@@ -42,15 +42,22 @@ public class ExcelController extends ExcelControllerModel {
     }
 
     public void exportXlsToDb(final Handler handler, final String path, final String sheetName) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mLoadingDbDialog.start(mContext);
-                HSSFSheet sheet = getSheetFromXls(path, sheetName);
-                saveSheetInDb(sheet, handler);
-            }
-        }).start();
-        ((Activity) mContext).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+        if (mContext instanceof Activity) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    mLoadingDbDialog.start(mContext);
+                    HSSFSheet sheet = getSheetFromXls(path, sheetName);
+                    saveSheetInDb(sheet, handler);
+                }
+            }).start();
+
+            ((Activity) mContext).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+        } else {
+            HSSFSheet sheet = getSheetFromXls(path, sheetName);
+            saveSheetInDb(sheet, handler);
+        }
+
     }
 
     private HSSFSheet getSheetFromXls(String path, String sheetName) {
