@@ -48,7 +48,6 @@ public class ExcelControllerTest {
                 .build();
 
         Handler handler = new Handler(InstrumentationRegistry.getTargetContext().getMainLooper());
-
         excelController.exportXlsToDb(handler, file.getAbsolutePath(), sheetName);
 
         SparePart[] spareParts = sparePartsDbController.findSparePart("");
