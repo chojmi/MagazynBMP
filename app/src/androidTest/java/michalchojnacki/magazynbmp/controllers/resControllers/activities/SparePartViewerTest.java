@@ -5,7 +5,6 @@ import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,8 +23,18 @@ public class SparePartViewerTest {
     @Rule
     public ActivityTestRule<SparePartViewer> mSparePartViewer = new ActivityTestRule<>(SparePartViewer.class, false, false);
 
-    @Before
-    public void init() {
+    @Test
+    public void activityLaunchedWithoutExtra() {
+        mSparePartViewer.launchActivity(new Intent());
+    }
+
+    @Test
+    public void numberProperlyRead() {
+        initSparePart();
+        Espresso.onView(withId(R.id.SparePartNumberText)).check(matches(withText("number")));
+    }
+
+    private void initSparePart() {
 
         SparePart sparePart = new SparePart.Builder()
                 .number("number")
@@ -40,27 +49,26 @@ public class SparePartViewerTest {
     }
 
     @Test
-    public void numberProperlyRead() {
-        Espresso.onView(withId(R.id.SparePartNumberText)).check(matches(withText("number")));
-    }
-
-    @Test
     public void descriptionProperlyRead() {
+        initSparePart();
         Espresso.onView(withId(R.id.SparePartDescriptionText)).check(matches(withText("description")));
     }
 
     @Test
     public void typeProperlyRead() {
+        initSparePart();
         Espresso.onView(withId(R.id.SparePartTypeText)).check(matches(withText("type")));
     }
 
     @Test
     public void locationProperlyRead() {
+        initSparePart();
         Espresso.onView(withId(R.id.SparePartLocationText)).check(matches(withText("location")));
     }
 
     @Test
     public void producerProperlyRead() {
+        initSparePart();
         Espresso.onView(withId(R.id.SparePartProducerText)).check(matches(withText("producer")));
     }
 }

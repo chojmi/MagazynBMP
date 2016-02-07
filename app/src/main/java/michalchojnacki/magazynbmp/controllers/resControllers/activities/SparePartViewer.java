@@ -24,8 +24,16 @@ public class SparePartViewer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.spare_part_viewer);
         ButterKnife.bind(this);
-        SparePart sparePart = (SparePart) getIntent().getSerializableExtra(SPARE_PART);
+        SparePart sparePart = readSparePart();
         loadUi(sparePart);
+    }
+
+    private SparePart readSparePart() {
+        SparePart sparePart = (SparePart) getIntent().getSerializableExtra(SPARE_PART);
+        if (sparePart == null) {
+            sparePart = new SparePart.Builder().build();
+        }
+        return sparePart;
     }
 
     private void loadUi(SparePart sparePart) {
