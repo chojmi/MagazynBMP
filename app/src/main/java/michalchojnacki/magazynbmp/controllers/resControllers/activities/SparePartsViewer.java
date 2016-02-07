@@ -38,7 +38,7 @@ public class SparePartsViewer extends AppCompatActivity {
     @NonNull
     private RecyclerViewAdapter getRecyclerViewAdapter() {
         Object[] array = (Object[]) getIntent().getSerializableExtra(SPARE_PARTS);
-        SparePart[] spareParts = Arrays.copyOf(array, array.length, SparePart[].class);
+        SparePart[] spareParts = readSpareParts(array);
         return new RecyclerViewAdapter(this, spareParts);
     }
 
@@ -50,6 +50,17 @@ public class SparePartsViewer extends AppCompatActivity {
         recyclerView.addItemDecoration(new DividerItemDecoration(this, null));
     }
 
+    @NonNull
+    private SparePart[] readSpareParts(Object[] array) {
+        SparePart[] spareParts;
+        if (array != null) {
+            spareParts = Arrays.copyOf(array, array.length, SparePart[].class);
+        } else {
+            spareParts = new SparePart[1];
+            spareParts[0] = new SparePart.Builder().build();
+        }
+        return spareParts;
+    }
 }
 
 class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.SparePartsViewHolder> {

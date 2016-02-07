@@ -21,7 +21,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 public class SparePartViewerTest {
 
     @Rule
-    public ActivityTestRule<SparePartViewer> mSparePartViewer = new ActivityTestRule<>(SparePartViewer.class, false, false);
+    public ActivityTestRule<SparePartViewer> mSparePartViewer = new ActivityTestRule(SparePartViewer.class, false, false);
 
     @Test
     public void activityLaunchedWithoutExtra() {
