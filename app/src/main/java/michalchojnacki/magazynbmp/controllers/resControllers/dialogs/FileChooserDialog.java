@@ -38,18 +38,20 @@ public class FileChooserDialog {
         } catch (URISyntaxException e) {
             ErrorDialog.newInstance(mContext.getString(R.string.ErrorLabel),
                     mContext.getString(R.string.YouNeedChooseXlsFile)).showDialog(mContext);
+        } catch (IllegalArgumentException e) {
+            ErrorDialog.newInstance(mContext.getString(R.string.ErrorLabel),
+                    mContext.getString(R.string.YouNeedChooseXlsFile)).showDialog(mContext);
         }
 
         return selectedPath;
     }
 
-    private String isXlsFile(Uri uri) throws URISyntaxException {
+    private String isXlsFile(Uri uri) throws URISyntaxException, IllegalArgumentException {
         String selectedPath = null;
         if (uri.getLastPathSegment().endsWith(mContext.getString(R.string.XlsExtension))) {
             selectedPath = FileUtils.getPath(mContext, uri);
         } else {
-            ErrorDialog.newInstance(mContext.getString(R.string.ErrorLabel),
-                    mContext.getString(R.string.YouNeedChooseXlsFile)).showDialog(mContext);
+            throw new IllegalArgumentException("Should be an .xls file!");
         }
         return selectedPath;
     }
