@@ -30,7 +30,7 @@ public class SparePartsViewerTest {
 
     @Rule
     public ActivityTestRule<SparePartsViewer> mSparePartsViewer = new ActivityTestRule(SparePartsViewer.class, false, false);
-    private int size = 5;
+    private int size = 3;
 
     @Test
     public void activityStartedWithoutExtra() {
@@ -41,8 +41,6 @@ public class SparePartsViewerTest {
     public void isShownProperly() {
         initSpareParts();
         for (int i = 0; i < size; i++) {
-            Espresso.onView(withId(R.id.SparePartsRecyclerView))
-                    .perform(RecyclerViewActions.scrollToPosition(i));
 
             Espresso.onView(nthChildOf(withId(R.id.SparePartsRecyclerView), i))
                     .check(matches(hasDescendant(withText("description " + i))))
