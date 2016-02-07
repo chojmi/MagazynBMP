@@ -27,6 +27,7 @@ public class ExcelControllerTest {
     private File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "/test.xls");
     private String sheetName = "Automatyka";
     private ExcelControllerModel mExcelControllerModel = new ExcelControllerModel();
+    private SparePartsDbController sparePartsDbController = new SparePartsDbController(InstrumentationRegistry.getTargetContext());
 
     @Before
     public void initExcelFile() throws IOException {
@@ -40,7 +41,6 @@ public class ExcelControllerTest {
 
     @Test
     public void isItemRead() {
-        SparePartsDbController sparePartsDbController = new SparePartsDbController(InstrumentationRegistry.getTargetContext());
         ExcelController excelController = new ExcelController.Builder()
                 .context(InstrumentationRegistry.getTargetContext())
                 .numberPlaceIndex(mExcelControllerModel.mNumberPlaceIndex)
@@ -58,7 +58,8 @@ public class ExcelControllerTest {
     }
 
     @After
-    public void deleteFile() {
+    public void deleteData() {
         file.delete();
+        sparePartsDbController.deleteAllSpareParts();
     }
 }

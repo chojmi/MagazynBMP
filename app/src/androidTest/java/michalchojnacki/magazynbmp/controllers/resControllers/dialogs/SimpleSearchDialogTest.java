@@ -4,6 +4,7 @@ import android.support.test.espresso.Espresso;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.rule.ActivityTestRule;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -20,20 +21,37 @@ public class SimpleSearchDialogTest {
 
     @Rule
     public ActivityTestRule<StartActivity> mStartActivity = new ActivityTestRule(StartActivity.class);
+    private SparePartsDbController sparePartsDbController;
+
+    @Before
+    public void init() {
+        sparePartsDbController = new SparePartsDbController(mStartActivity.getActivity());
+    }
 
     @Test
     public void disappearsWhenCancelled() {
         SimpleSearchDialog simpleSearchDialog = new SimpleSearchDialog();
-        simpleSearchDialog.setSparePartsDbController(new SparePartsDbController(mStartActivity.getActivity()));
+        simpleSearchDialog.setSparePartsDbController(sparePartsDbController);
         simpleSearchDialog.show(mStartActivity.getActivity().getSupportFragmentManager(), "fragment_simple_search_for_part");
 
-        Espresso.onView(withText(mStartActivity.getActivity().getString(R.string.SearchLabel))).check(matches(isDisplayed()));
+        Espresso.onView(withText(R.string.SearchLabel)).check(matches(isDisplayed()));
 
         Espresso.onView(withText(R.string.CancelLabel))
                 .perform(ViewActions.click());
 
-        Espresso.onView(withText(mStartActivity.getActivity().getString(R.string.SearchLabel))).check(doesNotExist());
+        Espresso.onView(withText(R.string.SearchLabel)).check(doesNotExist());
+    }
 
+    @Test
+    public void clickOkWhenEmptyDb() {
+        SimpleSearchDialog simpleSearchDialog = new SimpleSearchDialog();
+        simpleSearchDialog.setSparePartsDbController(sparePartsDbController);
+        simpleSearchDialog.show(mStartActivity.getActivity().getSupportFragmentManager(), "fragment_simple_search_for_part");
+
+        Espresso.onView(withText(R.string.OkLabel))
+                .perform(ViewActions.click());
+
+        Espresso.onView(withText(R.string.NoSparePartFoundLabel)).check(matches(isDisplayed()));
     }
 
 }

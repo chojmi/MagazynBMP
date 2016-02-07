@@ -43,6 +43,6 @@ public class FileChooserDialogTest {
         FileChooserDialog fileChooserDialog = new FileChooserDialog(mStartActivity.getActivity());
         String path = fileChooserDialog.getFileChosen(intent);
         assertThat(path, equalTo("Plik nie wybrany"));
-        Espresso.onView(withText(mStartActivity.getActivity().getString(R.string.YouNeedChooseXlsFile))).check(matches(isDisplayed()));
+        Espresso.onView(withText((R.string.YouNeedChooseXlsFile))).check(matches(isDisplayed()));
     }
 }
