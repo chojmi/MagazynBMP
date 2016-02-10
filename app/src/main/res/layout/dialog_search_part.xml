@@ -83,5 +83,24 @@
                 android:hint="@string/ProducerHint"
                 android:selectAllOnFocus="true"/>
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/DialogSearchSupplierCheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/SupplierLabel"/>
+
+            <EditText
+                android:id="@+id/DialogSearchSupplierText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/SupplierHint"
+                android:selectAllOnFocus="true"/>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

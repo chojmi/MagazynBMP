@@ -15,6 +15,7 @@ public class ChooseFileDialogModel {
     private final CheckableTextView mTypeColumn;
     private final CheckableTextView mDescriptionColumn;
     private final CheckableTextView mProducerColumn;
+    private final CheckableTextView mSupplierColumn;
     private final CheckableTextView mLocationColumn;
     private final TextView mPartPrefix;
     private final EditText mSheetNameText;
@@ -32,6 +33,8 @@ public class ChooseFileDialogModel {
                 (CheckBox) view.findViewById(R.id.DialogChooseDescriptionColumnCheckbox));
         mProducerColumn = new CheckableTextView((EditText) view.findViewById(R.id.DialogChooseProducerColumnText),
                 (CheckBox) view.findViewById(R.id.DialogChooseProducerColumnCheckbox));
+        mSupplierColumn = new CheckableTextView((EditText) view.findViewById(R.id.DialogChooseSupplierColumnText),
+                (CheckBox) view.findViewById(R.id.DialogChooseSupplierColumnCheckBox));
         mLocationColumn = new CheckableTextView((EditText) view.findViewById(R.id.DialogChooseLocationColumnText),
                 (CheckBox) view.findViewById(R.id.DialogChooseLocationColumnCheckBox));
 
@@ -47,6 +50,8 @@ public class ChooseFileDialogModel {
         setDescriptionColumn(context.getResources().getString(R.string.DefaultDescriptionColumn));
         setProducerColumnChecked(true);
         setProducerColumn(context.getResources().getString(R.string.DefaultProducerColumn));
+        setSupplierColumnChecked(true);
+        setSupplierColumn(context.getResources().getString(R.string.DefaultSupplierColumn));
         setLocationColumnChecked(true);
         setLocationColumn(context.getResources().getString(R.string.DefaultLocationColumn));
     }
@@ -133,8 +138,20 @@ public class ChooseFileDialogModel {
         mProducerColumn.setText(text);
     }
 
+    public String getSupplierColumn() {
+        return getText(mSupplierColumn);
+    }
+
+    public void setSupplierColumn(String text) {
+        mSupplierColumn.setText(text);
+    }
+
     public String getProducerColumnIfChecked() {
         return getTextIfChecked(mProducerColumn);
+    }
+
+    public String getSupplierColumnIfChecked() {
+        return getTextIfChecked(mSupplierColumn);
     }
 
     public String getSheetName() {
@@ -187,5 +204,13 @@ public class ChooseFileDialogModel {
 
     public void setTypeColumnChecked(boolean value) {
         mTypeColumn.setChecked(value);
+    }
+
+    public boolean isSupplierColumnChecked() {
+        return mSupplierColumn.isChecked();
+    }
+
+    public void setSupplierColumnChecked(boolean value) {
+        mSupplierColumn.setChecked(value);
     }
 }

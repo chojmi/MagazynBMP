@@ -18,6 +18,7 @@ public class SparePartViewer extends AppCompatActivity {
     @Bind(R.id.SparePartTypeText) TextView mType;
     @Bind(R.id.SparePartLocationText) TextView mLocation;
     @Bind(R.id.SparePartProducerText) TextView mProducer;
+    @Bind(R.id.SparePartSupplierText) TextView mSupplier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class SparePartViewer extends AppCompatActivity {
         mType.setText(sparePart.getType());
         mLocation.setText(sparePart.getLocation());
         mProducer.setText(sparePart.getProducer());
+        mSupplier.setText(sparePart.getSupplier());
     }
 
 

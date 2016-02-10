@@ -38,6 +38,7 @@ public class ExcelController extends ExcelControllerModel {
         mTypePlaceIndex = builder.mTypePlaceIndex;
         mLocationPlaceIndex = builder.mLocationPlaceIndex;
         mProducerPlaceIndex = builder.mProducerPlaceIndex;
+        mSupplierPlaceIndex = builder.mSupplierPlaceIndex;
         mLoadingDbDialog = new LoadingDbDialog();
     }
 
@@ -116,6 +117,7 @@ public class ExcelController extends ExcelControllerModel {
                 .number(saveCell(row, mNumberPlaceIndex))
                 .type(saveCell(row, mTypePlaceIndex))
                 .producer(saveCell(row, mProducerPlaceIndex))
+                .supplier(saveCell(row, mSupplierPlaceIndex))
                 .build();
 
         return mSparePartsDbController.saveSparePart(sparePart);
@@ -186,6 +188,13 @@ public class ExcelController extends ExcelControllerModel {
             }
             return this;
         }
+
+        public Builder supplierPlaceIndex(String supplierPlaceIndex) {
+            if (supplierPlaceIndex != null) {
+                mSupplierPlaceIndex = Integer.valueOf(supplierPlaceIndex);
+            }
+            return this;
+        }
     }
 }
 
@@ -199,6 +208,7 @@ class ExcelControllerModel {
     int mTypePlaceIndex = -1;
     int mLocationPlaceIndex = -1;
     int mProducerPlaceIndex = -1;
+    int mSupplierPlaceIndex = -1;
 
     String mPartPrefix;
 }

@@ -8,6 +8,7 @@
     <string name="DefaultDescriptionColumn" translatable="false">1</string>
     <string name="DefaultProducerColumn" translatable="false">2</string>
     <string name="DefaultLocationColumn" translatable="false">7</string>
+    <string name="DefaultSupplierColumn" translatable="false">2</string>
     <string name="NumberOfSparePartsInDbLabel">Number of spare parts:</string>
     <string name="ChooseFileButtonLabel">Choose file</string>
     <string name="NameOfSheetLabel">Name of sheet:</string>
@@ -16,10 +17,12 @@
     <string name="ColumnOfDescriptionLabel">Column of description:</string>
     <string name="ColumnOfProducerLabel">Column of producer:</string>
     <string name="ColumnOfLocationLabel">Column of location:</string>
+    <string name="ColumnOfSupplierLabel">Column of supplier:</string>
     <string name="NumberLabel">Part number:</string>
     <string name="DescriptionLabel">Description:</string>
     <string name="TypeLabel">Type:</string>
     <string name="ProducerLabel">Producer:</string>
+    <string name="SupplierLabel">Supplier:</string>
     <string name="AddExcelFileTitle">Add excel file</string>
     <string name="ClearDatabaseTitle">Clear Database</string>
     <string name="SimpleSearchInDatabaseTitle">Search In Database</string>
@@ -44,6 +47,7 @@
     <string name="TypeHint">type</string>
     <string name="DescriptionHint">description</string>
     <string name="ProducerHint">producer</string>
+    <string name="SupplierHint">supplier</string>
     <string name="LocationLabel">Location:</string>
     <string name="AreYouSureLabel">Are you sure? All spare parts in database will be deleted.</string>
     <string name="SimpleSearchText">type your text</string>

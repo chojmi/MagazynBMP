@@ -85,6 +85,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.Spare
         holder.mModel.setText(mSpareParts.get(position).getType());
         holder.mDescription.setText(mSpareParts.get(position).getDescription());
         holder.mProducer.setText(mSpareParts.get(position).getProducer());
+        holder.mSupplier.setText(mSpareParts.get(position).getSupplier());
         holder.setClickListener(new ItemClickListener() {
             @Override
             public void onClick(int position) {
@@ -106,6 +107,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.Spare
         private final TextView mDescription;
         private final TextView mModel;
         private final TextView mProducer;
+        private final TextView mSupplier;
         private ItemClickListener clickListener;
 
         public SparePartsViewHolder(View itemView) {
@@ -113,6 +115,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.Spare
             mDescription = (TextView) itemView.findViewById(R.id.SparePartsDescriptionItem);
             mModel = (TextView) itemView.findViewById(R.id.SparePartsModelItem);
             mProducer = (TextView) itemView.findViewById(R.id.SparePartsProducerItem);
+            mSupplier = (TextView) itemView.findViewById(R.id.SparePartsSupplierItem);
             itemView.setOnClickListener(this);
         }
 

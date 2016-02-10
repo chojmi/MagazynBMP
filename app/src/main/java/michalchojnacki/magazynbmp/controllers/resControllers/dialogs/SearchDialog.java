@@ -119,6 +119,7 @@ public class SearchDialog extends DialogFragment {
                 .description(mSearchDialogModel.getPartDescriptionIfChecked())
                 .type(mSearchDialogModel.getPartTypeIfChecked())
                 .producer(mSearchDialogModel.getPartProducerIfChecked())
+                .supplier(mSearchDialogModel.getPartSupplierIfChecked())
                 .build();
     }
 

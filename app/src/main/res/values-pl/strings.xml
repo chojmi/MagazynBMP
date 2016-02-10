@@ -9,10 +9,12 @@
     <string name="ColumnOfDescriptionLabel">Kolumna opisu:</string>
     <string name="ColumnOfProducerLabel">Kolumna producenta:</string>
     <string name="ColumnOfLocationLabel">Kolumna lokalizacji:</string>
+    <string name="ColumnOfSupplierLabel">Kolumna dostawcy:</string>
     <string name="NumberLabel">Numer części:</string>
     <string name="DescriptionLabel">Opis:</string>
     <string name="TypeLabel">Typ:</string>
     <string name="ProducerLabel">Producent:</string>
+    <string name="SupplierLabel">Dostawca:</string>
     <string name="AddExcelFileTitle">Dodaj plik Excela</string>
     <string name="ClearDatabaseTitle">Wyczyść bazę części</string>
     <string name="SimpleSearchInDatabaseTitle">Szukaj w bazie części</string>
@@ -35,6 +37,7 @@
     <string name="TypeHint">typ</string>
     <string name="DescriptionHint">opis</string>
     <string name="ProducerHint">producent</string>
+    <string name="SupplierHint">dostawca</string>
     <string name="LocationLabel">Lokalizacja:</string>
     <string name="AreYouSureLabel">Jesteś pewien? Wszyskie części zapasowe w bazie zostaną usunięte.</string>
     <string name="SimpleSearchText">wpisz tekst</string>

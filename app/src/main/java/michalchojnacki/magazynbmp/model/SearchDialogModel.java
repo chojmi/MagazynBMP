@@ -12,6 +12,7 @@ public class SearchDialogModel {
     private final CheckableTextView mPartType;
     private final CheckableTextView mPartDescription;
     private final CheckableTextView mPartProducer;
+    private final CheckableTextView mPartSupplier;
 
     public SearchDialogModel(View view) {
 
@@ -23,6 +24,8 @@ public class SearchDialogModel {
                 (CheckBox) view.findViewById(R.id.searchingPartDescriptionCheckbox));
         mPartProducer = new CheckableTextView((EditText) view.findViewById(R.id.DialogSearchProducerText),
                 (CheckBox) view.findViewById(R.id.DialogSearchProducerCheckbox));
+        mPartSupplier = new CheckableTextView((EditText) view.findViewById(R.id.DialogSearchSupplierText),
+                (CheckBox) view.findViewById(R.id.DialogSearchSupplierCheckbox));
     }
 
     public String getPartDescription() {
@@ -37,6 +40,14 @@ public class SearchDialogModel {
         return checkableTextView.getText();
     }
 
+    public String getPartSupplier() {
+        return getText(mPartSupplier);
+    }
+
+    public void setPartSupplier(String partSupplier) {
+        mPartSupplier.setText(partSupplier);
+    }
+
     public String getPartDescriptionIfChecked() {
         return getTextIfChecked(mPartDescription);
     }
@@ -46,6 +57,10 @@ public class SearchDialogModel {
             return getText(checkableTextView);
         }
         return null;
+    }
+
+    public String getPartSupplierIfChecked() {
+        return getTextIfChecked(mPartSupplier);
     }
 
     public String getPartNumber() {
@@ -92,6 +107,15 @@ public class SearchDialogModel {
         mPartDescription.setChecked(value);
     }
 
+    public boolean isPartSupplierChecked() {
+        return mPartSupplier.isChecked();
+    }
+
+    public void setPartSupplierChecked(boolean value) {
+        mPartSupplier.setChecked(value);
+    }
+
+
     public boolean isPartNumberChecked() {
         return mPartNumber.isChecked();
     }
@@ -126,5 +150,7 @@ public class SearchDialogModel {
         setPartDescription("");
         setPartProducerChecked(false);
         setPartProducer("");
+        setPartSupplierChecked(false);
+        setPartSupplier("");
     }
 }

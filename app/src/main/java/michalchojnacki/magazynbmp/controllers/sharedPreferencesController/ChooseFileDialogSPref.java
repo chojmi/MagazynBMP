@@ -16,10 +16,12 @@ public class ChooseFileDialogSPref {
     private final String COLUMN_OF_DESCRIPTION = "columnOfDescription";
     private final String COLUMN_OF_PRODUCER = "columnOfProducer";
     private final String COLUMN_OF_LOCATION = "columnOfLocation";
+    private final String COLUMN_OF_SUPPLIER = "columnOfSupplier";
     private final String COLUMN_OF_TYPE_CHECKBOX = "columnOfTypeCheckbox";
     private final String COLUMN_OF_DESCRIPTION_CHECKBOX = "columnOfDescriptionCheckbox";
     private final String COLUMN_OF_PRODUCER_CHECKBOX = "columnOfProducerCheckbox";
     private final String COLUMN_OF_LOCATION_CHECKBOX = "columnOfLocationCheckbox";
+    private final String COLUMN_OF_SUPPLIER_CHECKBOX = "columnOfSupplierCheckbox";
 
 
     private final ChooseFileDialogModel mChooseFileDialogModel;
@@ -39,10 +41,11 @@ public class ChooseFileDialogSPref {
                 .putString(COLUMN_OF_DESCRIPTION, mChooseFileDialogModel.getDescriptionColumn())
                 .putString(COLUMN_OF_PRODUCER, mChooseFileDialogModel.getProducerColumn())
                 .putString(COLUMN_OF_LOCATION, mChooseFileDialogModel.getLocationColumn())
+                .putString(COLUMN_OF_SUPPLIER, mChooseFileDialogModel.getSupplierColumn())
                 .putBoolean(COLUMN_OF_TYPE_CHECKBOX, mChooseFileDialogModel.isTypeColumnChecked())
                 .putBoolean(COLUMN_OF_DESCRIPTION_CHECKBOX, mChooseFileDialogModel.isDescriptionColumnChecked())
                 .putBoolean(COLUMN_OF_PRODUCER_CHECKBOX, mChooseFileDialogModel.isProducerColumnChecked())
-                .putBoolean(COLUMN_OF_LOCATION_CHECKBOX, mChooseFileDialogModel.isLocationColumnChecked())
+                .putBoolean(COLUMN_OF_SUPPLIER_CHECKBOX, mChooseFileDialogModel.isSupplierColumnChecked())
                 .apply();
     }
 
@@ -56,10 +59,11 @@ public class ChooseFileDialogSPref {
         mChooseFileDialogModel.setDescriptionColumn(sharedPreferences.getString(COLUMN_OF_DESCRIPTION, mChooseFileDialogModel.getDescriptionColumn()));
         mChooseFileDialogModel.setProducerColumn(sharedPreferences.getString(COLUMN_OF_PRODUCER, mChooseFileDialogModel.getProducerColumn()));
         mChooseFileDialogModel.setLocationColumn(sharedPreferences.getString(COLUMN_OF_LOCATION, mChooseFileDialogModel.getLocationColumn()));
+        mChooseFileDialogModel.setSupplierColumn(sharedPreferences.getString(COLUMN_OF_SUPPLIER, mChooseFileDialogModel.getSupplierColumn()));
         mChooseFileDialogModel.setTypeColumnChecked(sharedPreferences.getBoolean(COLUMN_OF_TYPE_CHECKBOX, mChooseFileDialogModel.isTypeColumnChecked()));
         mChooseFileDialogModel.setDescriptionColumnChecked(sharedPreferences.getBoolean(COLUMN_OF_DESCRIPTION_CHECKBOX, mChooseFileDialogModel.isDescriptionColumnChecked()));
         mChooseFileDialogModel.setProducerColumnChecked(sharedPreferences.getBoolean(COLUMN_OF_PRODUCER_CHECKBOX, mChooseFileDialogModel.isProducerColumnChecked()));
         mChooseFileDialogModel.setLocationColumnChecked(sharedPreferences.getBoolean(COLUMN_OF_LOCATION_CHECKBOX, mChooseFileDialogModel.isLocationColumnChecked()));
+        mChooseFileDialogModel.setSupplierColumnChecked(sharedPreferences.getBoolean(COLUMN_OF_SUPPLIER_CHECKBOX, mChooseFileDialogModel.isSupplierColumnChecked()));
     }
-
 }

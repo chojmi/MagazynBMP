@@ -10,6 +10,7 @@ public class SparePart extends SparePartModel {
         mType = builder.mType;
         mProducer = builder.mProducer;
         mLocation = builder.mLocation;
+        mSupplier = builder.mSupplier;
     }
 
     public String getNumber() {
@@ -30,6 +31,10 @@ public class SparePart extends SparePartModel {
 
     public String getProducer() {
         return mProducer;
+    }
+
+    public String getSupplier() {
+        return mSupplier;
     }
 
     public static class Builder extends SparePartModel {
@@ -62,6 +67,11 @@ public class SparePart extends SparePartModel {
             mLocation = location;
             return this;
         }
+
+        public Builder supplier(String supplier) {
+            mSupplier = supplier;
+            return this;
+        }
     }
 }
 
@@ -72,4 +82,5 @@ class SparePartModel implements Serializable {
     String mType;
     String mProducer;
     String mLocation;
+    String mSupplier;
 }

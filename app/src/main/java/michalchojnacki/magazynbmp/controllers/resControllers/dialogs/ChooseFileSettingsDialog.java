@@ -159,7 +159,8 @@ public class ChooseFileSettingsDialog extends DialogFragment {
                 .typePlaceIndex(mChooseFileDialogModel.getTypeColumnIfChecked())
                 .descriptionPlaceIndex(mChooseFileDialogModel.getDescriptionColumnIfChecked())
                 .producerPlaceIndex(mChooseFileDialogModel.getProducerColumnIfChecked())
-                .locationPlaceIndex(mChooseFileDialogModel.getLocationColumnIfChecked());
+                .locationPlaceIndex(mChooseFileDialogModel.getLocationColumnIfChecked())
+                .supplierPlaceIndex(mChooseFileDialogModel.getSupplierColumnIfChecked());
 
         return excelControllerBuilder.build();
 

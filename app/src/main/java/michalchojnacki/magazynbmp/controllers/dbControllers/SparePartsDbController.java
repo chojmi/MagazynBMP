@@ -62,6 +62,7 @@ public final class SparePartsDbController {
         values.put(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_TYPE, sparePart.getType());
         values.put(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_PRODUCER, sparePart.getProducer());
         values.put(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_LOCATION, sparePart.getLocation());
+        values.put(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_SUPPLIER, sparePart.getSupplier());
         return values;
     }
 
@@ -99,6 +100,7 @@ public final class SparePartsDbController {
                 .type(cursor.getString(3))
                 .location(cursor.getString(5))
                 .producer(cursor.getString(4))
+                .supplier(cursor.getString(6))
                 .build();
     }
 
@@ -142,6 +144,7 @@ public final class SparePartsDbController {
         public static final String COLUMN_NAME_SPARE_PART_TYPE = "sparePartType";
         public static final String COLUMN_NAME_SPARE_PART_LOCATION = "sparePartLocation";
         public static final String COLUMN_NAME_SPARE_PART_PRODUCER = "sparePartProducer";
+        public static final String COLUMN_NAME_SPARE_PART_SUPPLIER = "sparePartSupplier";
         private static final String TABLE_NAME = "spareParts";
     }
 
@@ -156,7 +159,8 @@ public final class SparePartsDbController {
                         SparePartsDbEntry.COLUMN_NAME_SPARE_PART_NUMBER + TEXT_TYPE + COMMA_SEP +
                         SparePartsDbEntry.COLUMN_NAME_SPARE_PART_TYPE + TEXT_TYPE + COMMA_SEP +
                         SparePartsDbEntry.COLUMN_NAME_SPARE_PART_PRODUCER + TEXT_TYPE + COMMA_SEP +
-                        SparePartsDbEntry.COLUMN_NAME_SPARE_PART_LOCATION + TEXT_TYPE +
+                        SparePartsDbEntry.COLUMN_NAME_SPARE_PART_LOCATION + TEXT_TYPE + COMMA_SEP +
+                        SparePartsDbEntry.COLUMN_NAME_SPARE_PART_SUPPLIER + TEXT_TYPE +
                         ")";
 
         private static final String SQL_READ_ENTRIES = "SELECT  * FROM " + SparePartsDbEntry.TABLE_NAME;
@@ -164,7 +168,9 @@ public final class SparePartsDbController {
         private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + SparePartsDbEntry.TABLE_NAME;
 
         private static String sqlCheckEntry(SparePart sparePart) {
-            if (sparePart.getDescription() == null && sparePart.getNumber() == null && sparePart.getType() == null && sparePart.getProducer() == null)
+            if (sparePart.getDescription() == null && sparePart.getNumber() == null
+                    && sparePart.getType() == null && sparePart.getProducer() == null
+                    && sparePart.getSupplier() == null)
                 return null;
 
             boolean needsAnd = false;
@@ -202,9 +208,19 @@ public final class SparePartsDbController {
             if (sparePart.getProducer() != null) {
                 if (needsAnd) {
                     builder.append(" AND ");
+                    needsAnd = true;
                 }
                 builder.append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_PRODUCER + " LIKE '%")
                         .append(sparePart.getProducer())
+                        .append("%'");
+            }
+
+            if (sparePart.getSupplier() != null) {
+                if (needsAnd) {
+                    builder.append(" AND ");
+                }
+                builder.append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_SUPPLIER + " LIKE '%")
+                        .append(sparePart.getSupplier())
                         .append("%'");
             }
 
@@ -229,13 +245,16 @@ public final class SparePartsDbController {
                     .append("%' OR ")
                     .append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_PRODUCER + " LIKE '%")
                     .append(searchedText)
+                    .append("%' OR ")
+                    .append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_SUPPLIER + " LIKE '%")
+                    .append(searchedText)
                     .append("%'").toString();
         }
     }
 
     private class FavDbHelper extends SQLiteOpenHelper {
 
-        private static final int DB_VERSION = 1;
+        private static final int DB_VERSION = 2;
         private static final String DB_NAME = "bazaY.db";
 
         public FavDbHelper(Context context) {

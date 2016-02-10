@@ -16,6 +16,8 @@ public class SearchDialogSPref {
     private final String TYPE_VALUE = "typeValue";
     private final String PRODUCER_CHECKBOX = "producerCheckbox";
     private final String PRODUCER_VALUE = "producerValue";
+    private final String SUPPLIER_CHECKBOX = "supplierCheckbox";
+    private final String SUPPLIER_VALUE = "supplierValue";
 
     private final SearchDialogModel mSearchDialogModel;
 
@@ -34,6 +36,8 @@ public class SearchDialogSPref {
                 .putBoolean(TYPE_CHECKBOX, mSearchDialogModel.isPartTypeChecked())
                 .putString(PRODUCER_VALUE, mSearchDialogModel.getPartProducer())
                 .putBoolean(PRODUCER_CHECKBOX, mSearchDialogModel.isPartProducerChecked())
+                .putString(SUPPLIER_VALUE, mSearchDialogModel.getPartSupplier())
+                .putBoolean(SUPPLIER_CHECKBOX, mSearchDialogModel.isPartSupplierChecked())
                 .apply();
     }
 
@@ -47,5 +51,7 @@ public class SearchDialogSPref {
         mSearchDialogModel.setPartType(sharedPreferences.getString(TYPE_VALUE, mSearchDialogModel.getPartType()));
         mSearchDialogModel.setPartProducerChecked(sharedPreferences.getBoolean(PRODUCER_CHECKBOX, mSearchDialogModel.isPartProducerChecked()));
         mSearchDialogModel.setPartProducer(sharedPreferences.getString(PRODUCER_VALUE, mSearchDialogModel.getPartProducer()));
+        mSearchDialogModel.setPartSupplierChecked(sharedPreferences.getBoolean(SUPPLIER_CHECKBOX, mSearchDialogModel.isPartSupplierChecked()));
+        mSearchDialogModel.setPartSupplier(sharedPreferences.getString(SUPPLIER_VALUE, mSearchDialogModel.getPartSupplier()));
     }
 }

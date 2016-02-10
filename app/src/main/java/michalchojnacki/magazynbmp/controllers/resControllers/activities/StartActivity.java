@@ -135,9 +135,4 @@ public class StartActivity extends AppCompatActivity implements DialogFragmentUp
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        //No call for super(). Bug on API Level > 11.
-    }
 }
