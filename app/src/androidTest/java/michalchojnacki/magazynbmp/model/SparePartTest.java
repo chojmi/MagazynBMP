@@ -14,6 +14,7 @@ public class SparePartTest {
                 && sparePart.getDescription() == null
                 && sparePart.getType() == null
                 && sparePart.getProducer() == null
+                && sparePart.getSupplier() == null
                 && sparePart.getLocation() == null);
     }
 
@@ -25,12 +26,14 @@ public class SparePartTest {
                 .type("type")
                 .producer("producer")
                 .location("location")
+                .supplier("supplier")
                 .build();
 
         assertTrue(sparePart.getNumber().equals("number")
                 && sparePart.getDescription().equals("description")
                 && sparePart.getType().equals("type")
                 && sparePart.getProducer().equals("producer")
+                && sparePart.getSupplier().equals("supplier")
                 && sparePart.getLocation().equals("location"));
 
     }

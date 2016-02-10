@@ -45,7 +45,8 @@ public class SparePartsViewerTest {
             Espresso.onView(nthChildOf(withId(R.id.SparePartsRecyclerView), i))
                     .check(matches(hasDescendant(withText("description " + i))))
                     .check(matches(hasDescendant(withText("type " + i))))
-                    .check(matches(hasDescendant(withText("producer " + i))));
+                    .check(matches(hasDescendant(withText("producer " + i))))
+                    .check(matches(hasDescendant(withText("supplier " + i))));
         }
     }
 
@@ -60,6 +61,7 @@ public class SparePartsViewerTest {
                     .type("type " + i)
                     .producer("producer " + i)
                     .location("location " + i)
+                    .supplier("supplier " + i)
                     .build();
         }
 
@@ -105,6 +107,7 @@ public class SparePartsViewerTest {
             Espresso.onView(withId(R.id.SparePartTypeText)).check(matches(withText("type " + i)));
             Espresso.onView(withId(R.id.SparePartLocationText)).check(matches(withText("location " + i)));
             Espresso.onView(withId(R.id.SparePartProducerText)).check(matches(withText("producer " + i)));
+            Espresso.onView(withId(R.id.SparePartSupplierText)).check(matches(withText("supplier " + i)));
             Espresso.pressBack();
         }
     }

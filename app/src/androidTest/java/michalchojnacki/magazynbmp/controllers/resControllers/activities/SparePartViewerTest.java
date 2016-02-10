@@ -42,6 +42,7 @@ public class SparePartViewerTest {
                 .type("type")
                 .producer("producer")
                 .location("location")
+                .supplier("supplier")
                 .build();
 
         Intent intent = new Intent().putExtra(SparePartViewer.SPARE_PART, sparePart);
@@ -64,6 +65,12 @@ public class SparePartViewerTest {
     public void locationProperlyRead() {
         initSparePart();
         Espresso.onView(withId(R.id.SparePartLocationText)).check(matches(withText("location")));
+    }
+
+    @Test
+    public void supplierProperlyRead() {
+        initSparePart();
+        Espresso.onView(withId(R.id.SparePartSupplierText)).check(matches(withText("supplier")));
     }
 
     @Test

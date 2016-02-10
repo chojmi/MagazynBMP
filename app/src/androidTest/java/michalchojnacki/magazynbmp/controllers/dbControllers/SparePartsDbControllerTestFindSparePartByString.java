@@ -19,14 +19,21 @@ public class SparePartsDbControllerTestFindSparePartByString {
     @Before
     public void initSparePartsDbController() {
         sparePartsDbController = new SparePartsDbController(InstrumentationRegistry.getTargetContext());
+        deleteAllSpareParts();
         SparePart sparePart = new SparePart.Builder()
                 .number("YA2020")
                 .description("desc")
                 .producer("producer")
                 .type("type")
                 .location("00-00-00")
+                .supplier("supplier")
                 .build();
         sparePartsDbController.saveSparePart(sparePart);
+    }
+
+    @After
+    public void deleteAllSpareParts() {
+        sparePartsDbController.deleteAllSpareParts();
     }
 
     @Test
@@ -35,6 +42,14 @@ public class SparePartsDbControllerTestFindSparePartByString {
 
         assertFalse(spareParts.length != 1);
         assertThat(spareParts[0].getNumber(), equalTo("YA2020"));
+    }
+
+    @Test
+    public void findSparePartByStringWithSupplier() {
+        SparePart[] spareParts = sparePartsDbController.findSparePart("supplier");
+
+        assertFalse(spareParts.length != 1);
+        assertThat(spareParts[0].getSupplier(), equalTo("supplier"));
     }
 
     @Test
@@ -59,10 +74,5 @@ public class SparePartsDbControllerTestFindSparePartByString {
 
         assertFalse(spareParts.length != 1);
         assertThat(spareParts[0].getNumber(), equalTo("YA2020"));
-    }
-
-    @After
-    public void deleteAllSpareParts() {
-        sparePartsDbController.deleteAllSpareParts();
     }
 }

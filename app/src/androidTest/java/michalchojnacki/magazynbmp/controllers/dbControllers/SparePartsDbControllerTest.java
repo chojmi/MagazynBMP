@@ -19,14 +19,21 @@ public class SparePartsDbControllerTest {
     @Before
     public void initSparePartsDbController() {
         sparePartsDbController = new SparePartsDbController(InstrumentationRegistry.getTargetContext());
+        deleteAllSpareParts();
         SparePart sparePart = new SparePart.Builder()
                 .number("YA2020")
                 .description("desc")
                 .producer("producer")
                 .type("type")
                 .location("00-00-00")
+                .supplier("00-00-00")
                 .build();
         sparePartsDbController.saveSparePart(sparePart);
+    }
+
+    @After
+    public void deleteAllSpareParts() {
+        sparePartsDbController.deleteAllSpareParts();
     }
 
     @Test
@@ -68,11 +75,6 @@ public class SparePartsDbControllerTest {
         SparePart[] spareParts = sparePartsDbController.findSparePart((String) null);
 
         assertThat(spareParts, equalTo(null));
-    }
-
-    @After
-    public void deleteAllSpareParts() {
-        sparePartsDbController.deleteAllSpareParts();
     }
 
 }
