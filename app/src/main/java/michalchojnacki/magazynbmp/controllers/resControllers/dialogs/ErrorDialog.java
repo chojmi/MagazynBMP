@@ -38,6 +38,6 @@ public class ErrorDialog extends DialogFragment {
 
     public void showDialog(Context context) {
         FragmentManager fm = ((AppCompatActivity) context).getSupportFragmentManager();
-        show(fm, "dialog");
+        fm.beginTransaction().add(this, "dialog").commitAllowingStateLoss();
     }
 }
