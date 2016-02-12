@@ -18,6 +18,7 @@ import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.DialogFragm
 import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.FileChooserDialog;
 import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.SearchDialog;
 import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.SimpleSearchDialog;
+import michalchojnacki.magazynbmp.model.SparePart;
 
 
 public class StartActivity extends AppCompatActivity implements DialogFragmentUpdater, UiOwner, ClearDatabaseDialog.ClearDatabaseListener {
@@ -42,6 +43,7 @@ public class StartActivity extends AppCompatActivity implements DialogFragmentUp
         findSearchInDatabaseItem(menu);
         findSimpleSearchInDatabaseItem(menu);
         findClearDatabaseItem(menu);
+        findShowTrayItem(menu);
     }
 
     private void findAddExcelFileItem(Menu menu) {
@@ -83,6 +85,24 @@ public class StartActivity extends AppCompatActivity implements DialogFragmentUp
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 new ClearDatabaseDialog().show(getSupportFragmentManager(), "clearDatabaseDialog");
+                return false;
+            }
+        });
+    }
+
+    private void findShowTrayItem(Menu menu) {
+        MenuItem showTray = menu.findItem(R.id.MenuShowSparePartsTray);
+        final Intent intent = new Intent(this, SparePartsTray.class);
+        showTray.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                SparePartWithQuantity[] sparePartWithQuantities = new SparePartWithQuantity[2];
+                sparePartWithQuantities[0] = new SparePartWithQuantity(new SparePart.Builder().number("Ya000").build());
+                sparePartWithQuantities[0].setQuantity(4);
+                sparePartWithQuantities[1] = new SparePartWithQuantity(new SparePart.Builder().number("Ya002").build());
+                sparePartWithQuantities[1].setQuantity(6);
+                intent.putExtra(SparePartsTray.SPARE_PARTS_WITH_QUANTITY, sparePartWithQuantities);
+                startActivity(intent);
                 return false;
             }
         });

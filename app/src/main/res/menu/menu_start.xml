@@ -27,4 +27,10 @@
         android:orderInCategory="3"
         android:title="@string/SearchInDatabaseTitle"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/MenuShowSparePartsTray"
+        android:orderInCategory="4"
+        android:title="Show tray"
+        app:showAsAction="never"/>
 </menu>
