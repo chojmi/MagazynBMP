@@ -26,7 +26,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
-    compile files('libs/poi-3.8-20120326.jar')
+    compile 'org.apache.poi:poi:3.13'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.nononsenseapps:filepicker:2.4.2'
 

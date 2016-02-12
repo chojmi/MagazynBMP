@@ -231,24 +231,32 @@ public final class SparePartsDbController {
             if (searchedText == null)
                 return null;
 
-            return new StringBuilder()
-                    .append(SQL_READ_ENTRIES)
+            String[] wordsToCheck = SqlCheckEntryBuilder.getWordsToCheck(searchedText);
+            StringBuilder stringBuilder = new StringBuilder();
+
+            stringBuilder.append(SQL_READ_ENTRIES)
                     .append(" WHERE ")
                     .append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_NUMBER + " LIKE '%")
                     .append(searchedText)
-                    .append("%' OR ")
-                    .append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_DESCRIPTION + " LIKE '%")
-                    .append(searchedText)
-                    .append("%' OR ")
-                    .append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_TYPE + " LIKE '%")
-                    .append(searchedText)
-                    .append("%' OR ")
-                    .append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_PRODUCER + " LIKE '%")
-                    .append(searchedText)
-                    .append("%' OR ")
-                    .append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_SUPPLIER + " LIKE '%")
-                    .append(searchedText)
-                    .append("%'").toString();
+                    .append("%'");
+
+            for (String word : wordsToCheck) {
+                stringBuilder.append(" OR ")
+                        .append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_DESCRIPTION + " LIKE '%")
+                        .append(word)
+                        .append("%' OR ")
+                        .append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_TYPE + " LIKE '%")
+                        .append(word)
+                        .append("%' OR ")
+                        .append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_PRODUCER + " LIKE '%")
+                        .append(word)
+                        .append("%' OR ")
+                        .append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_SUPPLIER + " LIKE '%")
+                        .append(word)
+                        .append("%'");
+            }
+
+            return stringBuilder.toString();
         }
     }
 
