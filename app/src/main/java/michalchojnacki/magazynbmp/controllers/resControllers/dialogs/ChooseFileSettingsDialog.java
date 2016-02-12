@@ -33,6 +33,7 @@ public class ChooseFileSettingsDialog extends DialogFragment {
     private Context mContext;
     private FileChooserDialog mFileChooserDialog;
     private SparePartsDbController mSparePartsDbController;
+    private boolean clearDb = false;
 
     @Override
     public void onAttach(Activity activity) {
@@ -118,10 +119,13 @@ public class ChooseFileSettingsDialog extends DialogFragment {
         if (!mChooseFileDialogModel.getChosenFileText().equals(mContext.getString(R.string.NoChosenFileLabel))) {
             final Handler handler = createEndOfSavingOperationHandler();
 
-            QuestionDialog.newInstance("Overwrite old Y?", "Overwrite old Y?")
+            final QuestionDialog questionDialog = QuestionDialog.newInstance("Overwrite old Y?", "Overwrite old Y?")
                     .setPositiveClickListener(new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            if (clearDb) {
+                                ((ClearDatabaseDialog.ClearDatabaseListener) mContext).clearDatabase();
+                            }
                             createExcelController(true).exportXlsToDb(handler,
                                     mChooseFileDialogModel.getChosenFilePath(),
                                     mChooseFileDialogModel.getSheetName());
@@ -130,11 +134,30 @@ public class ChooseFileSettingsDialog extends DialogFragment {
                     .setNegativeClickListener(new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            if (clearDb) {
+                                ((ClearDatabaseDialog.ClearDatabaseListener) mContext).clearDatabase();
+                            }
                             createExcelController(false).exportXlsToDb(handler,
                                     mChooseFileDialogModel.getChosenFilePath(),
                                     mChooseFileDialogModel.getSheetName());
                         }
-                    }).showDialog(mContext);
+                    });
+
+            QuestionDialog.newInstance("Clear?", "First clear db?")
+                    .setPositiveClickListener(new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            clearDb = true;
+                            questionDialog.showDialog(mContext);
+                        }
+                    }).setNegativeClickListener(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    clearDb = false;
+                    questionDialog.showDialog(mContext);
+                }
+            }).showDialog(mContext);
+
         } else {
             ErrorDialog.newInstance(mContext.getString(R.string.ErrorLabel),
                     mContext.getString(R.string.NoChosenFileLabel)).showDialog(mContext);
