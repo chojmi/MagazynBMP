@@ -30,11 +30,7 @@ public final class SparePartsDbController {
     }
 
     public boolean saveSparePart(SparePart sparePart, boolean overwrite) {
-        if (!sparePartExist(sparePart)) {
-            SQLiteDatabase db = mFavDbHelper.getWritableDatabase();
-            ContentValues values = getContentValues(sparePart);
-            db.insert(SparePartsDbEntry.TABLE_NAME, null, values);
-            db.close();
+        if (saveSparePart(sparePart)) {
             return true;
         } else if (overwrite) {
             SQLiteDatabase db = mFavDbHelper.getWritableDatabase();
@@ -44,6 +40,29 @@ public final class SparePartsDbController {
             return true;
         }
         return false;
+    }
+
+    public boolean saveSparePart(SparePart sparePart) {
+        if (!sparePartExist(sparePart)) {
+            SQLiteDatabase db = mFavDbHelper.getWritableDatabase();
+            ContentValues values = getContentValues(sparePart);
+            db.insert(SparePartsDbEntry.TABLE_NAME, null, values);
+            db.close();
+            return true;
+        }
+        return false;
+    }
+
+    @NonNull
+    private ContentValues getContentValues(SparePart sparePart) {
+        ContentValues values = new ContentValues();
+        values.put(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_NUMBER, sparePart.getNumber());
+        values.put(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_DESCRIPTION, sparePart.getDescription());
+        values.put(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_TYPE, sparePart.getType());
+        values.put(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_PRODUCER, sparePart.getProducer());
+        values.put(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_LOCATION, sparePart.getLocation());
+        values.put(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_SUPPLIER, sparePart.getSupplier());
+        return values;
     }
 
     private boolean sparePartExist(SparePart sparePart) {
@@ -58,18 +77,6 @@ public final class SparePartsDbController {
         cursor.close();
         db.close();
         return true;
-    }
-
-    @NonNull
-    private ContentValues getContentValues(SparePart sparePart) {
-        ContentValues values = new ContentValues();
-        values.put(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_NUMBER, sparePart.getNumber());
-        values.put(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_DESCRIPTION, sparePart.getDescription());
-        values.put(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_TYPE, sparePart.getType());
-        values.put(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_PRODUCER, sparePart.getProducer());
-        values.put(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_LOCATION, sparePart.getLocation());
-        values.put(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_SUPPLIER, sparePart.getSupplier());
-        return values;
     }
 
     public SparePart[] findSparePart(SparePart searchedSparePart) {
