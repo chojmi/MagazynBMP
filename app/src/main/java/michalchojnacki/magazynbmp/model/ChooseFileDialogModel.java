@@ -18,12 +18,12 @@ public class ChooseFileDialogModel {
     private final CheckableTextView mSupplierColumn;
     private final CheckableTextView mLocationColumn;
     private final TextView mPartPrefix;
-    private final EditText mSheetNameText;
+    private final TextView mSheetNameText;
     private final TextView mChosenFile;
     private String mChosenFilePath;
 
     public ChooseFileDialogModel(View view) {
-        mSheetNameText = (EditText) view.findViewById(R.id.DialogChooseSheetNameText);
+        mSheetNameText = (TextView) view.findViewById(R.id.DialogChooseSheetNameText);
         mChosenFile = (TextView) view.findViewById(R.id.DialogChosenFileNameTextView);
         mPartPrefix = (EditText) view.findViewById(R.id.DialogChoosePartPrefixText);
         mNumberColumnEditText = (EditText) view.findViewById(R.id.DialogChooseNumberColumnText);

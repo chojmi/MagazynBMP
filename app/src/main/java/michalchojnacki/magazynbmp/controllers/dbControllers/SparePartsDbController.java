@@ -29,18 +29,24 @@ public final class SparePartsDbController {
         return quantity;
     }
 
-    public boolean saveSparePart(SparePart sparePart) {
-        if (!doesSparePartExist(sparePart)) {
+    public boolean saveSparePart(SparePart sparePart, boolean overwrite) {
+        if (!sparePartExist(sparePart)) {
             SQLiteDatabase db = mFavDbHelper.getWritableDatabase();
             ContentValues values = getContentValues(sparePart);
             db.insert(SparePartsDbEntry.TABLE_NAME, null, values);
+            db.close();
+            return true;
+        } else if (overwrite) {
+            SQLiteDatabase db = mFavDbHelper.getWritableDatabase();
+            ContentValues values = getContentValues(sparePart);
+            db.update(SparePartsDbEntry.TABLE_NAME, values, SparePartsDbEntry.COLUMN_NAME_SPARE_PART_NUMBER + "='" + sparePart.getNumber() + "'", null);
             db.close();
             return true;
         }
         return false;
     }
 
-    private boolean doesSparePartExist(SparePart sparePart) {
+    private boolean sparePartExist(SparePart sparePart) {
         SQLiteDatabase db = mFavDbHelper.getReadableDatabase();
 
         Cursor cursor = db.rawQuery(SparePartsDbCommands.sqlCheckEntry(new SparePart.Builder().number(sparePart.getNumber()).build()), null);

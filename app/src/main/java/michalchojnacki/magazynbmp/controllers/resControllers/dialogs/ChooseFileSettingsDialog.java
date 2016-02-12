@@ -116,12 +116,25 @@ public class ChooseFileSettingsDialog extends DialogFragment {
 
     private void saveDataFromChosenFile() {
         if (!mChooseFileDialogModel.getChosenFileText().equals(mContext.getString(R.string.NoChosenFileLabel))) {
-            Handler handler = createEndOfSavingOperationHandler();
+            final Handler handler = createEndOfSavingOperationHandler();
 
-            createExcelController().exportXlsToDb(handler,
-                    mChooseFileDialogModel.getChosenFilePath(),
-                    mChooseFileDialogModel.getSheetName());
-
+            QuestionDialog.newInstance("Overwrite old Y?", "Overwrite old Y?")
+                    .setPositiveClickListener(new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            createExcelController(true).exportXlsToDb(handler,
+                                    mChooseFileDialogModel.getChosenFilePath(),
+                                    mChooseFileDialogModel.getSheetName());
+                        }
+                    })
+                    .setNegativeClickListener(new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            createExcelController(false).exportXlsToDb(handler,
+                                    mChooseFileDialogModel.getChosenFilePath(),
+                                    mChooseFileDialogModel.getSheetName());
+                        }
+                    }).showDialog(mContext);
         } else {
             ErrorDialog.newInstance(mContext.getString(R.string.ErrorLabel),
                     mContext.getString(R.string.NoChosenFileLabel)).showDialog(mContext);
@@ -150,7 +163,7 @@ public class ChooseFileSettingsDialog extends DialogFragment {
         });
     }
 
-    private ExcelController createExcelController() {
+    private ExcelController createExcelController(boolean overwriteOldParts) {
         ExcelController.Builder excelControllerBuilder = new ExcelController.Builder()
                 .context(mContext)
                 .sparePartsDbController(mSparePartsDbController)
@@ -160,7 +173,8 @@ public class ChooseFileSettingsDialog extends DialogFragment {
                 .descriptionPlaceIndex(mChooseFileDialogModel.getDescriptionColumnIfChecked())
                 .producerPlaceIndex(mChooseFileDialogModel.getProducerColumnIfChecked())
                 .locationPlaceIndex(mChooseFileDialogModel.getLocationColumnIfChecked())
-                .supplierPlaceIndex(mChooseFileDialogModel.getSupplierColumnIfChecked());
+                .supplierPlaceIndex(mChooseFileDialogModel.getSupplierColumnIfChecked())
+                .overwriteOldPart(overwriteOldParts);
 
         return excelControllerBuilder.build();
 

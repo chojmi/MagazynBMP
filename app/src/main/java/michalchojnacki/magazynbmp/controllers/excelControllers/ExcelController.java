@@ -39,6 +39,7 @@ public class ExcelController extends ExcelControllerModel {
         mLocationPlaceIndex = builder.mLocationPlaceIndex;
         mProducerPlaceIndex = builder.mProducerPlaceIndex;
         mSupplierPlaceIndex = builder.mSupplierPlaceIndex;
+        mOverwriteOldPart = builder.mOverwriteOldPart;
         mLoadingDbDialog = new LoadingDbDialog();
     }
 
@@ -120,7 +121,7 @@ public class ExcelController extends ExcelControllerModel {
                 .supplier(saveCell(row, mSupplierPlaceIndex))
                 .build();
 
-        return mSparePartsDbController.saveSparePart(sparePart);
+        return mSparePartsDbController.saveSparePart(sparePart, mOverwriteOldPart);
 
     }
 
@@ -195,6 +196,11 @@ public class ExcelController extends ExcelControllerModel {
             }
             return this;
         }
+
+        public Builder overwriteOldPart(boolean overwriteOldPart) {
+            mOverwriteOldPart = overwriteOldPart;
+            return this;
+        }
     }
 }
 
@@ -209,6 +215,8 @@ class ExcelControllerModel {
     int mLocationPlaceIndex = -1;
     int mProducerPlaceIndex = -1;
     int mSupplierPlaceIndex = -1;
+
+    boolean mOverwriteOldPart = false;
 
     String mPartPrefix;
 }
