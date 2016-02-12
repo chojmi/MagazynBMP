@@ -189,9 +189,16 @@ public final class SparePartsDbController {
                 if (needsAnd) {
                     builder.append(" AND ");
                 }
-                builder.append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_DESCRIPTION + " LIKE '%")
-                        .append(sparePart.getDescription())
-                        .append("%'");
+                String[] descriptions = SqlCheckEntryBuilder.getWordsToCheck(sparePart.getDescription());
+
+                builder.append("(");
+                for (String description : descriptions) {
+                    builder.append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_DESCRIPTION + " LIKE '%")
+                            .append(description)
+                            .append("%' OR ");
+                }
+                builder.delete(builder.length() - 4, builder.length());
+                builder.append(")");
                 needsAnd = true;
             }
 
