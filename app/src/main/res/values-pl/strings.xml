@@ -11,6 +11,7 @@
     <string name="ColumnOfLocationLabel">Kolumna lokalizacji:</string>
     <string name="ColumnOfSupplierLabel">Kolumna dostawcy:</string>
     <string name="NumberLabel">Numer części:</string>
+    <string name="QuantityLabel">Ilość:</string>
     <string name="DescriptionLabel">Opis:</string>
     <string name="TypeLabel">Typ:</string>
     <string name="ProducerLabel">Producent:</string>
@@ -27,6 +28,7 @@
     <string name="NoSheetFound">Nie znaleziono arkusza o wybranej nazwie.</string>
     <string name="NoDataLabel">Brak danych</string>
     <string name="ChooseExcelFileLabel">Wybierz plik Excela:</string>
+    <string name="AddSpPartToBasketLabel">Dodaj część do koszyka:</string>
     <string name="ResetToDefaultLabel">Przywróć\ndomyślne</string>
     <string name="CancelLabel">Anuluj</string>
     <string name="YouNeedChooseXlsFile">Musisz wybrać plik z rozszerzeniem .xls!</string>
@@ -46,4 +48,6 @@
     <string name="SimpleSearchText">wpisz tekst</string>
     <string name="SearchInDatabaseTitle">Szczegółowe szukanie</string>
     <string name="partNumberHint">numer części</string>
+    <string name="quantityHint">ilość</string>
+    <string name="AddLabel">Dodaj</string>
 </resources>

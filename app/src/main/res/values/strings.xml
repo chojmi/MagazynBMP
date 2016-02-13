@@ -23,6 +23,7 @@
     <string name="TypeLabel">Type:</string>
     <string name="ProducerLabel">Producer:</string>
     <string name="SupplierLabel">Supplier:</string>
+    <string name="QuantityLabel">Quantity:</string>
     <string name="AddExcelFileTitle">Add excel file</string>
     <string name="AddSpPartToBasket">Add spare part to basket</string>
     <string name="ClearDatabaseTitle">Clear Database</string>
@@ -36,6 +37,7 @@
     <string name="NoDataLabel">No data</string>
     <string name="OkLabel" translatable="false">OK</string>
     <string name="ChooseExcelFileLabel">Choose Excel file:</string>
+    <string name="AddSpPartToBasketLabel">Add spare part to basket</string>
     <string name="ResetToDefaultLabel">Reset\nto default</string>
     <string name="CancelLabel">Cancel</string>
     <string name="YouNeedChooseXlsFile">You need to choose file with xls extension!</string>
@@ -56,4 +58,6 @@
     <string name="SimpleSearchText">type your text</string>
     <string name="SearchInDatabaseTitle">Detailed Search</string>
     <string name="partNumberHint">part number</string>
+    <string name="quantityHint">quantity</string>
+    <string name="AddLabel">Add</string>
 </resources>

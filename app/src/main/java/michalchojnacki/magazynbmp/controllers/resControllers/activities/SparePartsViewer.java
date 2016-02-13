@@ -1,5 +1,6 @@
 package michalchojnacki.magazynbmp.controllers.resControllers.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import michalchojnacki.magazynbmp.R;
+import michalchojnacki.magazynbmp.controllers.basketControllers.BasketController;
 import michalchojnacki.magazynbmp.controllers.recyclerViews.DividerItemDecoration;
 import michalchojnacki.magazynbmp.controllers.resControllers.listeners.ItemClickListener;
 import michalchojnacki.magazynbmp.model.SparePart;
@@ -25,11 +27,23 @@ import michalchojnacki.magazynbmp.model.SparePart;
 public class SparePartsViewer extends AppCompatActivity {
 
     public static final String SPARE_PARTS = "spareParts";
+    private static final String BASKET_CONTROLLER = "basketController";
+
+    private BasketController mBasketController;
+    private RecyclerViewAdapter mRecyclerViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spare_parts);
+
+        if (savedInstanceState != null && savedInstanceState.getSerializable(BASKET_CONTROLLER) != null) {
+            mBasketController = (BasketController) savedInstanceState.getSerializable(BASKET_CONTROLLER);
+        } else if (getIntent().getSerializableExtra(SparePartViewer.BASKET_CONTROLLER) != null) {
+            mBasketController = (BasketController) getIntent().getSerializableExtra(SparePartViewer.BASKET_CONTROLLER);
+        } else {
+            mBasketController = new BasketController();
+        }
 
         RecyclerViewAdapter recyclerViewAdapter = getRecyclerViewAdapter();
         createRecyclerView(recyclerViewAdapter);
@@ -39,7 +53,8 @@ public class SparePartsViewer extends AppCompatActivity {
     private RecyclerViewAdapter getRecyclerViewAdapter() {
         Object[] array = (Object[]) getIntent().getSerializableExtra(SPARE_PARTS);
         SparePart[] spareParts = readSpareParts(array);
-        return new RecyclerViewAdapter(this, spareParts);
+        mRecyclerViewAdapter = new RecyclerViewAdapter(this, spareParts, mBasketController);
+        return mRecyclerViewAdapter;
     }
 
     private void createRecyclerView(RecyclerViewAdapter recyclerViewAdapter) {
@@ -61,15 +76,38 @@ public class SparePartsViewer extends AppCompatActivity {
         }
         return spareParts;
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1 && data != null) {
+            switch (resultCode) {
+                case SparePartViewer.SPARE_PARTS_VIEWER_STOPPED: {
+                    mBasketController = (BasketController) data.getSerializableExtra(SparePartViewer.BASKET_CONTROLLER);
+                    mRecyclerViewAdapter.setBasketController(mBasketController);
+                    setResult(SparePartViewer.SPARE_PARTS_VIEWER_STOPPED, data);
+                    break;
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(BASKET_CONTROLLER, mBasketController);
+        super.onSaveInstanceState(outState);
+    }
 }
 
 class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.SparePartsViewHolder> {
 
     private final List<SparePart> mSpareParts;
     private final Context mContext;
+    private BasketController mBasketController;
 
-    public RecyclerViewAdapter(Context context, SparePart[] spareParts) {
+    public RecyclerViewAdapter(Context context, SparePart[] spareParts, BasketController basketController) {
         mContext = context;
+        mBasketController = basketController;
         this.mSpareParts = new LinkedList<>();
         Collections.addAll(this.mSpareParts, spareParts);
     }
@@ -92,7 +130,8 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.Spare
                 SparePart sparePart = mSpareParts.get(position);
                 Intent intent = new Intent(mContext, SparePartViewer.class);
                 intent.putExtra(SparePartViewer.SPARE_PART, sparePart);
-                mContext.startActivity(intent);
+                intent.putExtra(SparePartViewer.BASKET_CONTROLLER, mBasketController);
+                ((Activity) mContext).startActivityForResult(intent, SparePartViewer.SPARE_PARTS_VIEWER_STOPPED);
             }
         });
     }
@@ -100,6 +139,10 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.Spare
     @Override
     public int getItemCount() {
         return mSpareParts.size();
+    }
+
+    public void setBasketController(BasketController basketController) {
+        mBasketController = basketController;
     }
 
     static class SparePartsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

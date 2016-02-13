@@ -1,5 +1,6 @@
 package michalchojnacki.magazynbmp.controllers.resControllers.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -9,18 +10,23 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import michalchojnacki.magazynbmp.R;
+import michalchojnacki.magazynbmp.controllers.basketControllers.BasketController;
+import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.AddSparePartToBasketDialog;
 import michalchojnacki.magazynbmp.model.SparePart;
 
 public class SparePartViewer extends AppCompatActivity {
 
     public static final String SPARE_PART = "sparePart";
-
+    public static final String BASKET_CONTROLLER = "basketController";
+    public static final int SPARE_PARTS_VIEWER_STOPPED = 1;
     @Bind(R.id.SparePartNumberText) TextView mYNumber;
     @Bind(R.id.SparePartDescriptionText) TextView mDescription;
     @Bind(R.id.SparePartTypeText) TextView mType;
     @Bind(R.id.SparePartLocationText) TextView mLocation;
     @Bind(R.id.SparePartProducerText) TextView mProducer;
     @Bind(R.id.SparePartSupplierText) TextView mSupplier;
+    private BasketController mBasketController;
+    private SparePart mSparePart;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -29,10 +35,10 @@ public class SparePartViewer extends AppCompatActivity {
         addSpPartToBasket.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                AddSparePartToBasketDialog.newInstance(mSparePart).show(getSupportFragmentManager(), "fragment_add_to_basket");
                 return false;
             }
         });
-
         return true;
     }
 
@@ -41,8 +47,9 @@ public class SparePartViewer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spare_part_viewer);
         ButterKnife.bind(this);
-        SparePart sparePart = readSparePart();
-        loadUi(sparePart);
+        mSparePart = readSparePart();
+        mBasketController = readBasketController();
+        loadUi(mSparePart);
     }
 
     private SparePart readSparePart() {
@@ -51,6 +58,14 @@ public class SparePartViewer extends AppCompatActivity {
             sparePart = new SparePart.Builder().build();
         }
         return sparePart;
+    }
+
+    private BasketController readBasketController() {
+        BasketController basketController = (BasketController) getIntent().getSerializableExtra(BASKET_CONTROLLER);
+        if (basketController == null) {
+            basketController = new BasketController();
+        }
+        return basketController;
     }
 
     private void loadUi(SparePart sparePart) {
@@ -62,5 +77,10 @@ public class SparePartViewer extends AppCompatActivity {
         mSupplier.setText(sparePart.getSupplier());
     }
 
-
+    public void addToBasket(int quantity) {
+        mBasketController.addToBasket(mSparePart, quantity);
+        Intent intent = new Intent();
+        intent.putExtra(BASKET_CONTROLLER, mBasketController);
+        setResult(SPARE_PARTS_VIEWER_STOPPED, intent);
+    }
 }

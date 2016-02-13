@@ -19,17 +19,18 @@ import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.DialogFragm
 import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.FileChooserDialog;
 import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.SearchDialog;
 import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.SimpleSearchDialog;
-import michalchojnacki.magazynbmp.model.SparePart;
 
 
 public class StartActivity extends AppCompatActivity implements DialogFragmentUpdater, UiOwner, ClearDatabaseDialog.ClearDatabaseListener {
+
+    private static final String BASKET_CONTROLLER = "basketController";
 
     private final SparePartsDbController mSparePartsDbController = new SparePartsDbController(this);
     @Bind(R.id.StartActivityItemsQuantity) TextView mItemsQuantity;
     private SearchDialog mSearchDialog = new SearchDialog();
     private SimpleSearchDialog mSimpleSearchDialog = new SimpleSearchDialog();
     private ChooseFileSettingsDialog mChooseFileSettingsDialog = new ChooseFileSettingsDialog();
-    private BasketController mBasketController = new BasketController();
+    private BasketController mBasketController;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -53,7 +54,7 @@ public class StartActivity extends AppCompatActivity implements DialogFragmentUp
         addExcelFile.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                mChooseFileSettingsDialog.show(getSupportFragmentManager(), "fragment_edit_name");
+                mChooseFileSettingsDialog.show(getSupportFragmentManager(), "fragment_choose_file_settings");
                 return false;
             }
         });
@@ -98,8 +99,6 @@ public class StartActivity extends AppCompatActivity implements DialogFragmentUp
         showTray.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                mBasketController.addToBasket(new SparePart.Builder().number("Ya00ew").build(), 4);
-                mBasketController.addToBasket(new SparePart.Builder().number("Ya00xx").build(), 7);
                 intent.putExtra(SparePartsBasketViewer.BASKET_CONTROLLER, mBasketController);
                 startActivity(intent);
                 return false;
@@ -137,7 +136,11 @@ public class StartActivity extends AppCompatActivity implements DialogFragmentUp
 
         setContentView(R.layout.activity_start);
         ButterKnife.bind(this);
-
+        if (savedInstanceState != null && savedInstanceState.getSerializable(BASKET_CONTROLLER) != null) {
+            mBasketController = (BasketController) savedInstanceState.getSerializable(BASKET_CONTROLLER);
+        } else {
+            mBasketController = new BasketController();
+        }
         mChooseFileSettingsDialog.setSparePartsDbController(mSparePartsDbController);
         mSearchDialog.setSparePartsDbController(mSparePartsDbController);
         mSimpleSearchDialog.setSparePartsDbController(mSparePartsDbController);
@@ -146,12 +149,28 @@ public class StartActivity extends AppCompatActivity implements DialogFragmentUp
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case FileChooserDialog.FILE_SELECT_CODE: {
-                mChooseFileSettingsDialog.fileChosen(resultCode, data);
-                break;
+        if (requestCode == 1 && data != null) {
+            switch (resultCode) {
+                case FileChooserDialog.FILE_SELECT_CODE: {
+                    mChooseFileSettingsDialog.fileChosen(resultCode, data);
+                    break;
+                }
+                case SparePartViewer.SPARE_PARTS_VIEWER_STOPPED: {
+                    mBasketController = (BasketController) data.getSerializableExtra(SparePartViewer.BASKET_CONTROLLER);
+                    break;
+                }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(BASKET_CONTROLLER, mBasketController);
+        super.onSaveInstanceState(outState);
+    }
+
+    public BasketController getBasketController() {
+        return mBasketController;
     }
 }

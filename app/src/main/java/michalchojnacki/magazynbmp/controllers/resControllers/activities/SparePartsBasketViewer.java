@@ -89,6 +89,7 @@ class SparePartsBasketRecyclerViewAdapter extends RecyclerView.Adapter<SparePart
                 SparePart sparePart = mBasketController.getSparePart(position);
                 Intent intent = new Intent(mContext, SparePartViewer.class);
                 intent.putExtra(SparePartViewer.SPARE_PART, sparePart);
+                intent.putExtra(SparePartViewer.BASKET_CONTROLLER, sparePart);
                 mContext.startActivity(intent);
             }
         });

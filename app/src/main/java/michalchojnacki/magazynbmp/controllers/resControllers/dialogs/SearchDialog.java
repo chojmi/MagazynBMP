@@ -16,6 +16,7 @@ import michalchojnacki.magazynbmp.R;
 import michalchojnacki.magazynbmp.controllers.dbControllers.SparePartsDbController;
 import michalchojnacki.magazynbmp.controllers.resControllers.activities.SparePartViewer;
 import michalchojnacki.magazynbmp.controllers.resControllers.activities.SparePartsViewer;
+import michalchojnacki.magazynbmp.controllers.resControllers.activities.StartActivity;
 import michalchojnacki.magazynbmp.controllers.sharedPreferencesController.SearchDialogSPref;
 import michalchojnacki.magazynbmp.model.SearchDialogModel;
 import michalchojnacki.magazynbmp.model.SparePart;
@@ -132,9 +133,9 @@ public class SearchDialog extends DialogFragment {
             intent = new Intent(mContext, SparePartsViewer.class);
             intent.putExtra(SparePartsViewer.SPARE_PARTS, spareParts);
         }
-
+        intent.putExtra(SparePartViewer.BASKET_CONTROLLER, ((StartActivity) mContext).getBasketController());
         mSearchDialogSPref.saveToSPref(mContext);
-        mContext.startActivity(intent);
+        ((StartActivity) mContext).startActivityForResult(intent, SparePartViewer.SPARE_PARTS_VIEWER_STOPPED);
     }
 
     public void setSparePartsDbController(SparePartsDbController sparePartsDbController) {
