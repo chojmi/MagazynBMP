@@ -95,11 +95,11 @@ public class StartActivity extends AppCompatActivity implements DialogFragmentUp
 
     private void findShowTrayItem(Menu menu) {
         MenuItem showTray = menu.findItem(R.id.MenuShowBasket);
-        final Intent intent = new Intent(this, SparePartsBasketViewer.class);
+        final Intent intent = new Intent(this, BasketViewer.class);
         showTray.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                intent.putExtra(SparePartsBasketViewer.BASKET_CONTROLLER, mBasketController);
+                intent.putExtra(BasketViewer.BASKET_CONTROLLER, mBasketController);
                 startActivity(intent);
                 return false;
             }

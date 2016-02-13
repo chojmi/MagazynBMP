@@ -18,15 +18,16 @@ import android.widget.TextView;
 import michalchojnacki.magazynbmp.R;
 import michalchojnacki.magazynbmp.controllers.basketControllers.BasketController;
 import michalchojnacki.magazynbmp.controllers.recyclerViews.DividerItemDecoration;
+import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.ChangeBasketDialog;
 import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.QuestionDialog;
 import michalchojnacki.magazynbmp.controllers.resControllers.listeners.ItemClickListener;
 import michalchojnacki.magazynbmp.model.SparePart;
 
-public class SparePartsBasketViewer extends AppCompatActivity {
+public class BasketViewer extends AppCompatActivity {
 
     public static final String BASKET_CONTROLLER = "basketController";
     private BasketController mBasketController;
-    private SparePartsBasketRecyclerViewAdapter recyclerViewAdapter;
+    private BasketRecyclerViewAdapter recyclerViewAdapter;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -43,7 +44,7 @@ public class SparePartsBasketViewer extends AppCompatActivity {
                                 recyclerViewAdapter.notifyDataSetChanged();
 
                             }
-                        }).showDialog(SparePartsBasketViewer.this);
+                        }).showDialog(BasketViewer.this);
                 return false;
             }
         });
@@ -61,12 +62,12 @@ public class SparePartsBasketViewer extends AppCompatActivity {
     }
 
     @NonNull
-    private SparePartsBasketRecyclerViewAdapter getRecyclerViewAdapter() {
+    private BasketRecyclerViewAdapter getRecyclerViewAdapter() {
         mBasketController = (BasketController) getIntent().getSerializableExtra(BASKET_CONTROLLER);
-        return new SparePartsBasketRecyclerViewAdapter(this, mBasketController);
+        return new BasketRecyclerViewAdapter(this, mBasketController);
     }
 
-    private void createRecyclerView(SparePartsBasketRecyclerViewAdapter recyclerViewAdapter) {
+    private void createRecyclerView(BasketRecyclerViewAdapter recyclerViewAdapter) {
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.SparePartsTrayRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -75,12 +76,12 @@ public class SparePartsBasketViewer extends AppCompatActivity {
     }
 }
 
-class SparePartsBasketRecyclerViewAdapter extends RecyclerView.Adapter<SparePartsBasketRecyclerViewAdapter.SparePartsViewHolder> {
+class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewAdapter.SparePartsViewHolder> {
 
     private final Context mContext;
     private BasketController mBasketController;
 
-    public SparePartsBasketRecyclerViewAdapter(Context context, BasketController basketController) {
+    public BasketRecyclerViewAdapter(Context context, BasketController basketController) {
         mContext = context;
         this.mBasketController = basketController;
     }
@@ -101,8 +102,22 @@ class SparePartsBasketRecyclerViewAdapter extends RecyclerView.Adapter<SparePart
                 SparePart sparePart = mBasketController.getSparePart(position);
                 Intent intent = new Intent(mContext, SparePartViewer.class);
                 intent.putExtra(SparePartViewer.SPARE_PART, sparePart);
-                intent.putExtra(SparePartViewer.BASKET_CONTROLLER, sparePart);
+                intent.putExtra(SparePartViewer.BASKET_CONTROLLER, mBasketController);
                 mContext.startActivity(intent);
+            }
+        });
+        holder.setLongClickListener(new ItemClickListener() {
+            @Override
+            public void onClick(final int position) {
+                ChangeBasketDialog
+                        .newInstance(mBasketController.getSparePart(position), mBasketController.getQuantity(position))
+                        .setDeleteClick(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mBasketController.deleteSparePart(mBasketController.getSparePart(position));
+                                notifyDataSetChanged();
+                            }
+                        }).show(((AppCompatActivity) mContext).getSupportFragmentManager(), "dialog");
             }
         });
     }
@@ -112,17 +127,25 @@ class SparePartsBasketRecyclerViewAdapter extends RecyclerView.Adapter<SparePart
         return mBasketController.size();
     }
 
-    static class SparePartsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    static class SparePartsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         private final TextView mNumber;
         private final TextView mQuantity;
         private ItemClickListener clickListener;
+        private ItemClickListener longClickListener;
 
         public SparePartsViewHolder(View itemView) {
             super(itemView);
             mNumber = (TextView) itemView.findViewById(R.id.SparePartsTrayNumberItem);
             mQuantity = (TextView) itemView.findViewById(R.id.SparePartsTrayQuantityItem);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            longClickListener.onClick(getPosition());
+            return false;
         }
 
         @Override
@@ -130,8 +153,14 @@ class SparePartsBasketRecyclerViewAdapter extends RecyclerView.Adapter<SparePart
             clickListener.onClick(getPosition());
         }
 
+        public void setLongClickListener(ItemClickListener longClickListener) {
+            this.longClickListener = longClickListener;
+        }
+
         public void setClickListener(ItemClickListener clickListener) {
             this.clickListener = clickListener;
         }
+
+
     }
 }

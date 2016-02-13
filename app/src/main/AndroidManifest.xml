@@ -24,7 +24,7 @@
         </activity>
         <activity android:name=".controllers.resControllers.activities.SparePartViewer"/>
         <activity android:name=".controllers.resControllers.activities.SparePartsViewer"/>
-        <activity android:name=".controllers.resControllers.activities.SparePartsBasketViewer"/>
+        <activity android:name=".controllers.resControllers.activities.BasketViewer"/>
         <activity
             android:name="com.nononsenseapps.filepicker.FilePickerActivity"
             android:label="@string/AppName"

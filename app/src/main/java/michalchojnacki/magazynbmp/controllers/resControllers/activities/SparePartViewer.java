@@ -11,7 +11,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import michalchojnacki.magazynbmp.R;
 import michalchojnacki.magazynbmp.controllers.basketControllers.BasketController;
-import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.AddSparePartToBasketDialog;
+import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.AddToBasketDialog;
 import michalchojnacki.magazynbmp.model.SparePart;
 
 public class SparePartViewer extends AppCompatActivity {
@@ -35,7 +35,7 @@ public class SparePartViewer extends AppCompatActivity {
         addSpPartToBasket.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                AddSparePartToBasketDialog.newInstance(mSparePart).show(getSupportFragmentManager(), "fragment_add_to_basket");
+                AddToBasketDialog.newInstance(mSparePart).show(getSupportFragmentManager(), "fragment_add_to_basket");
                 return false;
             }
         });

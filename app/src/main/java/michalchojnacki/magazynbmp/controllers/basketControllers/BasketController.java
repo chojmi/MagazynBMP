@@ -1,6 +1,7 @@
 package michalchojnacki.magazynbmp.controllers.basketControllers;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,7 +20,12 @@ public class BasketController implements Serializable {
     }
 
     public void deleteSparePart(SparePart sparePart) {
-
+        for (Iterator<SparePartWithQuantity> it = mSparePartsWithQuantities.iterator(); it.hasNext(); ) {
+            SparePartWithQuantity sparePartWithQuantity = it.next();
+            if (sparePartWithQuantity.getSparePart().getNumber().equals(sparePart.getNumber())) {
+                it.remove();
+            }
+        }
     }
 
     public void clear() {

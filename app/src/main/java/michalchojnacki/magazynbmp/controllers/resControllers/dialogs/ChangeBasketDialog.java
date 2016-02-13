@@ -1,13 +1,13 @@
 package michalchojnacki.magazynbmp.controllers.resControllers.dialogs;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -15,23 +15,26 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import michalchojnacki.magazynbmp.R;
-import michalchojnacki.magazynbmp.controllers.resControllers.activities.SparePartViewer;
 import michalchojnacki.magazynbmp.model.SparePart;
 
-public class AddSparePartToBasketDialog extends DialogFragment {
+public class ChangeBasketDialog extends DialogFragment {
 
     private static final String SPARE_PART = "sparePart";
+    private static final String QUANTITY = "quantity";
 
     private SparePart mSparePart;
     private Context mContext;
     private TextView mSparePartNumber;
     private EditText mSparePartQuantity;
 
-    public static AddSparePartToBasketDialog newInstance(SparePart sparePart) {
-        AddSparePartToBasketDialog f = new AddSparePartToBasketDialog();
+    private View.OnClickListener deleteClick;
+
+    public static ChangeBasketDialog newInstance(SparePart sparePart, int quantity) {
+        ChangeBasketDialog f = new ChangeBasketDialog();
 
         Bundle args = new Bundle();
         args.putSerializable(SPARE_PART, sparePart);
+        args.putInt(QUANTITY, quantity);
         f.setArguments(args);
 
         return f;
@@ -50,10 +53,13 @@ public class AddSparePartToBasketDialog extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_change_basket, null);
         mSparePart = (SparePart) getArguments().getSerializable(SPARE_PART);
+        int quantity = getArguments().getInt(QUANTITY);
 
         mSparePartNumber = (TextView) view.findViewById(R.id.changeBasketSparePart);
         mSparePartNumber.setText(mSparePart.getNumber());
         mSparePartQuantity = (EditText) view.findViewById(R.id.changeBasketQuantity);
+        mSparePartQuantity.setText(String.valueOf(quantity));
+        mSparePartQuantity.setSelectAllOnFocus(true);
 
         Dialog dialog = initializeAlertDialog(view);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -65,10 +71,11 @@ public class AddSparePartToBasketDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.AddSpPartToBasketLabel)
                 .setView(view)
-                .setPositiveButton(mContext.getString(R.string.AddLabel), null)
+                .setPositiveButton("Delete", null)
+                .setNeutralButton("Change", null)
                 .setNegativeButton(R.string.CancelLabel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        AddSparePartToBasketDialog.this.getDialog().cancel();
+                        ChangeBasketDialog.this.getDialog().cancel();
                     }
                 });
         return initializeAlertDialogButtons(builder.create());
@@ -81,17 +88,17 @@ public class AddSparePartToBasketDialog extends DialogFragment {
                 alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (!mSparePartQuantity.getText().toString().equals("")) {
-                            ((SparePartViewer) getActivity()).addToBasket(new Integer(mSparePartQuantity.getText().toString()));
-                            dismissAllowingStateLoss();
-                        } else {
-                            ErrorDialog.newInstance(mContext.getString(R.string.ErrorLabel), "Quantity can't be empty!").showDialog(mContext);
-                        }
-
+                        deleteClick.onClick(v);
+                        dismissAllowingStateLoss();
                     }
                 });
             }
         });
         return alertDialog;
+    }
+
+    public ChangeBasketDialog setDeleteClick(View.OnClickListener deleteClick) {
+        this.deleteClick = deleteClick;
+        return this;
     }
 }
