@@ -1,6 +1,7 @@
 package michalchojnacki.magazynbmp.controllers.resControllers.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import michalchojnacki.magazynbmp.R;
 import michalchojnacki.magazynbmp.controllers.basketControllers.BasketController;
 import michalchojnacki.magazynbmp.controllers.recyclerViews.DividerItemDecoration;
+import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.QuestionDialog;
 import michalchojnacki.magazynbmp.controllers.resControllers.listeners.ItemClickListener;
 import michalchojnacki.magazynbmp.model.SparePart;
 
@@ -24,6 +26,7 @@ public class SparePartsBasketViewer extends AppCompatActivity {
 
     public static final String BASKET_CONTROLLER = "basketController";
     private BasketController mBasketController;
+    private SparePartsBasketRecyclerViewAdapter recyclerViewAdapter;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -32,6 +35,15 @@ public class SparePartsBasketViewer extends AppCompatActivity {
         clearBasket.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                QuestionDialog.newInstance("Clear?", "Clear basket?")
+                        .setPositiveClickListener(new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mBasketController.clear();
+                                recyclerViewAdapter.notifyDataSetChanged();
+
+                            }
+                        }).showDialog(SparePartsBasketViewer.this);
                 return false;
             }
         });
@@ -44,7 +56,7 @@ public class SparePartsBasketViewer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spare_parts_tray);
 
-        SparePartsBasketRecyclerViewAdapter recyclerViewAdapter = getRecyclerViewAdapter();
+        recyclerViewAdapter = getRecyclerViewAdapter();
         createRecyclerView(recyclerViewAdapter);
     }
 

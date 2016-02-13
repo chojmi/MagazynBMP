@@ -22,6 +22,10 @@ public class BasketController implements Serializable {
 
     }
 
+    public void clear() {
+        mSparePartsWithQuantities.clear();
+    }
+
     public int size() {
         return mSparePartsWithQuantities.size();
     }
