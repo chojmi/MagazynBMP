@@ -79,12 +79,12 @@ public class SparePartsViewer extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1 && data != null) {
-            switch (resultCode) {
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            switch (requestCode) {
                 case SparePartViewer.SPARE_PARTS_VIEWER_STOPPED: {
                     mBasketController = (BasketController) data.getSerializableExtra(SparePartViewer.BASKET_CONTROLLER);
                     mRecyclerViewAdapter.setBasketController(mBasketController);
-                    setResult(SparePartViewer.SPARE_PARTS_VIEWER_STOPPED, data);
+                    setResult(Activity.RESULT_OK, data);
                     break;
                 }
             }

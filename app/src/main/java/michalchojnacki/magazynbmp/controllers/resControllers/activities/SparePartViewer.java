@@ -1,5 +1,6 @@
 package michalchojnacki.magazynbmp.controllers.resControllers.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +19,7 @@ public class SparePartViewer extends AppCompatActivity {
 
     public static final String SPARE_PART = "sparePart";
     public static final String BASKET_CONTROLLER = "basketController";
-    public static final int SPARE_PARTS_VIEWER_STOPPED = 1;
+    public static final int SPARE_PARTS_VIEWER_STOPPED = 10;
     @Bind(R.id.SparePartNumberText) TextView mYNumber;
     @Bind(R.id.SparePartDescriptionText) TextView mDescription;
     @Bind(R.id.SparePartTypeText) TextView mType;
@@ -81,6 +82,6 @@ public class SparePartViewer extends AppCompatActivity {
         mBasketController.addToBasket(mSparePart, quantity);
         Intent intent = new Intent();
         intent.putExtra(BASKET_CONTROLLER, mBasketController);
-        setResult(SPARE_PARTS_VIEWER_STOPPED, intent);
+        setResult(Activity.RESULT_OK, intent);
     }
 }
