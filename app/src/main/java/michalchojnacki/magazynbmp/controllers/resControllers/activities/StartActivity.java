@@ -11,6 +11,7 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import michalchojnacki.magazynbmp.R;
+import michalchojnacki.magazynbmp.controllers.basketControllers.BasketController;
 import michalchojnacki.magazynbmp.controllers.dbControllers.SparePartsDbController;
 import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.ChooseFileSettingsDialog;
 import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.ClearDatabaseDialog;
@@ -28,6 +29,7 @@ public class StartActivity extends AppCompatActivity implements DialogFragmentUp
     private SearchDialog mSearchDialog = new SearchDialog();
     private SimpleSearchDialog mSimpleSearchDialog = new SimpleSearchDialog();
     private ChooseFileSettingsDialog mChooseFileSettingsDialog = new ChooseFileSettingsDialog();
+    private BasketController mBasketController = new BasketController();
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -91,17 +93,14 @@ public class StartActivity extends AppCompatActivity implements DialogFragmentUp
     }
 
     private void findShowTrayItem(Menu menu) {
-        MenuItem showTray = menu.findItem(R.id.MenuShowSparePartsTray);
-        final Intent intent = new Intent(this, SparePartsTray.class);
+        MenuItem showTray = menu.findItem(R.id.MenuShowBasket);
+        final Intent intent = new Intent(this, SparePartsBasketViewer.class);
         showTray.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                SparePartWithQuantity[] sparePartWithQuantities = new SparePartWithQuantity[2];
-                sparePartWithQuantities[0] = new SparePartWithQuantity(new SparePart.Builder().number("Ya000").build());
-                sparePartWithQuantities[0].setQuantity(4);
-                sparePartWithQuantities[1] = new SparePartWithQuantity(new SparePart.Builder().number("Ya002").build());
-                sparePartWithQuantities[1].setQuantity(6);
-                intent.putExtra(SparePartsTray.SPARE_PARTS_WITH_QUANTITY, sparePartWithQuantities);
+                mBasketController.addToBasket(new SparePart.Builder().number("Ya00ew").build(), 4);
+                mBasketController.addToBasket(new SparePart.Builder().number("Ya00xx").build(), 7);
+                intent.putExtra(SparePartsBasketViewer.BASKET_CONTROLLER, mBasketController);
                 startActivity(intent);
                 return false;
             }

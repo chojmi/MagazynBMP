@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
-      tools:context=".controllers.excelControllers.activities.MainActivity">
+      tools:context=".controllers.resControllers.activities.StartActivity">
 
     <item
         android:id="@+id/MenuAddExcelFile"
@@ -29,8 +29,8 @@
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/MenuShowSparePartsTray"
-        android:orderInCategory="4"
-        android:title="Show tray"
+        android:id="@+id/MenuShowBasket"
+        android:orderInCategory="5"
+        android:title="@string/ShowBasketTitle"
         app:showAsAction="never"/>
 </menu>

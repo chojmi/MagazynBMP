@@ -8,69 +8,69 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
 import michalchojnacki.magazynbmp.R;
+import michalchojnacki.magazynbmp.controllers.basketControllers.BasketController;
 import michalchojnacki.magazynbmp.controllers.recyclerViews.DividerItemDecoration;
 import michalchojnacki.magazynbmp.controllers.resControllers.listeners.ItemClickListener;
 import michalchojnacki.magazynbmp.model.SparePart;
 
-public class SparePartsTray extends AppCompatActivity {
+public class SparePartsBasketViewer extends AppCompatActivity {
 
-    public static final String SPARE_PARTS_WITH_QUANTITY = "sparePartsWithQuantity";
+    public static final String BASKET_CONTROLLER = "basketController";
+    private BasketController mBasketController;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_basket, menu);
+        MenuItem clearBasket = menu.findItem(R.id.MenuClearBasket);
+        clearBasket.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return false;
+            }
+        });
+
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.spare_parts_tray);
+        setContentView(R.layout.activity_spare_parts_tray);
 
-        SparePartTrayRecyclerViewAdapter recyclerViewAdapter = getRecyclerViewAdapter();
+        SparePartsBasketRecyclerViewAdapter recyclerViewAdapter = getRecyclerViewAdapter();
         createRecyclerView(recyclerViewAdapter);
     }
 
     @NonNull
-    private SparePartTrayRecyclerViewAdapter getRecyclerViewAdapter() {
-        Object[] array = (Object[]) getIntent().getSerializableExtra(SPARE_PARTS_WITH_QUANTITY);
-        SparePartWithQuantity[] sparePartWithQuantities = readSparePartsWithQuantity(array);
-        return new SparePartTrayRecyclerViewAdapter(this, sparePartWithQuantities);
+    private SparePartsBasketRecyclerViewAdapter getRecyclerViewAdapter() {
+        mBasketController = (BasketController) getIntent().getSerializableExtra(BASKET_CONTROLLER);
+        return new SparePartsBasketRecyclerViewAdapter(this, mBasketController);
     }
 
-    private void createRecyclerView(SparePartTrayRecyclerViewAdapter recyclerViewAdapter) {
+    private void createRecyclerView(SparePartsBasketRecyclerViewAdapter recyclerViewAdapter) {
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.SparePartsTrayRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, null));
     }
-
-    @NonNull
-    private SparePartWithQuantity[] readSparePartsWithQuantity(Object[] array) {
-        SparePartWithQuantity[] spareParts = null;
-        if (array != null) {
-            spareParts = Arrays.copyOf(array, array.length, SparePartWithQuantity[].class);
-        }
-        return spareParts;
-    }
-
 }
 
-class SparePartTrayRecyclerViewAdapter extends RecyclerView.Adapter<SparePartTrayRecyclerViewAdapter.SparePartsViewHolder> {
+class SparePartsBasketRecyclerViewAdapter extends RecyclerView.Adapter<SparePartsBasketRecyclerViewAdapter.SparePartsViewHolder> {
 
-    private final List<SparePartWithQuantity> mSparePartsWithQuantities;
     private final Context mContext;
+    private BasketController mBasketController;
 
-    public SparePartTrayRecyclerViewAdapter(Context context, SparePartWithQuantity[] sparePartsWithQuantities) {
+    public SparePartsBasketRecyclerViewAdapter(Context context, BasketController basketController) {
         mContext = context;
-        this.mSparePartsWithQuantities = new LinkedList<>();
-        Collections.addAll(this.mSparePartsWithQuantities, sparePartsWithQuantities);
+        this.mBasketController = basketController;
     }
 
     @Override
@@ -81,14 +81,14 @@ class SparePartTrayRecyclerViewAdapter extends RecyclerView.Adapter<SparePartTra
 
     @Override
     public void onBindViewHolder(SparePartsViewHolder holder, int position) {
-        holder.mNumber.setText(mSparePartsWithQuantities.get(position).getSparePart().getNumber());
-        holder.mQuantity.setText(String.valueOf(mSparePartsWithQuantities.get(position).getQuantity()));
+        holder.mNumber.setText(mBasketController.getSparePart(position).getNumber());
+        holder.mQuantity.setText(String.valueOf(mBasketController.getQuantity(position)));
         holder.setClickListener(new ItemClickListener() {
             @Override
             public void onClick(int position) {
-                SparePartWithQuantity sparePartWithQuantity = mSparePartsWithQuantities.get(position);
+                SparePart sparePart = mBasketController.getSparePart(position);
                 Intent intent = new Intent(mContext, SparePartViewer.class);
-                intent.putExtra(SparePartViewer.SPARE_PART, sparePartWithQuantity.getSparePart());
+                intent.putExtra(SparePartViewer.SPARE_PART, sparePart);
                 mContext.startActivity(intent);
             }
         });
@@ -96,7 +96,7 @@ class SparePartTrayRecyclerViewAdapter extends RecyclerView.Adapter<SparePartTra
 
     @Override
     public int getItemCount() {
-        return mSparePartsWithQuantities.size();
+        return mBasketController.size();
     }
 
     static class SparePartsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -120,27 +120,5 @@ class SparePartTrayRecyclerViewAdapter extends RecyclerView.Adapter<SparePartTra
         public void setClickListener(ItemClickListener clickListener) {
             this.clickListener = clickListener;
         }
-    }
-}
-
-class SparePartWithQuantity implements Serializable {
-
-    private SparePart mSparePart;
-    private int quantity = 0;
-
-    public SparePartWithQuantity(SparePart sparePart) {
-        mSparePart = sparePart;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public SparePart getSparePart() {
-        return mSparePart;
     }
 }

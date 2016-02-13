@@ -2,6 +2,8 @@ package michalchojnacki.magazynbmp.controllers.resControllers.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import butterknife.Bind;
@@ -21,9 +23,23 @@ public class SparePartViewer extends AppCompatActivity {
     @Bind(R.id.SparePartSupplierText) TextView mSupplier;
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_spare_part_viewer, menu);
+        MenuItem addSpPartToBasket = menu.findItem(R.id.MenuAddSparePartToTray);
+        addSpPartToBasket.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return false;
+            }
+        });
+
+        return true;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.spare_part_viewer);
+        setContentView(R.layout.activity_spare_part_viewer);
         ButterKnife.bind(this);
         SparePart sparePart = readSparePart();
         loadUi(sparePart);
