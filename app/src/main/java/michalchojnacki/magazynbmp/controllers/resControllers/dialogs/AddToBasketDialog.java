@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import michalchojnacki.magazynbmp.R;
 import michalchojnacki.magazynbmp.controllers.resControllers.activities.SparePartViewer;
+import michalchojnacki.magazynbmp.controllers.sharedPreferencesController.AddToBasketDialogSPref;
 import michalchojnacki.magazynbmp.model.SparePart;
 
 public class AddToBasketDialog extends DialogFragment {
@@ -26,6 +27,7 @@ public class AddToBasketDialog extends DialogFragment {
     private Context mContext;
     private TextView mSparePartNumber;
     private EditText mSparePartQuantity;
+    private AddToBasketDialogSPref mAddToBasketDialogSPref;
 
     public static AddToBasketDialog newInstance(SparePart sparePart) {
         AddToBasketDialog f = new AddToBasketDialog();
@@ -54,6 +56,8 @@ public class AddToBasketDialog extends DialogFragment {
         mSparePartNumber = (TextView) view.findViewById(R.id.changeBasketSparePart);
         mSparePartNumber.setText(mSparePart.getNumber());
         mSparePartQuantity = (EditText) view.findViewById(R.id.changeBasketQuantity);
+        mAddToBasketDialogSPref = new AddToBasketDialogSPref(mSparePartQuantity);
+        mAddToBasketDialogSPref.readFromSPref(mContext);
 
         Dialog dialog = initializeAlertDialog(view);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -83,6 +87,7 @@ public class AddToBasketDialog extends DialogFragment {
                     public void onClick(View v) {
                         if (!mSparePartQuantity.getText().toString().equals("")) {
                             ((SparePartViewer) getActivity()).addToBasket(new Integer(mSparePartQuantity.getText().toString()));
+                            mAddToBasketDialogSPref.saveToSPref(mContext);
                             dismissAllowingStateLoss();
                         } else {
                             ErrorDialog.newInstance(mContext.getString(R.string.ErrorLabel), "Quantity can't be empty!").showDialog(mContext);
