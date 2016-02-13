@@ -11,19 +11,24 @@ public class BasketController implements Serializable {
 
     private List<SparePartWithQuantity> mSparePartsWithQuantities = new LinkedList<>();
 
-    public void addToBasket(SparePart sparePart, int quantity) {
-        deleteSparePart(sparePart);
-        mSparePartsWithQuantities.add(new SparePartWithQuantity(sparePart).setQuantity(quantity));
-
+    public void updateBasket(SparePart sparePart, int newQuantity, int oldQuantity) {
+        deleteSparePart(sparePart, oldQuantity);
+        mSparePartsWithQuantities.add(new SparePartWithQuantity(sparePart).setQuantity(newQuantity));
     }
 
-    public void deleteSparePart(SparePart sparePart) {
+    public void deleteSparePart(SparePart sparePart, int quantity) {
         for (Iterator<SparePartWithQuantity> it = mSparePartsWithQuantities.iterator(); it.hasNext(); ) {
             SparePartWithQuantity sparePartWithQuantity = it.next();
-            if (sparePartWithQuantity.getSparePart().getNumber().equals(sparePart.getNumber())) {
+            if (sparePartWithQuantity.getSparePart().getNumber().equals(sparePart.getNumber())
+                    && sparePartWithQuantity.getQuantity() == quantity) {
                 it.remove();
+                return;
             }
         }
+    }
+
+    public void addToBasket(SparePart sparePart, int quantity) {
+        mSparePartsWithQuantities.add(new SparePartWithQuantity(sparePart).setQuantity(quantity));
     }
 
     public void clear() {

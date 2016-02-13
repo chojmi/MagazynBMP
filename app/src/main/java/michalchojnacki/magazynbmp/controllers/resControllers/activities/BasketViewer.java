@@ -83,6 +83,22 @@ public class BasketViewer extends AppCompatActivity {
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, null));
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            switch (requestCode) {
+                case SparePartViewer.SPARE_PARTS_VIEWER_STOPPED: {
+                    mBasketController = (BasketController) data.getSerializableExtra(SparePartViewer.BASKET_CONTROLLER);
+                    saveBasketController();
+                    recyclerViewAdapter.setBasketController(mBasketController);
+                    recyclerViewAdapter.notifyDataSetChanged();
+                    break;
+                }
+            }
+        }
+    }
 }
 
 class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewAdapter.SparePartsViewHolder> {
@@ -112,7 +128,7 @@ class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewA
                 Intent intent = new Intent(mContext, SparePartViewer.class);
                 intent.putExtra(SparePartViewer.SPARE_PART, sparePart);
                 intent.putExtra(SparePartViewer.BASKET_CONTROLLER, mBasketController);
-                mContext.startActivity(intent);
+                ((Activity) mContext).startActivityForResult(intent, SparePartViewer.SPARE_PARTS_VIEWER_STOPPED);
             }
         });
         holder.setLongClickListener(new ItemClickListener() {
@@ -127,7 +143,7 @@ class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewA
                                         .setPositiveClickListener(new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                mBasketController.deleteSparePart(mBasketController.getSparePart(position));
+                                                mBasketController.deleteSparePart(mBasketController.getSparePart(position), mBasketController.getQuantity(position));
                                                 notifyDataSetChanged();
                                                 ((BasketViewer) mContext).saveBasketController();
                                             }
@@ -137,7 +153,7 @@ class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewA
                         .setChangeClick(new QuantityChangedListener() {
                             @Override
                             public void quantityChanged(int newQuantity) {
-                                mBasketController.addToBasket(mBasketController.getSparePart(position), newQuantity);
+                                mBasketController.updateBasket(mBasketController.getSparePart(position), newQuantity, mBasketController.getQuantity(position));
                                 notifyDataSetChanged();
                                 ((BasketViewer) mContext).saveBasketController();
                             }
@@ -149,6 +165,10 @@ class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewA
     @Override
     public int getItemCount() {
         return mBasketController.size();
+    }
+
+    public void setBasketController(BasketController basketController) {
+        mBasketController = basketController;
     }
 
     static class SparePartsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
