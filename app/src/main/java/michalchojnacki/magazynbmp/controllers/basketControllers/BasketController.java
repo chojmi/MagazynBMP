@@ -12,10 +12,8 @@ public class BasketController implements Serializable {
     private List<SparePartWithQuantity> mSparePartsWithQuantities = new LinkedList<>();
 
     public void addToBasket(SparePart sparePart, int quantity) {
+        deleteSparePart(sparePart);
         mSparePartsWithQuantities.add(new SparePartWithQuantity(sparePart).setQuantity(quantity));
-    }
-
-    public void updateSparePart(SparePart sparePart) {
 
     }
 

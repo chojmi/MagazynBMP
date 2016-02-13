@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import michalchojnacki.magazynbmp.R;
 import michalchojnacki.magazynbmp.controllers.basketControllers.BasketController;
+import michalchojnacki.magazynbmp.controllers.basketControllers.QuantityChangedListener;
 import michalchojnacki.magazynbmp.controllers.recyclerViews.DividerItemDecoration;
 import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.ChangeBasketDialog;
 import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.QuestionDialog;
@@ -114,7 +115,20 @@ class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewA
                         .setDeleteClick(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                mBasketController.deleteSparePart(mBasketController.getSparePart(position));
+                                QuestionDialog.newInstance("Are You sure?", "do you want to del?")
+                                        .setPositiveClickListener(new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                mBasketController.deleteSparePart(mBasketController.getSparePart(position));
+                                                notifyDataSetChanged();
+                                            }
+                                        }).showDialog(mContext);
+                            }
+                        })
+                        .setChangeClick(new QuantityChangedListener() {
+                            @Override
+                            public void quantityChanged(int newQuantity) {
+                                mBasketController.addToBasket(mBasketController.getSparePart(position), newQuantity);
                                 notifyDataSetChanged();
                             }
                         }).show(((AppCompatActivity) mContext).getSupportFragmentManager(), "dialog");
@@ -148,13 +162,13 @@ class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewA
             return false;
         }
 
+        public void setLongClickListener(ItemClickListener longClickListener) {
+            this.longClickListener = longClickListener;
+        }
+
         @Override
         public void onClick(View v) {
             clickListener.onClick(getPosition());
-        }
-
-        public void setLongClickListener(ItemClickListener longClickListener) {
-            this.longClickListener = longClickListener;
         }
 
         public void setClickListener(ItemClickListener clickListener) {

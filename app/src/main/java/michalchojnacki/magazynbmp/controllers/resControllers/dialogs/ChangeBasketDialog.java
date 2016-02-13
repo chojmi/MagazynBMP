@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import michalchojnacki.magazynbmp.R;
+import michalchojnacki.magazynbmp.controllers.basketControllers.QuantityChangedListener;
 import michalchojnacki.magazynbmp.model.SparePart;
 
 public class ChangeBasketDialog extends DialogFragment {
@@ -28,6 +29,7 @@ public class ChangeBasketDialog extends DialogFragment {
     private EditText mSparePartQuantity;
 
     private View.OnClickListener deleteClick;
+    private QuantityChangedListener mQuantityChangedListener;
 
     public static ChangeBasketDialog newInstance(SparePart sparePart, int quantity) {
         ChangeBasketDialog f = new ChangeBasketDialog();
@@ -71,8 +73,8 @@ public class ChangeBasketDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.AddSpPartToBasketLabel)
                 .setView(view)
-                .setPositiveButton("Delete", null)
-                .setNeutralButton("Change", null)
+                .setNeutralButton("Delete", null)
+                .setPositiveButton("Change", null)
                 .setNegativeButton(R.string.CancelLabel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         ChangeBasketDialog.this.getDialog().cancel();
@@ -85,10 +87,17 @@ public class ChangeBasketDialog extends DialogFragment {
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(final DialogInterface dialog) {
-                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         deleteClick.onClick(v);
+                        dismissAllowingStateLoss();
+                    }
+                });
+                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mQuantityChangedListener.quantityChanged(Integer.valueOf(mSparePartQuantity.getText().toString()));
                         dismissAllowingStateLoss();
                     }
                 });
@@ -99,6 +108,11 @@ public class ChangeBasketDialog extends DialogFragment {
 
     public ChangeBasketDialog setDeleteClick(View.OnClickListener deleteClick) {
         this.deleteClick = deleteClick;
+        return this;
+    }
+
+    public ChangeBasketDialog setChangeClick(QuantityChangedListener listener) {
+        this.mQuantityChangedListener = listener;
         return this;
     }
 }
