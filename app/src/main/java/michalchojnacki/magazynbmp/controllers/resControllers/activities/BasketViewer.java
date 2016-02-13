@@ -1,5 +1,6 @@
 package michalchojnacki.magazynbmp.controllers.resControllers.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,6 +28,7 @@ import michalchojnacki.magazynbmp.model.SparePart;
 public class BasketViewer extends AppCompatActivity {
 
     public static final String BASKET_CONTROLLER = "basketController";
+    public static final int SHOW_BASKET = 3;
     private BasketController mBasketController;
     private BasketRecyclerViewAdapter recyclerViewAdapter;
 
@@ -43,6 +45,7 @@ public class BasketViewer extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 mBasketController.clear();
                                 recyclerViewAdapter.notifyDataSetChanged();
+                                saveBasketController();
 
                             }
                         }).showDialog(BasketViewer.this);
@@ -51,6 +54,11 @@ public class BasketViewer extends AppCompatActivity {
         });
 
         return true;
+    }
+
+    public void saveBasketController() {
+        Intent intent = new Intent().putExtra(BASKET_CONTROLLER, mBasketController);
+        setResult(Activity.RESULT_OK, intent);
     }
 
     @Override
@@ -121,6 +129,7 @@ class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewA
                                             public void onClick(DialogInterface dialog, int which) {
                                                 mBasketController.deleteSparePart(mBasketController.getSparePart(position));
                                                 notifyDataSetChanged();
+                                                ((BasketViewer) mContext).saveBasketController();
                                             }
                                         }).showDialog(mContext);
                             }
@@ -130,6 +139,7 @@ class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewA
                             public void quantityChanged(int newQuantity) {
                                 mBasketController.addToBasket(mBasketController.getSparePart(position), newQuantity);
                                 notifyDataSetChanged();
+                                ((BasketViewer) mContext).saveBasketController();
                             }
                         }).show(((AppCompatActivity) mContext).getSupportFragmentManager(), "dialog");
             }
@@ -166,13 +176,13 @@ class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewA
             this.longClickListener = longClickListener;
         }
 
+        public void setClickListener(ItemClickListener clickListener) {
+            this.clickListener = clickListener;
+        }
+
         @Override
         public void onClick(View v) {
             clickListener.onClick(getPosition());
-        }
-
-        public void setClickListener(ItemClickListener clickListener) {
-            this.clickListener = clickListener;
         }
 
 

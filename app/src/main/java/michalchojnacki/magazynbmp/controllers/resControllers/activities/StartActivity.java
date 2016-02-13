@@ -20,6 +20,7 @@ import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.DialogFragm
 import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.FileChooserDialog;
 import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.SearchDialog;
 import michalchojnacki.magazynbmp.controllers.resControllers.dialogs.SimpleSearchDialog;
+import michalchojnacki.magazynbmp.controllers.sharedPreferencesController.BasketControllerSPref;
 
 
 public class StartActivity extends AppCompatActivity implements DialogFragmentUpdater, UiOwner, ClearDatabaseDialog.ClearDatabaseListener {
@@ -32,6 +33,7 @@ public class StartActivity extends AppCompatActivity implements DialogFragmentUp
     private SimpleSearchDialog mSimpleSearchDialog = new SimpleSearchDialog();
     private ChooseFileSettingsDialog mChooseFileSettingsDialog = new ChooseFileSettingsDialog();
     private BasketController mBasketController;
+    private BasketControllerSPref mBasketControllerSPref = new BasketControllerSPref();
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -101,7 +103,7 @@ public class StartActivity extends AppCompatActivity implements DialogFragmentUp
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 intent.putExtra(BasketViewer.BASKET_CONTROLLER, mBasketController);
-                startActivity(intent);
+                startActivityForResult(intent, BasketViewer.SHOW_BASKET);
                 return false;
             }
         });
@@ -140,7 +142,7 @@ public class StartActivity extends AppCompatActivity implements DialogFragmentUp
         if (savedInstanceState != null && savedInstanceState.getSerializable(BASKET_CONTROLLER) != null) {
             mBasketController = (BasketController) savedInstanceState.getSerializable(BASKET_CONTROLLER);
         } else {
-            mBasketController = new BasketController();
+            mBasketController = mBasketControllerSPref.readFromSPref(this);
         }
         mChooseFileSettingsDialog.setSparePartsDbController(mSparePartsDbController);
         mSearchDialog.setSparePartsDbController(mSparePartsDbController);
@@ -160,9 +162,24 @@ public class StartActivity extends AppCompatActivity implements DialogFragmentUp
                     mBasketController = (BasketController) data.getSerializableExtra(SparePartViewer.BASKET_CONTROLLER);
                     break;
                 }
+                case BasketViewer.SHOW_BASKET: {
+                    mBasketController = (BasketController) data.getSerializableExtra(BasketViewer.BASKET_CONTROLLER);
+                }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mBasketControllerSPref.saveToSPref(this, mBasketController);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mBasketControllerSPref.saveToSPref(this, mBasketController);
     }
 
     @Override
