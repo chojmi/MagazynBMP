@@ -51,7 +51,7 @@ public class ChangeBasketDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
+        setRetainInstance(true);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_change_basket, null);
         mSparePart = (SparePart) getArguments().getSerializable(SPARE_PART);
@@ -97,13 +97,17 @@ public class ChangeBasketDialog extends DialogFragment {
                 alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mQuantityChangedListener.quantityChanged(Integer.valueOf(mSparePartQuantity.getText().toString()));
+                        mQuantityChangedListener.quantityChanged(getQuantity());
                         dismissAllowingStateLoss();
                     }
                 });
             }
         });
         return alertDialog;
+    }
+
+    public int getQuantity() {
+        return Integer.valueOf(mSparePartQuantity.getText().toString());
     }
 
     public ChangeBasketDialog setDeleteClick(View.OnClickListener deleteClick) {

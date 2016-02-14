@@ -54,7 +54,7 @@ public class ExcelController extends ExcelControllerModel {
                 }
             }).start();
 
-            ((Activity) mContext).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+            ((Activity) mContext).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
         } else {
             HSSFSheet sheet = getSheetFromXls(path, sheetName);
             saveSheetInDb(sheet, handler);

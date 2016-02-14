@@ -29,30 +29,38 @@ public class BasketViewer extends AppCompatActivity {
 
     public static final String BASKET_CONTROLLER = "basketController";
     public static final int SHOW_BASKET = 3;
+    private static final String CLEAR_BASKET_DIALOG_VISIBLE = "clearBasketDialogVisible";
     private BasketController mBasketController;
     private BasketRecyclerViewAdapter recyclerViewAdapter;
+    private QuestionDialog mClearWholeBasket;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_basket, menu);
+        getMenuInflater().inflate(R.menu.menu_basket_viewer, menu);
         MenuItem clearBasket = menu.findItem(R.id.MenuClearBasket);
         clearBasket.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                QuestionDialog.newInstance(getString(R.string.WarningLabel), getString(R.string.ClearTheBasketLabel))
-                        .setPositiveClickListener(new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                mBasketController.clear();
-                                recyclerViewAdapter.notifyDataSetChanged();
-                                saveBasketController();
-                            }
-                        }).showDialog(BasketViewer.this);
+                mClearWholeBasket = getClearWholeBasketDialog();
+                mClearWholeBasket.showDialog(BasketViewer.this);
                 return false;
             }
         });
 
         return true;
+    }
+
+    private QuestionDialog getClearWholeBasketDialog() {
+        return QuestionDialog.newInstance(getString(R.string.WarningLabel), getString(R.string.ClearTheBasketLabel))
+                .setPositiveClickListener(new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mBasketController.clear();
+                        recyclerViewAdapter.notifyDataSetChanged();
+                        saveBasketController();
+                        mClearWholeBasket = null;
+                    }
+                });
     }
 
     public void saveBasketController() {
@@ -63,10 +71,16 @@ public class BasketViewer extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_spare_parts_tray);
+        setContentView(R.layout.activity_basket_viewer);
 
         recyclerViewAdapter = getRecyclerViewAdapter();
         createRecyclerView(recyclerViewAdapter);
+        if (savedInstanceState != null && savedInstanceState.getBoolean(CLEAR_BASKET_DIALOG_VISIBLE)) {
+            mClearWholeBasket = getClearWholeBasketDialog();
+            mClearWholeBasket.showDialog(this);
+        } else {
+            recyclerViewAdapter.checkRetainedDialogsData(savedInstanceState);
+        }
     }
 
     @NonNull
@@ -98,12 +112,30 @@ public class BasketViewer extends AppCompatActivity {
             }
         }
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState = recyclerViewAdapter.saveDialogsData(outState);
+        if (mClearWholeBasket != null && mClearWholeBasket.getActivity() == this) {
+            outState.putBoolean(CLEAR_BASKET_DIALOG_VISIBLE, true);
+        } else {
+            outState.putBoolean(CLEAR_BASKET_DIALOG_VISIBLE, false);
+        }
+    }
 }
 
 class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewAdapter.SparePartsViewHolder> {
 
+    private final String CHANGE_BASKET_DIALOG_VISIBLE = "changeBasketDialogVisible";
+    private final String DEL_FROM_BASKET_DIALOG_VISIBLE = "delFromBasketDialogVisible";
+    private final String QUANTITY = "quantity";
+    private final String POSITION = "position";
     private final Context mContext;
+    int lastClickedPosition = -1;
     private BasketController mBasketController;
+    private ChangeBasketDialog mChangeBasketDialog;
+    private QuestionDialog mDeleteFromBasketDialog;
 
     public BasketRecyclerViewAdapter(Context context, BasketController basketController) {
         mContext = context;
@@ -112,13 +144,13 @@ class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewA
 
     @Override
     public SparePartsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_spare_parts_tray_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_basket_viewer_item, parent, false);
         return new SparePartsViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(SparePartsViewHolder holder, int position) {
-        holder.mNumber.setText(mBasketController.getSparePart(position).getNumber());
+        holder.mNumber.setText(mBasketController.getSparePart(position).getNumber() + ": ");
         holder.mQuantity.setText(String.valueOf(mBasketController.getQuantity(position)));
         holder.setClickListener(new ItemClickListener() {
             @Override
@@ -133,30 +165,8 @@ class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewA
         holder.setLongClickListener(new ItemClickListener() {
             @Override
             public void onClick(final int position) {
-                ChangeBasketDialog
-                        .newInstance(mBasketController.getSparePart(position), mBasketController.getQuantity(position))
-                        .setDeleteClick(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                QuestionDialog.newInstance(mContext.getString(R.string.WarningLabel), mContext.getString(R.string.WantToDelSpPartFromBasketLabel))
-                                        .setPositiveClickListener(new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                mBasketController.deleteSparePart(mBasketController.getSparePart(position), mBasketController.getQuantity(position));
-                                                notifyDataSetChanged();
-                                                ((BasketViewer) mContext).saveBasketController();
-                                            }
-                                        }).showDialog(mContext);
-                            }
-                        })
-                        .setChangeClick(new QuantityChangedListener() {
-                            @Override
-                            public void quantityChanged(int newQuantity) {
-                                mBasketController.updateBasket(mBasketController.getSparePart(position), newQuantity, mBasketController.getQuantity(position));
-                                notifyDataSetChanged();
-                                ((BasketViewer) mContext).saveBasketController();
-                            }
-                        }).show(((AppCompatActivity) mContext).getSupportFragmentManager(), "changeBasketDialog");
+                mChangeBasketDialog = getChangeBasketDialog(position, -1);
+                mChangeBasketDialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), "changeBasketDialog");
             }
         });
     }
@@ -168,6 +178,76 @@ class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewA
 
     public void setBasketController(BasketController basketController) {
         mBasketController = basketController;
+    }
+
+    public void checkRetainedDialogsData(Bundle savedInstanceState) {
+        if (savedInstanceState != null && savedInstanceState.getBoolean(CHANGE_BASKET_DIALOG_VISIBLE)
+                && savedInstanceState.getInt(POSITION) != -1 && savedInstanceState.getInt(QUANTITY) != -1) {
+            mChangeBasketDialog = getChangeBasketDialog(savedInstanceState.getInt(POSITION), savedInstanceState.getInt(QUANTITY));
+            mChangeBasketDialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), "changeBasketDialog");
+        } else if (savedInstanceState != null && savedInstanceState.getBoolean(DEL_FROM_BASKET_DIALOG_VISIBLE) && savedInstanceState.getInt(POSITION) != -1) {
+            mDeleteFromBasketDialog = getDeleteFromBasketDialog(savedInstanceState.getInt(POSITION));
+            mDeleteFromBasketDialog.showDialog(mContext);
+        }
+    }
+
+    private ChangeBasketDialog getChangeBasketDialog(final int position, int quantity) {
+        if (quantity == -1) {
+            quantity = mBasketController.getQuantity(position);
+        }
+        lastClickedPosition = position;
+        return ChangeBasketDialog
+                .newInstance(mBasketController.getSparePart(position), quantity)
+                .setDeleteClick(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mDeleteFromBasketDialog = getDeleteFromBasketDialog(position);
+                        mDeleteFromBasketDialog.showDialog(mContext);
+                    }
+                })
+                .setChangeClick(new QuantityChangedListener() {
+                    @Override
+                    public void quantityChanged(int newQuantity) {
+                        mBasketController.updateBasket(mBasketController.getSparePart(position), newQuantity, mBasketController.getQuantity(position));
+                        notifyDataSetChanged();
+                        ((BasketViewer) mContext).saveBasketController();
+                        lastClickedPosition = -1;
+                    }
+                });
+    }
+
+    private QuestionDialog getDeleteFromBasketDialog(final int position) {
+        return QuestionDialog.newInstance(mContext.getString(R.string.WarningLabel), mContext.getString(R.string.WantToDelSpPartFromBasketLabel))
+                .setPositiveClickListener(new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mBasketController.deleteSparePart(mBasketController.getSparePart(position), mBasketController.getQuantity(position));
+                        notifyDataSetChanged();
+                        ((BasketViewer) mContext).saveBasketController();
+                        mDeleteFromBasketDialog = null;
+                        lastClickedPosition = -1;
+                    }
+                });
+    }
+
+    public Bundle saveDialogsData(Bundle outState) {
+        if (mChangeBasketDialog != null && mChangeBasketDialog.getActivity() == mContext) {
+            outState.putBoolean(CHANGE_BASKET_DIALOG_VISIBLE, true);
+            outState.putBoolean(DEL_FROM_BASKET_DIALOG_VISIBLE, false);
+            outState.putInt(QUANTITY, mChangeBasketDialog.getQuantity());
+            outState.putInt(POSITION, lastClickedPosition);
+        } else if (mDeleteFromBasketDialog != null && mDeleteFromBasketDialog.getActivity() == mContext) {
+            outState.putBoolean(CHANGE_BASKET_DIALOG_VISIBLE, false);
+            outState.putBoolean(DEL_FROM_BASKET_DIALOG_VISIBLE, true);
+            outState.putInt(QUANTITY, -1);
+            outState.putInt(POSITION, lastClickedPosition);
+        } else {
+            outState.putBoolean(CHANGE_BASKET_DIALOG_VISIBLE, false);
+            outState.putBoolean(DEL_FROM_BASKET_DIALOG_VISIBLE, false);
+            outState.putInt(QUANTITY, -1);
+            outState.putInt(POSITION, -1);
+        }
+        return outState;
     }
 
     static class SparePartsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {

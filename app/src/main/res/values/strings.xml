@@ -27,7 +27,7 @@
     <string name="AddExcelFileTitle">Add excel file</string>
     <string name="AddSpPartToBasket">Add spare part to basket</string>
     <string name="ClearDatabaseTitle">Clear Database</string>
-    <string name="ClearBasketTitle">Clear Basket</string>
+    <string name="ClearBasketTitle">Clear</string>
     <string name="SimpleSearchInDatabaseTitle">Search In Database</string>
     <string name="ShowBasketTitle">Show basket</string>
     <string name="PartPrefixLabel">Part prefix:</string>

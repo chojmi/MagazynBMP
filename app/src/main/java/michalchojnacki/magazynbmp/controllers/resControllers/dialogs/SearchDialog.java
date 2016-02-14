@@ -12,6 +12,8 @@ import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.WindowManager;
 
+import java.util.Arrays;
+
 import michalchojnacki.magazynbmp.R;
 import michalchojnacki.magazynbmp.controllers.dbControllers.SparePartsDbController;
 import michalchojnacki.magazynbmp.controllers.resControllers.activities.SparePartViewer;
@@ -129,9 +131,12 @@ public class SearchDialog extends DialogFragment {
         if (spareParts.length == 1) {
             intent = new Intent(mContext, SparePartViewer.class);
             intent.putExtra(SparePartViewer.SPARE_PART, spareParts[0]);
-        } else if (spareParts.length > 1) {
+        } else if (spareParts.length > 1 && spareParts.length <= 1000) {
             intent = new Intent(mContext, SparePartsViewer.class);
             intent.putExtra(SparePartsViewer.SPARE_PARTS, spareParts);
+        } else if (spareParts.length > 1000) {
+            intent = new Intent(mContext, SparePartsViewer.class);
+            intent.putExtra(SparePartsViewer.SPARE_PARTS, Arrays.copyOf(spareParts, 1000));
         }
         intent.putExtra(SparePartViewer.BASKET_CONTROLLER, ((StartActivity) mContext).getBasketController());
         mSearchDialogSPref.saveToSPref(mContext);

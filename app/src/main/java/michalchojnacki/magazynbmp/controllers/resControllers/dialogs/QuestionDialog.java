@@ -31,6 +31,7 @@ public class QuestionDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        setRetainInstance(true);
         String title = getArguments().getString(TITLE);
         return new AlertDialog.Builder(getContext())
                 .setTitle(title)

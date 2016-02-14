@@ -19,7 +19,7 @@
     <string name="AddExcelFileTitle">Dodaj plik Excela</string>
     <string name="AddSpPartToBasket">Dodaj część do koszyka</string>
     <string name="ClearDatabaseTitle">Wyczyść bazę części</string>
-    <string name="ClearBasketTitle">Wyczyść koszyk</string>
+    <string name="ClearBasketTitle">Wyczyść</string>
     <string name="SimpleSearchInDatabaseTitle">Szukaj w bazie części</string>
     <string name="ShowBasketTitle">Pokaż koszyk</string>
     <string name="PartPrefixLabel">Prefix numeru części:</string>

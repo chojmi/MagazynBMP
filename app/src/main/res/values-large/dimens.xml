@@ -11,4 +11,6 @@
     <dimen name="SparePartsViewerTextSize">25sp</dimen>
     <dimen name="SparePartsViewerExternalVerticalMargin">10dp</dimen>
     <dimen name="SimpleSearchDialogTextSize">40sp</dimen>
+    <dimen name="BasketViewerTextSize">35sp</dimen>
+
 </resources>
