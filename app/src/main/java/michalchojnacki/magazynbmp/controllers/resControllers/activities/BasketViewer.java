@@ -39,14 +39,13 @@ public class BasketViewer extends AppCompatActivity {
         clearBasket.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                QuestionDialog.newInstance("Clear?", "Clear basket?")
+                QuestionDialog.newInstance(getString(R.string.WarningLabel), getString(R.string.ClearTheBasketLabel))
                         .setPositiveClickListener(new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 mBasketController.clear();
                                 recyclerViewAdapter.notifyDataSetChanged();
                                 saveBasketController();
-
                             }
                         }).showDialog(BasketViewer.this);
                 return false;
@@ -139,7 +138,7 @@ class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewA
                         .setDeleteClick(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                QuestionDialog.newInstance("Are You sure?", "do you want to del?")
+                                QuestionDialog.newInstance(mContext.getString(R.string.WarningLabel), mContext.getString(R.string.WantToDelSpPartFromBasketLabel))
                                         .setPositiveClickListener(new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
@@ -157,7 +156,7 @@ class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewA
                                 notifyDataSetChanged();
                                 ((BasketViewer) mContext).saveBasketController();
                             }
-                        }).show(((AppCompatActivity) mContext).getSupportFragmentManager(), "dialog");
+                        }).show(((AppCompatActivity) mContext).getSupportFragmentManager(), "changeBasketDialog");
             }
         });
     }

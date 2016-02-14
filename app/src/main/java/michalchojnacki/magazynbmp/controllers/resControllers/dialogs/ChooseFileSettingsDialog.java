@@ -119,7 +119,7 @@ public class ChooseFileSettingsDialog extends DialogFragment {
         if (!mChooseFileDialogModel.getChosenFileText().equals(mContext.getString(R.string.NoChosenFileLabel))) {
             final Handler handler = createEndOfSavingOperationHandler();
 
-            final QuestionDialog questionDialog = QuestionDialog.newInstance("Overwrite old Y?", "Overwrite old Y?")
+            final QuestionDialog questionDialog = QuestionDialog.newInstance(mContext.getString(R.string.WarningLabel), mContext.getString(R.string.OverwriteOldSparePartLabel))
                     .setPositiveClickListener(new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -143,7 +143,7 @@ public class ChooseFileSettingsDialog extends DialogFragment {
                         }
                     });
 
-            QuestionDialog.newInstance("Clear?", "First clear db?")
+            QuestionDialog.newInstance(mContext.getString(R.string.WarningLabel), mContext.getString(R.string.DelAllSparePartsLabel))
                     .setPositiveClickListener(new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

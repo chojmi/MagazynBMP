@@ -28,7 +28,6 @@
     <string name="NoSheetFound">Nie znaleziono arkusza o wybranej nazwie.</string>
     <string name="NoDataLabel">Brak danych</string>
     <string name="ChooseExcelFileLabel">Wybierz plik Excela:</string>
-    <string name="AddSpPartToBasketLabel">Dodaj część do koszyka:</string>
     <string name="ResetToDefaultLabel">Przywróć\ndomyślne</string>
     <string name="CancelLabel">Anuluj</string>
     <string name="YouNeedChooseXlsFile">Musisz wybrać plik z rozszerzeniem .xls!</string>
@@ -50,4 +49,14 @@
     <string name="partNumberHint">numer części</string>
     <string name="quantityHint">ilość</string>
     <string name="AddLabel">Dodaj</string>
+    <string name="ClearTheBasketLabel">Chcesz wyczyścić cały koszyk?</string>
+    <string name="WarningLabel">Uwaga</string>
+    <string name="WantToDelSpPartFromBasketLabel">Usunąć tą część z koszyka?</string>
+    <string name="QuantityEmptyLabel">Pole ilości jest puste</string>
+    <string name="DeleteLabel">Usuń</string>
+    <string name="ChangeLabel">Zmień</string>
+    <string name="OverwriteOldSparePartLabel">Nadpisać stare części przy powtórzeniu Y?</string>
+    <string name="DelAllSparePartsLabel">Usunąć najpierw wszystkie wczytane części?</string>
+    <string name="NoLabel">Nie</string>
+    <string name="BasketEditionLabel">Edycja koszyka</string>
 </resources>

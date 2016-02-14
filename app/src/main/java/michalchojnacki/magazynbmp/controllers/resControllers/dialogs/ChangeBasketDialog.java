@@ -71,10 +71,10 @@ public class ChangeBasketDialog extends DialogFragment {
 
     private AlertDialog initializeAlertDialog(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.AddSpPartToBasketLabel)
+        builder.setTitle(mContext.getString(R.string.BasketEditionLabel))
                 .setView(view)
-                .setNeutralButton("Delete", null)
-                .setPositiveButton("Change", null)
+                .setNeutralButton(mContext.getString(R.string.DeleteLabel), null)
+                .setPositiveButton(mContext.getString(R.string.ChangeLabel), null)
                 .setNegativeButton(R.string.CancelLabel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         ChangeBasketDialog.this.getDialog().cancel();

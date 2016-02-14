@@ -37,7 +37,7 @@ public class QuestionDialog extends DialogFragment {
                 .setMessage(getArguments().getString(QUESTION))
                 .setPositiveButton(getContext().getString(R.string.OkLabel), positiveClickListener)
                 .setNeutralButton(getContext().getString(R.string.CancelLabel), null)
-                .setNegativeButton("No", negativeClickListener)
+                .setNegativeButton(getContext().getString(R.string.NoLabel), negativeClickListener)
                 .create();
     }
 

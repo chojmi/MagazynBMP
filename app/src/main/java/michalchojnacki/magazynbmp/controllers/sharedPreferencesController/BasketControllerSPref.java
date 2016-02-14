@@ -9,13 +9,13 @@ import michalchojnacki.magazynbmp.model.SparePart;
 
 public class BasketControllerSPref {
 
-    private final String SHARED_PREFERENCES = "BasketControllerSharedPreferences";
+    private final String SHARED_PREFERENCES = "basketControllerSharedPreferences";
     private final String BASKET_SIZE = "basketSize";
     private final String NUMBER = "number";
     private final String DESCRIPTION = "description";
     private final String TYPE = "type";
     private final String PRODUCER = "producer";
-    private final String SUPPLIER = "suplier";
+    private final String SUPPLIER = "supplier";
     private final String LOCATION = "location";
     private final String QUANTITY = "quantity";
 

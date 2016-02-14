@@ -7,7 +7,7 @@ import michalchojnacki.magazynbmp.model.SimpleSearchDialogModel;
 
 public class SimpleSearchDialogSPref {
 
-    private final String SHARED_PREFERENCES = "SimpleSearchDialogSharedPreferences";
+    private final String SHARED_PREFERENCES = "simpleSearchDialogSharedPreferences";
     private final String SEARCH_TEXT = "searchText";
     private SimpleSearchDialogModel mSimpleSearchDialogModel;
 

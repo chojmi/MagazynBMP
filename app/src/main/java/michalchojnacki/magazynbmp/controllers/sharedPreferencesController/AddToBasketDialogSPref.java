@@ -6,7 +6,7 @@ import android.widget.EditText;
 
 public class AddToBasketDialogSPref {
 
-    private final String SHARED_PREFERENCES = "AddToBasketDialogSharedPreferences";
+    private final String SHARED_PREFERENCES = "addToBasketDialogSharedPreferences";
     private final String QUANTITY = "quantity";
     private EditText mQuantity;
 

@@ -37,7 +37,6 @@
     <string name="NoDataLabel">No data</string>
     <string name="OkLabel" translatable="false">OK</string>
     <string name="ChooseExcelFileLabel">Choose Excel file:</string>
-    <string name="AddSpPartToBasketLabel">Add spare part to basket</string>
     <string name="ResetToDefaultLabel">Reset\nto default</string>
     <string name="CancelLabel">Cancel</string>
     <string name="YouNeedChooseXlsFile">You need to choose file with xls extension!</string>
@@ -60,4 +59,14 @@
     <string name="partNumberHint">part number</string>
     <string name="quantityHint">quantity</string>
     <string name="AddLabel">Add</string>
+    <string name="ClearTheBasketLabel">Do you want to clear the whole basket?</string>
+    <string name="WarningLabel">Warning</string>
+    <string name="WantToDelSpPartFromBasketLabel">Do you want to delete this spare part from basket?</string>
+    <string name="QuantityEmptyLabel">Quantity is empty!</string>
+    <string name="DeleteLabel">Delete</string>
+    <string name="ChangeLabel">Change</string>
+    <string name="OverwriteOldSparePartLabel">Overwrite old spare parts with the same number?</string>
+    <string name="DelAllSparePartsLabel">Do you want to firstly delete all old spare parts?</string>
+    <string name="NoLabel">No</string>
+    <string name="BasketEditionLabel">Basket Edition</string>
 </resources>

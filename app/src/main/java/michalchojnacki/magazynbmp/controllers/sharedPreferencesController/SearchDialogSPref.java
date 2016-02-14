@@ -7,7 +7,7 @@ import michalchojnacki.magazynbmp.model.SearchDialogModel;
 
 public class SearchDialogSPref {
 
-    private final String SHARED_PREFERENCES = "SearchDialogSharedPreferences";
+    private final String SHARED_PREFERENCES = "searchDialogSharedPreferences";
     private final String NUMBER_CHECKBOX = "numberCheckbox";
     private final String NUMBER_VALUE = "numberValue";
     private final String DESCRIPTION_CHECKBOX = "descriptionCheckbox";

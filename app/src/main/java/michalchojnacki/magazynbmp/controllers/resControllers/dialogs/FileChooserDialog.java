@@ -51,7 +51,7 @@ public class FileChooserDialog {
         if (uri.getLastPathSegment().endsWith(mContext.getString(R.string.XlsExtension))) {
             selectedPath = FileUtils.getPath(mContext, uri);
         } else {
-            throw new IllegalArgumentException("Should be an .xls file!");
+            throw new IllegalArgumentException(mContext.getString(R.string.YouNeedChooseXlsFile));
         }
         return selectedPath;
     }

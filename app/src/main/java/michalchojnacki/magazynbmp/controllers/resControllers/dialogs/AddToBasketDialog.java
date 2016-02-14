@@ -67,7 +67,7 @@ public class AddToBasketDialog extends DialogFragment {
 
     private AlertDialog initializeAlertDialog(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.AddSpPartToBasketLabel)
+        builder.setTitle(mContext.getString(R.string.AddSpPartToBasket))
                 .setView(view)
                 .setPositiveButton(mContext.getString(R.string.AddLabel), null)
                 .setNegativeButton(R.string.CancelLabel, new DialogInterface.OnClickListener() {
@@ -90,7 +90,7 @@ public class AddToBasketDialog extends DialogFragment {
                             mAddToBasketDialogSPref.saveToSPref(mContext);
                             dismissAllowingStateLoss();
                         } else {
-                            ErrorDialog.newInstance(mContext.getString(R.string.ErrorLabel), "Quantity can't be empty!").showDialog(mContext);
+                            ErrorDialog.newInstance(mContext.getString(R.string.ErrorLabel), mContext.getString(R.string.QuantityEmptyLabel)).showDialog(mContext);
                         }
 
                     }

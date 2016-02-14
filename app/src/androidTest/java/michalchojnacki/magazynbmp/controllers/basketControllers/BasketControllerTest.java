@@ -53,7 +53,7 @@ public class BasketControllerTest {
         assertThat(mBasketController.getSparePart(0).getNumber(), equalTo(mSpareParts[0].getNumber()));
         assertThat(mBasketController.getQuantity(0), equalTo(4));
         assertThat(mBasketController.getSparePart(1).getNumber(), equalTo(mSpareParts[0].getNumber()));
-        assertThat(mBasketController.getQuantity(01), equalTo(9));
+        assertThat(mBasketController.getQuantity(1), equalTo(9));
     }
 
     @Test
