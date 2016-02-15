@@ -3,7 +3,7 @@ package michalchojnacki.magazynbmp.controllers.dbControllers;
 import java.util.HashSet;
 import java.util.Set;
 
-public class SqlCheckEntryBuilder {
+abstract class SqlCheckEntryBuilder {
 
     public static String[] getWordsToCheck(String searchedText) {
         Set<String> wordsToCheck = new HashSet<>();

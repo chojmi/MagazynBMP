@@ -5,8 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 
@@ -69,9 +69,7 @@ public final class SparePartsDbController {
         SQLiteDatabase db = mFavDbHelper.getReadableDatabase();
 
         Cursor cursor = db.rawQuery(SparePartsDbCommands.sqlCheckEntry(new SparePart.Builder().number(sparePart.getNumber()).build()), null);
-        if (cursor.getCount() <= 0) {
-            cursor.close();
-            db.close();
+        if (CursorUnderZero(db, cursor)) {
             return false;
         }
         cursor.close();
@@ -79,30 +77,50 @@ public final class SparePartsDbController {
         return true;
     }
 
-    public SparePart[] findSparePart(SparePart searchedSparePart) {
-        ArrayList<SparePart> spareParts = new ArrayList<>();
-        SQLiteDatabase db = mFavDbHelper.getReadableDatabase();
-
-        String sqlCheckEntry = SparePartsDbCommands.sqlCheckEntry(searchedSparePart);
-        if (sqlCheckEntry != null) {
-            Cursor cursor = db.rawQuery(sqlCheckEntry, null);
-
-            if (cursor.getCount() <= 0) {
-                cursor.close();
-                db.close();
-                return null;
-            }
-            if (cursor.moveToFirst()) {
-                do {
-                    spareParts.add(getSparePart(cursor));
-                } while (cursor.moveToNext());
-            }
+    private boolean CursorUnderZero(SQLiteDatabase db, Cursor cursor) {
+        if (cursor.getCount() <= 0) {
             cursor.close();
             db.close();
-            return spareParts.toArray(new SparePart[spareParts.size()]);
+            return true;
+        }
+        return false;
+    }
+
+    public SparePart[] findSparePart(SparePart searchedSparePart) {
+        String sqlCheckEntry = SparePartsDbCommands.sqlCheckEntry(searchedSparePart);
+        return getSpareParts(sqlCheckEntry);
+    }
+
+    private SparePart[] getSpareParts(String sqlCheckEntry) {
+        if (sqlCheckEntry != null) {
+            SQLiteDatabase db = mFavDbHelper.getReadableDatabase();
+            Cursor cursor = db.rawQuery(sqlCheckEntry, null);
+            return getSpareParts(db, cursor);
         } else {
             return null;
         }
+    }
+
+    @Nullable
+    private SparePart[] getSpareParts(SQLiteDatabase db, Cursor cursor) {
+        if (CursorUnderZero(db, cursor)) {
+            return null;
+        }
+        SparePart[] spareParts = getSpareParts(cursor);
+        cursor.close();
+        db.close();
+        return spareParts;
+    }
+
+    @NonNull
+    private SparePart[] getSpareParts(Cursor cursor) {
+        ArrayList<SparePart> spareParts = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+                spareParts.add(getSparePart(cursor));
+            } while (cursor.moveToNext());
+        }
+        return spareParts.toArray(new SparePart[spareParts.size()]);
     }
 
     @NonNull
@@ -118,166 +136,14 @@ public final class SparePartsDbController {
     }
 
     public SparePart[] findSparePart(String searchedText) {
-
-        ArrayList<SparePart> spareParts = new ArrayList<>();
-        SQLiteDatabase db = mFavDbHelper.getReadableDatabase();
-
         String sqlCheckEntry = SparePartsDbCommands.sqlCheckEntry(searchedText);
-        if (sqlCheckEntry != null) {
-            Cursor cursor = db.rawQuery(sqlCheckEntry, null);
-
-            if (cursor.getCount() <= 0) {
-                cursor.close();
-                db.close();
-                return null;
-            }
-            if (cursor.moveToFirst()) {
-                do {
-                    spareParts.add(getSparePart(cursor));
-                } while (cursor.moveToNext());
-            }
-            cursor.close();
-            db.close();
-            return spareParts.toArray(new SparePart[spareParts.size()]);
-        } else {
-            return null;
-        }
+        return getSpareParts(sqlCheckEntry);
     }
 
     public void deleteAllSpareParts() {
         SQLiteDatabase db = mFavDbHelper.getWritableDatabase();
         db.delete(SparePartsDbEntry.TABLE_NAME, null, null);
         db.close();
-    }
-
-    private static abstract class SparePartsDbEntry implements BaseColumns {
-
-        public static final String COLUMN_NAME_SPARE_PART_NUMBER = "sparePartNumber";
-        public static final String COLUMN_NAME_SPARE_PART_DESCRIPTION = "sparePartDescription";
-        public static final String COLUMN_NAME_SPARE_PART_TYPE = "sparePartType";
-        public static final String COLUMN_NAME_SPARE_PART_LOCATION = "sparePartLocation";
-        public static final String COLUMN_NAME_SPARE_PART_PRODUCER = "sparePartProducer";
-        public static final String COLUMN_NAME_SPARE_PART_SUPPLIER = "sparePartSupplier";
-        private static final String TABLE_NAME = "spareParts";
-    }
-
-    private static abstract class SparePartsDbCommands {
-
-        private static final String TEXT_TYPE = " TEXT";
-        private static final String COMMA_SEP = ",";
-        private static final String SQL_CREATE_ENTRIES =
-                "CREATE TABLE " + SparePartsDbEntry.TABLE_NAME + " (" +
-                        SparePartsDbEntry._ID + " INTEGER PRIMARY KEY," +
-                        SparePartsDbEntry.COLUMN_NAME_SPARE_PART_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
-                        SparePartsDbEntry.COLUMN_NAME_SPARE_PART_NUMBER + TEXT_TYPE + COMMA_SEP +
-                        SparePartsDbEntry.COLUMN_NAME_SPARE_PART_TYPE + TEXT_TYPE + COMMA_SEP +
-                        SparePartsDbEntry.COLUMN_NAME_SPARE_PART_PRODUCER + TEXT_TYPE + COMMA_SEP +
-                        SparePartsDbEntry.COLUMN_NAME_SPARE_PART_LOCATION + TEXT_TYPE + COMMA_SEP +
-                        SparePartsDbEntry.COLUMN_NAME_SPARE_PART_SUPPLIER + TEXT_TYPE +
-                        ")";
-
-        private static final String SQL_READ_ENTRIES = "SELECT  * FROM " + SparePartsDbEntry.TABLE_NAME;
-
-        private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + SparePartsDbEntry.TABLE_NAME;
-
-        private static String sqlCheckEntry(SparePart sparePart) {
-            if (sparePart.getDescription() == null && sparePart.getNumber() == null
-                    && sparePart.getType() == null && sparePart.getProducer() == null
-                    && sparePart.getSupplier() == null)
-                return null;
-
-            boolean needsAnd = false;
-            StringBuilder builder = new StringBuilder()
-                    .append(SQL_READ_ENTRIES)
-                    .append(" WHERE ");
-
-            if (sparePart.getNumber() != null) {
-                builder.append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_NUMBER + " LIKE '%")
-                        .append(sparePart.getNumber())
-                        .append("%'");
-                needsAnd = true;
-            }
-
-            if (sparePart.getDescription() != null) {
-                if (needsAnd) {
-                    builder.append(" AND ");
-                }
-                String[] descriptions = SqlCheckEntryBuilder.getWordsToCheck(sparePart.getDescription());
-
-                builder.append("(");
-                for (String description : descriptions) {
-                    builder.append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_DESCRIPTION + " LIKE '%")
-                            .append(description)
-                            .append("%' OR ");
-                }
-                builder.delete(builder.length() - 4, builder.length());
-                builder.append(")");
-                needsAnd = true;
-            }
-
-            if (sparePart.getType() != null) {
-                if (needsAnd) {
-                    builder.append(" AND ");
-                    needsAnd = true;
-                }
-                builder.append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_TYPE + " LIKE '%")
-                        .append(sparePart.getType())
-                        .append("%'");
-            }
-
-            if (sparePart.getProducer() != null) {
-                if (needsAnd) {
-                    builder.append(" AND ");
-                    needsAnd = true;
-                }
-                builder.append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_PRODUCER + " LIKE '%")
-                        .append(sparePart.getProducer())
-                        .append("%'");
-            }
-
-            if (sparePart.getSupplier() != null) {
-                if (needsAnd) {
-                    builder.append(" AND ");
-                }
-                builder.append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_SUPPLIER + " LIKE '%")
-                        .append(sparePart.getSupplier())
-                        .append("%'");
-            }
-
-            return builder.toString();
-        }
-
-        private static String sqlCheckEntry(String searchedText) {
-            if (searchedText == null)
-                return null;
-
-            String[] wordsToCheck = SqlCheckEntryBuilder.getWordsToCheck(searchedText);
-            StringBuilder stringBuilder = new StringBuilder();
-
-            stringBuilder.append(SQL_READ_ENTRIES)
-                    .append(" WHERE ")
-                    .append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_NUMBER + " LIKE '%")
-                    .append(searchedText)
-                    .append("%'");
-
-            for (String word : wordsToCheck) {
-                stringBuilder.append(" OR ")
-                        .append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_DESCRIPTION + " LIKE '%")
-                        .append(word)
-                        .append("%' OR ")
-                        .append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_TYPE + " LIKE '%")
-                        .append(word)
-                        .append("%' OR ")
-                        .append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_PRODUCER + " LIKE '%")
-                        .append(word)
-                        .append("%' OR ")
-                        .append(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_SUPPLIER + " LIKE '%")
-                        .append(word)
-                        .append("%'");
-            }
-
-            return stringBuilder.toString();
-        }
     }
 
     private class FavDbHelper extends SQLiteOpenHelper {

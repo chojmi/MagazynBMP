@@ -81,9 +81,7 @@ public class ExcelController extends ExcelControllerModel {
 
     private void saveSheetInDb(Sheet sheet, final Handler handler) {
         if (sheet != null) {
-            for (Row row : sheet) {
-                saveNextRowInDb(row);
-            }
+            saveSheetInDb(sheet);
             closeFile();
             handler.sendEmptyMessage(Activity.RESULT_OK);
         } else {
@@ -93,14 +91,9 @@ public class ExcelController extends ExcelControllerModel {
         mLoadingDbDialog.stop();
     }
 
-    private void saveNextRowInDb(Row row) {
-        if (row.getCell(mNumberPlaceIndex) != null) {
-            row.getCell(mNumberPlaceIndex).setCellType(Cell.CELL_TYPE_STRING);
-            if (row.getCell(mNumberPlaceIndex).getStringCellValue().startsWith(mPartPrefix)) {
-                if (isRowSavedWithSuccess(row)) {
-                    mLoadingDbDialog.nextValueSaved();
-                }
-            }
+    private void saveSheetInDb(Sheet sheet) {
+        for (Row row : sheet) {
+            saveNextRowInDb(row);
         }
     }
 
@@ -108,6 +101,21 @@ public class ExcelController extends ExcelControllerModel {
         try {
             file.close();
         } catch (IOException e) {
+        }
+    }
+
+    private void saveNextRowInDb(Row row) {
+        if (row.getCell(mNumberPlaceIndex) != null) {
+            row.getCell(mNumberPlaceIndex).setCellType(Cell.CELL_TYPE_STRING);
+            if (row.getCell(mNumberPlaceIndex).getStringCellValue().startsWith(mPartPrefix)) {
+                saveNextRow(row);
+            }
+        }
+    }
+
+    private void saveNextRow(Row row) {
+        if (isRowSavedWithSuccess(row)) {
+            mLoadingDbDialog.nextValueSaved();
         }
     }
 
@@ -131,9 +139,7 @@ public class ExcelController extends ExcelControllerModel {
             row.getCell(placeIndex).setCellType(Cell.CELL_TYPE_STRING);
             return row.getCell(placeIndex).getStringCellValue().trim();
         }
-
         return mContext.getString(R.string.NoDataLabel);
-
     }
 
     public static class Builder extends ExcelControllerModel {

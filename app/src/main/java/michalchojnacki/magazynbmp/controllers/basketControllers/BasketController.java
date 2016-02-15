@@ -19,8 +19,7 @@ public class BasketController implements Serializable {
     public void deleteSparePart(SparePart sparePart, int quantity) {
         for (Iterator<SparePartWithQuantity> it = mSparePartsWithQuantities.iterator(); it.hasNext(); ) {
             SparePartWithQuantity sparePartWithQuantity = it.next();
-            if (sparePartWithQuantity.getSparePart().getNumber().equals(sparePart.getNumber())
-                    && sparePartWithQuantity.getQuantity() == quantity) {
+            if (sparePartWithQuantity.equalToSparePart(sparePart, quantity)) {
                 it.remove();
                 return;
             }
@@ -56,6 +55,15 @@ public class BasketController implements Serializable {
             mSparePart = sparePart;
         }
 
+        public boolean equalToSparePart(SparePart sparePart, int quantity) {
+            return getSparePart().getNumber().equals(sparePart.getNumber())
+                    && getQuantity() == quantity;
+        }
+
+        public SparePart getSparePart() {
+            return mSparePart;
+        }
+
         public int getQuantity() {
             return quantity;
         }
@@ -63,10 +71,6 @@ public class BasketController implements Serializable {
         public SparePartWithQuantity setQuantity(int quantity) {
             this.quantity = quantity;
             return this;
-        }
-
-        public SparePart getSparePart() {
-            return mSparePart;
         }
     }
 }
