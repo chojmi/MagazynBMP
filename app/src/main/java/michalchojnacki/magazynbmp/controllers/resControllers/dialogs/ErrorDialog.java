@@ -29,8 +29,7 @@ public class ErrorDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String title = getArguments().getString(TITLE);
-        return new AlertDialog.Builder(getContext())
-                .setTitle(title)
+        return new AlertDialog.Builder(getContext()).setTitle(title)
                 .setMessage(getArguments().getString(MESSAGE))
                 .setPositiveButton(getContext().getString(R.string.OkLabel), null)
                 .create();

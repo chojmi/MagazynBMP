@@ -33,8 +33,7 @@ public class QuestionDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         setRetainInstance(true);
         String title = getArguments().getString(TITLE);
-        return new AlertDialog.Builder(getContext())
-                .setTitle(title)
+        return new AlertDialog.Builder(getContext()).setTitle(title)
                 .setMessage(getArguments().getString(QUESTION))
                 .setPositiveButton(getContext().getString(R.string.OkLabel), positiveClickListener)
                 .setNeutralButton(getContext().getString(R.string.CancelLabel), null)
@@ -42,12 +41,14 @@ public class QuestionDialog extends DialogFragment {
                 .create();
     }
 
-    public QuestionDialog setPositiveClickListener(DialogInterface.OnClickListener onClickListener) {
+    public QuestionDialog setPositiveClickListener(
+            DialogInterface.OnClickListener onClickListener) {
         positiveClickListener = onClickListener;
         return this;
     }
 
-    public QuestionDialog setNegativeClickListener(DialogInterface.OnClickListener onClickListener) {
+    public QuestionDialog setNegativeClickListener(
+            DialogInterface.OnClickListener onClickListener) {
         negativeClickListener = onClickListener;
         return this;
     }

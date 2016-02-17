@@ -30,6 +30,12 @@ public class SparePartsViewerTest {
 
     @Rule
     public ActivityTestRule<SparePartsViewer> mSparePartsViewer = new ActivityTestRule(SparePartsViewer.class, false, false);
+    private String numberText = "number";
+    private String locationText = "location";
+    private String descText = "desc";
+    private String producerText = "producer";
+    private String typeText = "type";
+    private String supplierText = "supplier";
     private int size = 3;
 
     @Test
@@ -43,10 +49,10 @@ public class SparePartsViewerTest {
         for (int i = 0; i < size; i++) {
 
             Espresso.onView(nthChildOf(withId(R.id.SparePartsRecyclerView), i))
-                    .check(matches(hasDescendant(withText("description " + i))))
-                    .check(matches(hasDescendant(withText("type " + i))))
-                    .check(matches(hasDescendant(withText("producer " + i))))
-                    .check(matches(hasDescendant(withText("supplier " + i))));
+                    .check(matches(hasDescendant(withText(descText + i))))
+                    .check(matches(hasDescendant(withText(typeText + i))))
+                    .check(matches(hasDescendant(withText(producerText + i))))
+                    .check(matches(hasDescendant(withText(supplierText + i))));
         }
     }
 
@@ -55,13 +61,12 @@ public class SparePartsViewerTest {
         SparePart[] spareParts = new SparePart[size];
 
         for (int i = 0; i < size; i++) {
-            spareParts[i] = new SparePart.Builder()
-                    .number("number " + i)
-                    .description("description " + i)
-                    .type("type " + i)
-                    .producer("producer " + i)
-                    .location("location " + i)
-                    .supplier("supplier " + i)
+            spareParts[i] = new SparePart.Builder().number(numberText + i)
+                    .description(descText + i)
+                    .type(typeText + i)
+                    .producer(producerText + i)
+                    .location(locationText + i)
+                    .supplier(supplierText + i)
                     .build();
         }
 
@@ -102,12 +107,17 @@ public class SparePartsViewerTest {
         for (int i = 0; i < size; i++) {
             Espresso.onView(withId(R.id.SparePartsRecyclerView))
                     .perform(RecyclerViewActions.actionOnItemAtPosition(i, ViewActions.click()));
-            Espresso.onView(withId(R.id.SparePartNumberText)).check(matches(withText("number " + i)));
-            Espresso.onView(withId(R.id.SparePartDescriptionText)).check(matches(withText("description " + i)));
-            Espresso.onView(withId(R.id.SparePartTypeText)).check(matches(withText("type " + i)));
-            Espresso.onView(withId(R.id.SparePartLocationText)).check(matches(withText("location " + i)));
-            Espresso.onView(withId(R.id.SparePartProducerText)).check(matches(withText("producer " + i)));
-            Espresso.onView(withId(R.id.SparePartSupplierText)).check(matches(withText("supplier " + i)));
+            Espresso.onView(withId(R.id.SparePartNumberText))
+                    .check(matches(withText(numberText + i)));
+            Espresso.onView(withId(R.id.SparePartDescriptionText))
+                    .check(matches(withText(descText + i)));
+            Espresso.onView(withId(R.id.SparePartTypeText)).check(matches(withText(typeText + i)));
+            Espresso.onView(withId(R.id.SparePartLocationText))
+                    .check(matches(withText(locationText + i)));
+            Espresso.onView(withId(R.id.SparePartProducerText))
+                    .check(matches(withText(producerText + i)));
+            Espresso.onView(withId(R.id.SparePartSupplierText))
+                    .check(matches(withText(supplierText + i)));
             Espresso.pressBack();
         }
     }

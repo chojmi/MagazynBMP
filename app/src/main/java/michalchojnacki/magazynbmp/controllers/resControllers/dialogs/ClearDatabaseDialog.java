@@ -15,14 +15,14 @@ public class ClearDatabaseDialog extends DialogFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         if (!(activity instanceof ClearDatabaseListener)) {
-            throw new ClassCastException(activity.toString() + " must implement ClearDatabaseListener");
+            throw new ClassCastException(
+                    activity.toString() + " must implement ClearDatabaseListener");
         }
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return new AlertDialog.Builder(getActivity())
-                .setMessage(R.string.AreYouSureLabel)
+        return new AlertDialog.Builder(getActivity()).setMessage(R.string.AreYouSureLabel)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     @Override

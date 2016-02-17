@@ -64,7 +64,8 @@ public class ChangeBasketDialog extends DialogFragment {
         mSparePartQuantity.setSelectAllOnFocus(true);
 
         Dialog dialog = initializeAlertDialog(view);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        dialog.getWindow()
+                .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
         return dialog;
     }
@@ -87,20 +88,22 @@ public class ChangeBasketDialog extends DialogFragment {
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(final DialogInterface dialog) {
-                alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        deleteClick.onClick(v);
-                        dismissAllowingStateLoss();
-                    }
-                });
-                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mQuantityChangedListener.quantityChanged(getQuantity());
-                        dismissAllowingStateLoss();
-                    }
-                });
+                alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL)
+                        .setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                deleteClick.onClick(v);
+                                dismissAllowingStateLoss();
+                            }
+                        });
+                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                        .setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mQuantityChangedListener.quantityChanged(getQuantity());
+                                dismissAllowingStateLoss();
+                            }
+                        });
             }
         });
         return alertDialog;

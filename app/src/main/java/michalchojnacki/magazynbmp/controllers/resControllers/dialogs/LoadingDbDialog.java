@@ -18,9 +18,10 @@ public class LoadingDbDialog {
                 @Override
                 public void run() {
                     mContext = context;
-                    mProgressDialog = ProgressDialog.show(context,
-                            context.getString(R.string.LoadingLabel),
-                            context.getString(R.string.WaitWhileLoadingLabel), true);
+                    mProgressDialog =
+                            ProgressDialog.show(context, context.getString(R.string.LoadingLabel),
+                                                context.getString(R.string.WaitWhileLoadingLabel),
+                                                true);
                     valuesSaved = 0;
                 }
             });
@@ -32,15 +33,18 @@ public class LoadingDbDialog {
             ((Activity) mContext).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    mProgressDialog.setMessage(mContext.getString(R.string.LoadedLabel) + ++valuesSaved + mContext.getString(R.string.SparePartsLabel));
+                    mProgressDialog.setMessage(mContext.getString(
+                            R.string.LoadedLabel) + ++valuesSaved + mContext.getString(
+                            R.string.SparePartsLabel));
                 }
             });
         }
     }
 
     public void stop() {
-        if (mProgressDialog != null)
+        if (mProgressDialog != null) {
             mProgressDialog.dismiss();
+        }
     }
 
 }

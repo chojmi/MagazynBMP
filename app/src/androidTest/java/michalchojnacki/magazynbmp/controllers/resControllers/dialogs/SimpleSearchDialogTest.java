@@ -25,6 +25,8 @@ public class SimpleSearchDialogTest {
     @Rule
     public ActivityTestRule<StartActivity> mStartActivity = new ActivityTestRule(StartActivity.class);
 
+    private String numberText = "number";
+
     private SimpleSearchDialog simpleSearchDialog;
     private SparePartsDbController sparePartsDbController;
 
@@ -57,13 +59,13 @@ public class SimpleSearchDialogTest {
 
     @Test
     public void sparePartViewerShowsWhenFoundOneItem() {
-        SparePart sparePart = new SparePart.Builder()
-                .number("number")
+        SparePart sparePart = new SparePart.Builder().number(numberText)
                 .build();
 
         sparePartsDbController.saveSparePart(sparePart);
 
-        Espresso.onView(withId(R.id.DialogSimpleSearchText)).perform(ViewActions.replaceText("number"));
+        Espresso.onView(withId(R.id.DialogSimpleSearchText))
+                .perform(ViewActions.replaceText(numberText));
 
         Espresso.onView(withText(R.string.OkLabel))
                 .perform(ViewActions.click());
@@ -77,12 +79,12 @@ public class SimpleSearchDialogTest {
         int size = 3;
 
         for (int i = 0; i < size; i++) {
-            sparePartsDbController.saveSparePart(new SparePart.Builder()
-                    .number("number " + i)
+            sparePartsDbController.saveSparePart(new SparePart.Builder().number(numberText + i)
                     .build());
         }
 
-        Espresso.onView(withId(R.id.DialogSimpleSearchText)).perform(ViewActions.replaceText("number"));
+        Espresso.onView(withId(R.id.DialogSimpleSearchText))
+                .perform(ViewActions.replaceText(numberText));
 
         Espresso.onView(withText(R.string.OkLabel))
                 .perform(ViewActions.click());

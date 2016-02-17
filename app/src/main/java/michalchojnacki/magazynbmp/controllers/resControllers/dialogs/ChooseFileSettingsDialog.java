@@ -62,7 +62,8 @@ public class ChooseFileSettingsDialog extends DialogFragment {
         readingSavedData(savedInstanceState);
 
         Dialog dialog = initializeAlertDialog(view);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        dialog.getWindow()
+                .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
         return dialog;
     }
@@ -71,12 +72,15 @@ public class ChooseFileSettingsDialog extends DialogFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (savedInstanceState != null && savedInstanceState.getBoolean(OVERWRITE_ITEMS_DIALOG_VISIBLE)) {
+        if (savedInstanceState != null && savedInstanceState.getBoolean(
+                OVERWRITE_ITEMS_DIALOG_VISIBLE)) {
             clearDb = savedInstanceState.getBoolean(CLEAR_DB);
             mOverwriteItemsDialog = getOverwriteItemsDialog(createEndOfSavingOperationHandler());
             mOverwriteItemsDialog.showDialog(mContext);
-        } else if (savedInstanceState != null && savedInstanceState.getBoolean(CLEAR_ITEMS_DIALOG_VISIBLE))
+        } else if (savedInstanceState != null && savedInstanceState.getBoolean(
+                CLEAR_ITEMS_DIALOG_VISIBLE)) {
             saveDataFromChosenFile();
+        }
     }
 
     @Override
@@ -133,32 +137,36 @@ public class ChooseFileSettingsDialog extends DialogFragment {
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(final DialogInterface dialog) {
-                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        saveDataFromChosenFile();
-                    }
-                });
-                alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        setDefaultValues();
-                    }
-                });
+                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                        .setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                saveDataFromChosenFile();
+                            }
+                        });
+                alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL)
+                        .setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                setDefaultValues();
+                            }
+                        });
             }
         });
         return alertDialog;
     }
 
     private void saveDataFromChosenFile() {
-        if (!mChooseFileDialogModel.getChosenFileText().equals(mContext.getString(R.string.NoChosenFileLabel))) {
+        if (!mChooseFileDialogModel.getChosenFileText()
+                .equals(mContext.getString(R.string.NoChosenFileLabel))) {
             final Handler handler = createEndOfSavingOperationHandler();
             mOverwriteItemsDialog = getOverwriteItemsDialog(handler);
             mClearItemsDialog = getClearItemsDialog();
             mClearItemsDialog.showDialog(mContext);
         } else {
             ErrorDialog.newInstance(mContext.getString(R.string.ErrorLabel),
-                    mContext.getString(R.string.NoChosenFileLabel)).showDialog(mContext);
+                                    mContext.getString(R.string.NoChosenFileLabel))
+                    .showDialog(mContext);
         }
     }
 
@@ -180,14 +188,16 @@ public class ChooseFileSettingsDialog extends DialogFragment {
                 mClearItemsDialog = null;
                 mOverwriteItemsDialog = null;
                 dismiss();
-                ((Activity) mContext).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+                ((Activity) mContext).setRequestedOrientation(
+                        ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                 return true;
             }
         });
     }
 
     private QuestionDialog getOverwriteItemsDialog(final Handler handler) {
-        return QuestionDialog.newInstance(mContext.getString(R.string.WarningLabel), mContext.getString(R.string.OverwriteOldSparePartLabel))
+        return QuestionDialog.newInstance(mContext.getString(R.string.WarningLabel),
+                                          mContext.getString(R.string.OverwriteOldSparePartLabel))
                 .setPositiveClickListener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -195,8 +205,8 @@ public class ChooseFileSettingsDialog extends DialogFragment {
                             ((ClearDatabaseDialog.ClearDatabaseListener) mContext).clearDatabase();
                         }
                         createExcelController(true).exportXlsToDb(handler,
-                                mChooseFileDialogModel.getChosenFilePath(),
-                                mChooseFileDialogModel.getSheetName());
+                                                                  mChooseFileDialogModel.getChosenFilePath(),
+                                                                  mChooseFileDialogModel.getSheetName());
                     }
                 })
                 .setNegativeClickListener(new DialogInterface.OnClickListener() {
@@ -206,14 +216,15 @@ public class ChooseFileSettingsDialog extends DialogFragment {
                             ((ClearDatabaseDialog.ClearDatabaseListener) mContext).clearDatabase();
                         }
                         createExcelController(false).exportXlsToDb(handler,
-                                mChooseFileDialogModel.getChosenFilePath(),
-                                mChooseFileDialogModel.getSheetName());
+                                                                   mChooseFileDialogModel.getChosenFilePath(),
+                                                                   mChooseFileDialogModel.getSheetName());
                     }
                 });
     }
 
     private QuestionDialog getClearItemsDialog() {
-        return QuestionDialog.newInstance(mContext.getString(R.string.WarningLabel), mContext.getString(R.string.DelAllSparePartsLabel))
+        return QuestionDialog.newInstance(mContext.getString(R.string.WarningLabel),
+                                          mContext.getString(R.string.DelAllSparePartsLabel))
                 .setPositiveClickListener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -230,17 +241,18 @@ public class ChooseFileSettingsDialog extends DialogFragment {
     }
 
     private ExcelController createExcelController(boolean overwriteOldParts) {
-        ExcelController.Builder excelControllerBuilder = new ExcelController.Builder()
-                .context(mContext)
-                .sparePartsDbController(mSparePartsDbController)
-                .partPrefix(mChooseFileDialogModel.getPartPrefix())
-                .numberPlaceIndex(Integer.valueOf(mChooseFileDialogModel.getColumnNumber()))
-                .typePlaceIndex(mChooseFileDialogModel.getTypeColumnIfChecked())
-                .descriptionPlaceIndex(mChooseFileDialogModel.getDescriptionColumnIfChecked())
-                .producerPlaceIndex(mChooseFileDialogModel.getProducerColumnIfChecked())
-                .locationPlaceIndex(mChooseFileDialogModel.getLocationColumnIfChecked())
-                .supplierPlaceIndex(mChooseFileDialogModel.getSupplierColumnIfChecked())
-                .overwriteOldPart(overwriteOldParts);
+        ExcelController.Builder excelControllerBuilder =
+                new ExcelController.Builder().context(mContext)
+                        .sparePartsDbController(mSparePartsDbController)
+                        .partPrefix(mChooseFileDialogModel.getPartPrefix())
+                        .numberPlaceIndex(Integer.valueOf(mChooseFileDialogModel.getColumnNumber()))
+                        .typePlaceIndex(mChooseFileDialogModel.getTypeColumnIfChecked())
+                        .descriptionPlaceIndex(
+                                mChooseFileDialogModel.getDescriptionColumnIfChecked())
+                        .producerPlaceIndex(mChooseFileDialogModel.getProducerColumnIfChecked())
+                        .locationPlaceIndex(mChooseFileDialogModel.getLocationColumnIfChecked())
+                        .supplierPlaceIndex(mChooseFileDialogModel.getSupplierColumnIfChecked())
+                        .overwriteOldPart(overwriteOldParts);
 
         return excelControllerBuilder.build();
 

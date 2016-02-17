@@ -37,10 +37,12 @@ public class FileChooserDialog {
             selectedPath = isXlsFile(uri);
         } catch (URISyntaxException e) {
             ErrorDialog.newInstance(mContext.getString(R.string.ErrorLabel),
-                    mContext.getString(R.string.YouNeedChooseXlsFile)).showDialog(mContext);
+                                    mContext.getString(R.string.YouNeedChooseXlsFile))
+                    .showDialog(mContext);
         } catch (IllegalArgumentException e) {
             ErrorDialog.newInstance(mContext.getString(R.string.ErrorLabel),
-                    mContext.getString(R.string.YouNeedChooseXlsFile)).showDialog(mContext);
+                                    mContext.getString(R.string.YouNeedChooseXlsFile))
+                    .showDialog(mContext);
         }
 
         return selectedPath;

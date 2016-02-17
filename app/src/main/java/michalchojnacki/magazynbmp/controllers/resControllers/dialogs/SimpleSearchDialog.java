@@ -41,14 +41,16 @@ public class SimpleSearchDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_simple_search_part, null);
+        View view =
+                getActivity().getLayoutInflater().inflate(R.layout.dialog_simple_search_part, null);
 
         mSimpleSearchDialogModel = new SimpleSearchDialogModel(view);
         mSimpleSearchDialogSPref = new SimpleSearchDialogSPref(mSimpleSearchDialogModel);
 
         readingSavedData(savedInstanceState);
         Dialog dialog = initializeAlertDialog(view);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        dialog.getWindow()
+                .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
         return dialog;
     }
@@ -77,19 +79,21 @@ public class SimpleSearchDialog extends DialogFragment {
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(final DialogInterface dialog) {
-                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        SparePart[] spareParts = findSpareParts();
-                        startActivityIfSthFound(spareParts);
-                    }
-                });
-                alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        setDefaultValues();
-                    }
-                });
+                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                        .setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                SparePart[] spareParts = findSpareParts();
+                                startActivityIfSthFound(spareParts);
+                            }
+                        });
+                alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL)
+                        .setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                setDefaultValues();
+                            }
+                        });
             }
         });
         return alertDialog;
@@ -102,7 +106,8 @@ public class SimpleSearchDialog extends DialogFragment {
     private void startActivityIfSthFound(SparePart[] spareParts) {
         if (spareParts == null || spareParts.length < 1) {
             ErrorDialog.newInstance(mContext.getString(R.string.ErrorLabel),
-                    mContext.getString(R.string.NoSparePartFoundLabel)).showDialog(mContext);
+                                    mContext.getString(R.string.NoSparePartFoundLabel))
+                    .showDialog(mContext);
         } else {
             startProperActivity(spareParts);
         }
@@ -126,9 +131,11 @@ public class SimpleSearchDialog extends DialogFragment {
             intent = new Intent(mContext, SparePartsViewer.class);
             intent.putExtra(SparePartsViewer.SPARE_PARTS, Arrays.copyOf(spareParts, 1000));
         }
-        intent.putExtra(SparePartViewer.BASKET_CONTROLLER, ((StartActivity) mContext).getBasketController());
+        intent.putExtra(SparePartViewer.BASKET_CONTROLLER,
+                        ((StartActivity) mContext).getBasketController());
         mSimpleSearchDialogSPref.saveToSPref(mContext);
-        ((StartActivity) mContext).startActivityForResult(intent, SparePartViewer.SPARE_PARTS_VIEWER_STOPPED);
+        ((StartActivity) mContext).startActivityForResult(intent,
+                                                          SparePartViewer.SPARE_PARTS_VIEWER_STOPPED);
 
     }
 

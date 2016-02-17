@@ -14,6 +14,8 @@ import static org.junit.Assert.assertTrue;
 @RunWith(AndroidJUnit4.class)
 public class CheckableTextViewTest {
 
+    private String testText = "test";
+
     private CheckableTextView checkableTextView;
     private TextView mTextView;
     private CheckBox mCheckBox;
@@ -22,7 +24,7 @@ public class CheckableTextViewTest {
     public void init() {
 
         mTextView = new TextView(InstrumentationRegistry.getTargetContext());
-        mTextView.setText("test");
+        mTextView.setText(testText);
         mCheckBox = new CheckBox(InstrumentationRegistry.getTargetContext());
 
         InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
@@ -43,14 +45,14 @@ public class CheckableTextViewTest {
                 checkableTextView.setChecked(false);
             }
         });
-        checkableTextView.setText("text");
+        checkableTextView.setText(testText);
 
-        assertTrue("text".equals(checkableTextView.getText()) && !checkableTextView.isChecked());
+        assertTrue(testText.equals(checkableTextView.getText()) && !checkableTextView.isChecked());
     }
 
     @Test
     public void doesGettersWorks() {
-        assertTrue("test".equals(checkableTextView.getText()) && checkableTextView.isChecked());
+        assertTrue(testText.equals(checkableTextView.getText()) && checkableTextView.isChecked());
     }
 
 }

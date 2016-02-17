@@ -24,28 +24,33 @@ import static org.junit.Assert.assertThat;
 
 public class ExcelControllerTest {
 
-    private File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "/test.xls");
+    private String validTestNumber1 = "YA2020";
+
+    private File file =
+            new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                     "/test.xls");
     private String sheetName = "Automatyka";
     private ExcelControllerModel mExcelControllerModel = new ExcelControllerModel();
-    private SparePartsDbController sparePartsDbController = new SparePartsDbController(InstrumentationRegistry.getTargetContext());
+    private SparePartsDbController sparePartsDbController =
+            new SparePartsDbController(InstrumentationRegistry.getTargetContext());
 
     @Before
     public void initExcelFile() throws IOException {
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet(sheetName);
         Row row = sheet.createRow(0);
-        row.createCell(mExcelControllerModel.mNumberPlaceIndex).setCellValue("YA2020");
+        row.createCell(mExcelControllerModel.mNumberPlaceIndex).setCellValue(validTestNumber1);
         FileOutputStream out = new FileOutputStream(file);
         workbook.write(out);
     }
 
     @Test
     public void isItemRead() {
-        ExcelController excelController = new ExcelController.Builder()
-                .context(InstrumentationRegistry.getTargetContext())
-                .numberPlaceIndex(mExcelControllerModel.mNumberPlaceIndex)
-                .sparePartsDbController(sparePartsDbController)
-                .build();
+        ExcelController excelController =
+                new ExcelController.Builder().context(InstrumentationRegistry.getTargetContext())
+                        .numberPlaceIndex(mExcelControllerModel.mNumberPlaceIndex)
+                        .sparePartsDbController(sparePartsDbController)
+                        .build();
 
         Handler handler = new Handler(InstrumentationRegistry.getTargetContext().getMainLooper());
         excelController.exportXlsToDb(handler, file.getAbsolutePath(), sheetName);
@@ -53,7 +58,7 @@ public class ExcelControllerTest {
         SparePart[] spareParts = sparePartsDbController.findSparePart("");
 
         assertFalse(spareParts.length != 1);
-        assertThat(spareParts[0].getNumber(), equalTo("YA2020"));
+        assertThat(spareParts[0].getNumber(), equalTo(validTestNumber1));
 
     }
 

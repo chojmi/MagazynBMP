@@ -60,7 +60,8 @@ public class AddToBasketDialog extends DialogFragment {
         mAddToBasketDialogSPref.readFromSPref(mContext);
 
         Dialog dialog = initializeAlertDialog(view);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        dialog.getWindow()
+                .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
         return dialog;
     }
@@ -82,19 +83,24 @@ public class AddToBasketDialog extends DialogFragment {
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(final DialogInterface dialog) {
-                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (!mSparePartQuantity.getText().toString().equals("")) {
-                            ((SparePartViewer) getActivity()).addToBasket(new Integer(mSparePartQuantity.getText().toString()));
-                            mAddToBasketDialogSPref.saveToSPref(mContext);
-                            dismissAllowingStateLoss();
-                        } else {
-                            ErrorDialog.newInstance(mContext.getString(R.string.ErrorLabel), mContext.getString(R.string.QuantityEmptyLabel)).showDialog(mContext);
-                        }
+                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                        .setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (!mSparePartQuantity.getText().toString().equals("")) {
+                                    ((SparePartViewer) getActivity()).addToBasket(
+                                            new Integer(mSparePartQuantity.getText().toString()));
+                                    mAddToBasketDialogSPref.saveToSPref(mContext);
+                                    dismissAllowingStateLoss();
+                                } else {
+                                    ErrorDialog.newInstance(mContext.getString(R.string.ErrorLabel),
+                                                            mContext.getString(
+                                                                    R.string.QuantityEmptyLabel))
+                                            .showDialog(mContext);
+                                }
 
-                    }
-                });
+                            }
+                        });
             }
         });
         return alertDialog;

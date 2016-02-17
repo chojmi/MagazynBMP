@@ -48,7 +48,8 @@ public class SearchDialog extends DialogFragment {
 
         readingSavedData(savedInstanceState);
         Dialog dialog = initializeAlertDialog(view);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        dialog.getWindow()
+                .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
         return dialog;
     }
@@ -77,19 +78,21 @@ public class SearchDialog extends DialogFragment {
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(final DialogInterface dialog) {
-                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        SparePart[] spareParts = findSpareParts();
-                        startActivityIfSthFound(spareParts);
-                    }
-                });
-                alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        setDefaultValues();
-                    }
-                });
+                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                        .setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                SparePart[] spareParts = findSpareParts();
+                                startActivityIfSthFound(spareParts);
+                            }
+                        });
+                alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL)
+                        .setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                setDefaultValues();
+                            }
+                        });
             }
         });
         return alertDialog;
@@ -105,7 +108,8 @@ public class SearchDialog extends DialogFragment {
     private void startActivityIfSthFound(SparePart[] spareParts) {
         if (spareParts == null || spareParts.length < 1) {
             ErrorDialog.newInstance(mContext.getString(R.string.ErrorLabel),
-                    mContext.getString(R.string.NoSparePartFoundLabel)).showDialog(mContext);
+                                    mContext.getString(R.string.NoSparePartFoundLabel))
+                    .showDialog(mContext);
         } else {
             startProperActivity(spareParts);
         }
@@ -117,8 +121,7 @@ public class SearchDialog extends DialogFragment {
     }
 
     private SparePart createSearchedSparePart() {
-        return new SparePart.Builder()
-                .number(mSearchDialogModel.getPartNumberIfChecked())
+        return new SparePart.Builder().number(mSearchDialogModel.getPartNumberIfChecked())
                 .description(mSearchDialogModel.getPartDescriptionIfChecked())
                 .type(mSearchDialogModel.getPartTypeIfChecked())
                 .producer(mSearchDialogModel.getPartProducerIfChecked())
@@ -138,9 +141,11 @@ public class SearchDialog extends DialogFragment {
             intent = new Intent(mContext, SparePartsViewer.class);
             intent.putExtra(SparePartsViewer.SPARE_PARTS, Arrays.copyOf(spareParts, 1000));
         }
-        intent.putExtra(SparePartViewer.BASKET_CONTROLLER, ((StartActivity) mContext).getBasketController());
+        intent.putExtra(SparePartViewer.BASKET_CONTROLLER,
+                        ((StartActivity) mContext).getBasketController());
         mSearchDialogSPref.saveToSPref(mContext);
-        ((StartActivity) mContext).startActivityForResult(intent, SparePartViewer.SPARE_PARTS_VIEWER_STOPPED);
+        ((StartActivity) mContext).startActivityForResult(intent,
+                                                          SparePartViewer.SPARE_PARTS_VIEWER_STOPPED);
     }
 
     public void setSparePartsDbController(SparePartsDbController sparePartsDbController) {
