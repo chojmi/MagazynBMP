@@ -27,15 +27,21 @@ public class ChooseFileDialogModel {
         mChosenFile = (TextView) view.findViewById(R.id.DialogChosenFileNameTextView);
         mPartPrefix = (EditText) view.findViewById(R.id.DialogChoosePartPrefixText);
         mNumberColumnEditText = (EditText) view.findViewById(R.id.DialogChooseNumberColumnText);
-        mTypeColumn = new CheckableTextView((EditText) view.findViewById(R.id.DialogChooseTypeColumnText),
-                (CheckBox) view.findViewById(R.id.DialogChooseTypeColumnCheckbox));
-        mDescriptionColumn = new CheckableTextView((EditText) view.findViewById(R.id.DialogChooseDescriptionColumnText),
+        mTypeColumn =
+                new CheckableTextView((EditText) view.findViewById(R.id.DialogChooseTypeColumnText),
+                                      (CheckBox) view.findViewById(
+                                              R.id.DialogChooseTypeColumnCheckbox));
+        mDescriptionColumn = new CheckableTextView(
+                (EditText) view.findViewById(R.id.DialogChooseDescriptionColumnText),
                 (CheckBox) view.findViewById(R.id.DialogChooseDescriptionColumnCheckbox));
-        mProducerColumn = new CheckableTextView((EditText) view.findViewById(R.id.DialogChooseProducerColumnText),
+        mProducerColumn = new CheckableTextView(
+                (EditText) view.findViewById(R.id.DialogChooseProducerColumnText),
                 (CheckBox) view.findViewById(R.id.DialogChooseProducerColumnCheckbox));
-        mSupplierColumn = new CheckableTextView((EditText) view.findViewById(R.id.DialogChooseSupplierColumnText),
+        mSupplierColumn = new CheckableTextView(
+                (EditText) view.findViewById(R.id.DialogChooseSupplierColumnText),
                 (CheckBox) view.findViewById(R.id.DialogChooseSupplierColumnCheckBox));
-        mLocationColumn = new CheckableTextView((EditText) view.findViewById(R.id.DialogChooseLocationColumnText),
+        mLocationColumn = new CheckableTextView(
+                (EditText) view.findViewById(R.id.DialogChooseLocationColumnText),
                 (CheckBox) view.findViewById(R.id.DialogChooseLocationColumnCheckBox));
 
     }

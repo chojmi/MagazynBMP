@@ -46,7 +46,6 @@ public class BasketViewer extends AppCompatActivity {
                 return false;
             }
         });
-
         return true;
     }
 
@@ -75,12 +74,7 @@ public class BasketViewer extends AppCompatActivity {
 
         recyclerViewAdapter = getRecyclerViewAdapter();
         createRecyclerView(recyclerViewAdapter);
-        if (savedInstanceState != null && savedInstanceState.getBoolean(CLEAR_BASKET_DIALOG_VISIBLE)) {
-            mClearWholeBasket = getClearWholeBasketDialog();
-            mClearWholeBasket.showDialog(this);
-        } else {
-            recyclerViewAdapter.checkRetainedDialogsData(savedInstanceState);
-        }
+        getSavedData(savedInstanceState);
     }
 
     @NonNull
@@ -95,6 +89,16 @@ public class BasketViewer extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, null));
+    }
+
+    private void getSavedData(Bundle savedInstanceState) {
+        if (savedInstanceState != null && savedInstanceState.getBoolean(
+                CLEAR_BASKET_DIALOG_VISIBLE)) {
+            mClearWholeBasket = getClearWholeBasketDialog();
+            mClearWholeBasket.showDialog(this);
+        } else {
+            recyclerViewAdapter.checkRetainedDialogsData(savedInstanceState);
+        }
     }
 
     @Override
@@ -132,7 +136,7 @@ class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewA
     private final String QUANTITY = "quantity";
     private final String POSITION = "position";
     private final Context mContext;
-    int lastClickedPosition = -1;
+    int lastClickedPosition = Index.NO_DATA.getIndex();
     private BasketController mBasketController;
     private ChangeBasketDialog mChangeBasketDialog;
     private QuestionDialog mDeleteFromBasketDialog;
@@ -165,7 +169,7 @@ class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewA
         holder.setLongClickListener(new ItemClickListener() {
             @Override
             public void onClick(final int position) {
-                mChangeBasketDialog = getChangeBasketDialog(position, -1);
+                mChangeBasketDialog = getChangeBasketDialog(position, Index.NO_DATA.getIndex());
                 mChangeBasketDialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), "changeBasketDialog");
             }
         });
@@ -176,23 +180,8 @@ class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewA
         return mBasketController.size();
     }
 
-    public void setBasketController(BasketController basketController) {
-        mBasketController = basketController;
-    }
-
-    public void checkRetainedDialogsData(Bundle savedInstanceState) {
-        if (savedInstanceState != null && savedInstanceState.getBoolean(CHANGE_BASKET_DIALOG_VISIBLE)
-                && savedInstanceState.getInt(POSITION) != -1 && savedInstanceState.getInt(QUANTITY) != -1) {
-            mChangeBasketDialog = getChangeBasketDialog(savedInstanceState.getInt(POSITION), savedInstanceState.getInt(QUANTITY));
-            mChangeBasketDialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), "changeBasketDialog");
-        } else if (savedInstanceState != null && savedInstanceState.getBoolean(DEL_FROM_BASKET_DIALOG_VISIBLE) && savedInstanceState.getInt(POSITION) != -1) {
-            mDeleteFromBasketDialog = getDeleteFromBasketDialog(savedInstanceState.getInt(POSITION));
-            mDeleteFromBasketDialog.showDialog(mContext);
-        }
-    }
-
     private ChangeBasketDialog getChangeBasketDialog(final int position, int quantity) {
-        if (quantity == -1) {
+        if (quantity == Index.NO_DATA.getIndex()) {
             quantity = mBasketController.getQuantity(position);
         }
         lastClickedPosition = position;
@@ -211,7 +200,7 @@ class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewA
                         mBasketController.updateBasket(mBasketController.getSparePart(position), newQuantity, mBasketController.getQuantity(position));
                         notifyDataSetChanged();
                         ((BasketViewer) mContext).saveBasketController();
-                        lastClickedPosition = -1;
+                        lastClickedPosition = Index.NO_DATA.getIndex();
                     }
                 });
     }
@@ -225,9 +214,31 @@ class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewA
                         notifyDataSetChanged();
                         ((BasketViewer) mContext).saveBasketController();
                         mDeleteFromBasketDialog = null;
-                        lastClickedPosition = -1;
+                        lastClickedPosition = Index.NO_DATA.getIndex();
                     }
                 });
+    }
+
+    public void setBasketController(BasketController basketController) {
+        mBasketController = basketController;
+    }
+
+    public void checkRetainedDialogsData(Bundle savedInstanceState) {
+        if (savedInstanceState != null && savedInstanceState.getBoolean(
+                CHANGE_BASKET_DIALOG_VISIBLE) && savedInstanceState.getInt(
+                POSITION) != Index.NO_DATA.getIndex() && savedInstanceState.getInt(
+                QUANTITY) != Index.NO_DATA.getIndex()) {
+            mChangeBasketDialog = getChangeBasketDialog(savedInstanceState.getInt(POSITION),
+                                                        savedInstanceState.getInt(QUANTITY));
+            mChangeBasketDialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(),
+                                     "changeBasketDialog");
+        } else if (savedInstanceState != null && savedInstanceState.getBoolean(
+                DEL_FROM_BASKET_DIALOG_VISIBLE) && savedInstanceState.getInt(
+                POSITION) != Index.NO_DATA.getIndex()) {
+            mDeleteFromBasketDialog =
+                    getDeleteFromBasketDialog(savedInstanceState.getInt(POSITION));
+            mDeleteFromBasketDialog.showDialog(mContext);
+        }
     }
 
     public Bundle saveDialogsData(Bundle outState) {
@@ -239,15 +250,29 @@ class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewA
         } else if (mDeleteFromBasketDialog != null && mDeleteFromBasketDialog.getActivity() == mContext) {
             outState.putBoolean(CHANGE_BASKET_DIALOG_VISIBLE, false);
             outState.putBoolean(DEL_FROM_BASKET_DIALOG_VISIBLE, true);
-            outState.putInt(QUANTITY, -1);
+            outState.putInt(QUANTITY, Index.NO_DATA.getIndex());
             outState.putInt(POSITION, lastClickedPosition);
         } else {
             outState.putBoolean(CHANGE_BASKET_DIALOG_VISIBLE, false);
             outState.putBoolean(DEL_FROM_BASKET_DIALOG_VISIBLE, false);
-            outState.putInt(QUANTITY, -1);
-            outState.putInt(POSITION, -1);
+            outState.putInt(QUANTITY, Index.NO_DATA.getIndex());
+            outState.putInt(POSITION, Index.NO_DATA.getIndex());
         }
         return outState;
+    }
+
+    enum Index {
+        NO_DATA(-1);
+
+        private int index;
+
+        Index(int index) {
+            this.index = index;
+        }
+
+        public int getIndex() {
+            return index;
+        }
     }
 
     static class SparePartsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -283,7 +308,5 @@ class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewA
         public void onClick(View v) {
             clickListener.onClick(getPosition());
         }
-
-
     }
 }

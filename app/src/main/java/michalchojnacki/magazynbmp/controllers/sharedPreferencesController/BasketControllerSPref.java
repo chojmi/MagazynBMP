@@ -24,17 +24,23 @@ public class BasketControllerSPref {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear()
                 .putInt(BASKET_SIZE, basketController.size());
+
         for (int i = 0; i < basketController.size(); i++) {
-            SparePart sparePart = basketController.getSparePart(i);
-            editor.putString(NUMBER + i, sparePart.getNumber())
-                    .putString(DESCRIPTION + i, sparePart.getDescription())
-                    .putString(TYPE + i, sparePart.getType())
-                    .putString(PRODUCER + i, sparePart.getProducer())
-                    .putString(SUPPLIER + i, sparePart.getSupplier())
-                    .putString(LOCATION + i, sparePart.getLocation())
-                    .putInt(QUANTITY + i, basketController.getQuantity(i));
+            putNextSparePartToShPref(basketController, editor, i);
         }
         editor.apply();
+    }
+
+    private void putNextSparePartToShPref(BasketController basketController,
+                                          SharedPreferences.Editor editor, int index) {
+        SparePart sparePart = basketController.getSparePart(index);
+        editor.putString(NUMBER + index, sparePart.getNumber())
+                .putString(DESCRIPTION + index, sparePart.getDescription())
+                .putString(TYPE + index, sparePart.getType())
+                .putString(PRODUCER + index, sparePart.getProducer())
+                .putString(SUPPLIER + index, sparePart.getSupplier())
+                .putString(LOCATION + index, sparePart.getLocation())
+                .putInt(QUANTITY + index, basketController.getQuantity(index));
     }
 
     public BasketController readFromSPref(Context context) {
@@ -43,16 +49,28 @@ public class BasketControllerSPref {
         int size = sharedPreferences.getInt(BASKET_SIZE, -1);
         if (size > 0) {
             for (int i = 0; i < size; i++) {
-                basketController.addToBasket(new SparePart.Builder()
-                        .number(sharedPreferences.getString(NUMBER + i, context.getString(R.string.NoDataLabel)))
-                        .description(sharedPreferences.getString(DESCRIPTION + i, context.getString(R.string.NoDataLabel)))
-                        .type(sharedPreferences.getString(TYPE + i, context.getString(R.string.NoDataLabel)))
-                        .producer(sharedPreferences.getString(PRODUCER + i, context.getString(R.string.NoDataLabel)))
-                        .supplier(sharedPreferences.getString(SUPPLIER + i, context.getString(R.string.NoDataLabel)))
-                        .location(sharedPreferences.getString(LOCATION + i, context.getString(R.string.NoDataLabel)))
-                        .build(), sharedPreferences.getInt(QUANTITY + i, 0));
+                basketController.addToBasket(getSparePartFromShPref(context, sharedPreferences, i),
+                                             sharedPreferences.getInt(QUANTITY + i, 0));
             }
         }
         return basketController;
+    }
+
+    private SparePart getSparePartFromShPref(Context context, SharedPreferences sharedPreferences,
+                                             int index) {
+        return new SparePart.Builder().number(sharedPreferences.getString(NUMBER + index,
+                                                                          context.getString(
+                                                                                  R.string.NoDataLabel)))
+                .description(sharedPreferences.getString(DESCRIPTION + index,
+                                                         context.getString(R.string.NoDataLabel)))
+                .type(sharedPreferences.getString(TYPE + index,
+                                                  context.getString(R.string.NoDataLabel)))
+                .producer(sharedPreferences.getString(PRODUCER + index,
+                                                      context.getString(R.string.NoDataLabel)))
+                .supplier(sharedPreferences.getString(SUPPLIER + index,
+                                                      context.getString(R.string.NoDataLabel)))
+                .location(sharedPreferences.getString(LOCATION + index,
+                                                      context.getString(R.string.NoDataLabel)))
+                .build();
     }
 }

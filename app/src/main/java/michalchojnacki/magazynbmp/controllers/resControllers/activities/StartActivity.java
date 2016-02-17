@@ -57,7 +57,8 @@ public class StartActivity extends AppCompatActivity implements DialogFragmentUp
         addExcelFile.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                mChooseFileSettingsDialog.show(getSupportFragmentManager(), "fragment_choose_file_settings");
+                mChooseFileSettingsDialog.show(getSupportFragmentManager(),
+                                               "fragment_choose_file_settings");
                 return false;
             }
         });
@@ -79,7 +80,8 @@ public class StartActivity extends AppCompatActivity implements DialogFragmentUp
         simpleSearchForPart.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                mSimpleSearchDialog.show(getSupportFragmentManager(), "fragment_simple_search_for_part");
+                mSimpleSearchDialog.show(getSupportFragmentManager(),
+                                         "fragment_simple_search_for_part");
                 return false;
             }
         });
@@ -139,8 +141,10 @@ public class StartActivity extends AppCompatActivity implements DialogFragmentUp
 
         setContentView(R.layout.activity_start);
         ButterKnife.bind(this);
-        if (savedInstanceState != null && savedInstanceState.getSerializable(BASKET_CONTROLLER) != null) {
-            mBasketController = (BasketController) savedInstanceState.getSerializable(BASKET_CONTROLLER);
+        if (savedInstanceState != null && savedInstanceState.getSerializable(
+                BASKET_CONTROLLER) != null) {
+            mBasketController =
+                    (BasketController) savedInstanceState.getSerializable(BASKET_CONTROLLER);
         } else {
             mBasketController = mBasketControllerSPref.readFromSPref(this);
         }
@@ -159,11 +163,13 @@ public class StartActivity extends AppCompatActivity implements DialogFragmentUp
                     break;
                 }
                 case SparePartViewer.SPARE_PARTS_VIEWER_STOPPED: {
-                    mBasketController = (BasketController) data.getSerializableExtra(SparePartViewer.BASKET_CONTROLLER);
+                    mBasketController = (BasketController) data.getSerializableExtra(
+                            SparePartViewer.BASKET_CONTROLLER);
                     break;
                 }
                 case BasketViewer.SHOW_BASKET: {
-                    mBasketController = (BasketController) data.getSerializableExtra(BasketViewer.BASKET_CONTROLLER);
+                    mBasketController = (BasketController) data.getSerializableExtra(
+                            BasketViewer.BASKET_CONTROLLER);
                 }
             }
         }

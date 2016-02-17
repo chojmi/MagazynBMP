@@ -17,15 +17,23 @@ public class SearchDialogModel {
     public SearchDialogModel(View view) {
 
         mPartNumber = new CheckableTextView((EditText) view.findViewById(R.id.searchingPartNumber),
-                (CheckBox) view.findViewById(R.id.searchingPartNumberCheckbox));
+                                            (CheckBox) view.findViewById(
+                                                    R.id.searchingPartNumberCheckbox));
         mPartType = new CheckableTextView((EditText) view.findViewById(R.id.DialogSearchTypeText),
-                (CheckBox) view.findViewById(R.id.DialogSearchTypeCheckbox));
-        mPartDescription = new CheckableTextView((EditText) view.findViewById(R.id.searchingPartDescription),
-                (CheckBox) view.findViewById(R.id.searchingPartDescriptionCheckbox));
-        mPartProducer = new CheckableTextView((EditText) view.findViewById(R.id.DialogSearchProducerText),
-                (CheckBox) view.findViewById(R.id.DialogSearchProducerCheckbox));
-        mPartSupplier = new CheckableTextView((EditText) view.findViewById(R.id.DialogSearchSupplierText),
-                (CheckBox) view.findViewById(R.id.DialogSearchSupplierCheckbox));
+                                          (CheckBox) view.findViewById(
+                                                  R.id.DialogSearchTypeCheckbox));
+        mPartDescription =
+                new CheckableTextView((EditText) view.findViewById(R.id.searchingPartDescription),
+                                      (CheckBox) view.findViewById(
+                                              R.id.searchingPartDescriptionCheckbox));
+        mPartProducer =
+                new CheckableTextView((EditText) view.findViewById(R.id.DialogSearchProducerText),
+                                      (CheckBox) view.findViewById(
+                                              R.id.DialogSearchProducerCheckbox));
+        mPartSupplier =
+                new CheckableTextView((EditText) view.findViewById(R.id.DialogSearchSupplierText),
+                                      (CheckBox) view.findViewById(
+                                              R.id.DialogSearchSupplierCheckbox));
     }
 
     public String getPartDescription() {

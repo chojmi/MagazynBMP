@@ -30,13 +30,18 @@ public class SparePartsViewer extends AppCompatActivity {
     private static final String BASKET_CONTROLLER = "basketController";
 
     private BasketController mBasketController;
-    private RecyclerViewAdapter mRecyclerViewAdapter;
+    private SparePartsRecyclerViewAdapter mRecyclerViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spare_parts);
+        readSavedData(savedInstanceState);
+        SparePartsRecyclerViewAdapter sparePartsRecyclerViewAdapter = getRecyclerViewAdapter();
+        createRecyclerView(sparePartsRecyclerViewAdapter);
+    }
 
+    private void readSavedData(Bundle savedInstanceState) {
         if (savedInstanceState != null && savedInstanceState.getSerializable(BASKET_CONTROLLER) != null) {
             mBasketController = (BasketController) savedInstanceState.getSerializable(BASKET_CONTROLLER);
         } else if (getIntent().getSerializableExtra(SparePartViewer.BASKET_CONTROLLER) != null) {
@@ -44,24 +49,22 @@ public class SparePartsViewer extends AppCompatActivity {
         } else {
             mBasketController = new BasketController();
         }
-
-        RecyclerViewAdapter recyclerViewAdapter = getRecyclerViewAdapter();
-        createRecyclerView(recyclerViewAdapter);
     }
 
     @NonNull
-    private RecyclerViewAdapter getRecyclerViewAdapter() {
+    private SparePartsRecyclerViewAdapter getRecyclerViewAdapter() {
         Object[] array = (Object[]) getIntent().getSerializableExtra(SPARE_PARTS);
         SparePart[] spareParts = readSpareParts(array);
-        mRecyclerViewAdapter = new RecyclerViewAdapter(this, spareParts, mBasketController);
+        mRecyclerViewAdapter =
+                new SparePartsRecyclerViewAdapter(this, spareParts, mBasketController);
         return mRecyclerViewAdapter;
     }
 
-    private void createRecyclerView(RecyclerViewAdapter recyclerViewAdapter) {
+    private void createRecyclerView(SparePartsRecyclerViewAdapter sparePartsRecyclerViewAdapter) {
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.SparePartsRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(recyclerViewAdapter);
+        recyclerView.setAdapter(sparePartsRecyclerViewAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, null));
     }
 
@@ -99,13 +102,14 @@ public class SparePartsViewer extends AppCompatActivity {
     }
 }
 
-class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.SparePartsViewHolder> {
+class SparePartsRecyclerViewAdapter extends RecyclerView.Adapter<SparePartsRecyclerViewAdapter.SparePartsViewHolder> {
 
     private final List<SparePart> mSpareParts;
     private final Context mContext;
     private BasketController mBasketController;
 
-    public RecyclerViewAdapter(Context context, SparePart[] spareParts, BasketController basketController) {
+    public SparePartsRecyclerViewAdapter(Context context, SparePart[] spareParts,
+                                         BasketController basketController) {
         mContext = context;
         mBasketController = basketController;
         this.mSpareParts = new LinkedList<>();

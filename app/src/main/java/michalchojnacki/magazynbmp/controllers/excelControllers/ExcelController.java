@@ -70,11 +70,13 @@ public class ExcelController extends ExcelControllerModel {
             return workbook.getSheet(sheetName);
         } catch (FileNotFoundException e) {
             ErrorDialog.newInstance(mContext.getString(R.string.ErrorLabel),
-                    mContext.getString(R.string.NoFileFoundLabel)).showDialog(mContext);
+                                    mContext.getString(R.string.NoFileFoundLabel))
+                    .showDialog(mContext);
             return null;
         } catch (IOException e) {
             ErrorDialog.newInstance(mContext.getString(R.string.ErrorLabel),
-                    mContext.getString(R.string.NoFileFoundLabel)).showDialog(mContext);
+                                    mContext.getString(R.string.NoFileFoundLabel))
+                    .showDialog(mContext);
             return null;
         }
     }
@@ -86,7 +88,7 @@ public class ExcelController extends ExcelControllerModel {
             handler.sendEmptyMessage(Activity.RESULT_OK);
         } else {
             ErrorDialog.newInstance(mContext.getString(R.string.ErrorLabel),
-                    mContext.getString(R.string.NoSheetFound)).showDialog(mContext);
+                                    mContext.getString(R.string.NoSheetFound)).showDialog(mContext);
         }
         mLoadingDbDialog.stop();
     }
@@ -107,9 +109,13 @@ public class ExcelController extends ExcelControllerModel {
     private void saveNextRowInDb(Row row) {
         if (row.getCell(mNumberPlaceIndex) != null) {
             row.getCell(mNumberPlaceIndex).setCellType(Cell.CELL_TYPE_STRING);
-            if (row.getCell(mNumberPlaceIndex).getStringCellValue().startsWith(mPartPrefix)) {
-                saveNextRow(row);
-            }
+            saveRowIfHasPrefix(row);
+        }
+    }
+
+    private void saveRowIfHasPrefix(Row row) {
+        if (row.getCell(mNumberPlaceIndex).getStringCellValue().startsWith(mPartPrefix)) {
+            saveNextRow(row);
         }
     }
 
@@ -120,8 +126,7 @@ public class ExcelController extends ExcelControllerModel {
     }
 
     private boolean isRowSavedWithSuccess(Row row) {
-        SparePart sparePart = new SparePart.Builder()
-                .location(saveCell(row, mLocationPlaceIndex))
+        SparePart sparePart = new SparePart.Builder().location(saveCell(row, mLocationPlaceIndex))
                 .description(saveCell(row, mDescriptionPlaceIndex))
                 .number(saveCell(row, mNumberPlaceIndex))
                 .type(saveCell(row, mTypePlaceIndex))
@@ -170,8 +175,9 @@ public class ExcelController extends ExcelControllerModel {
         }
 
         public Builder descriptionPlaceIndex(String descriptionPlaceIndex) {
-            if (descriptionPlaceIndex != null)
+            if (descriptionPlaceIndex != null) {
                 mDescriptionPlaceIndex = Integer.valueOf(descriptionPlaceIndex);
+            }
             return this;
         }
 
@@ -216,13 +222,27 @@ class ExcelControllerModel {
     SparePartsDbController mSparePartsDbController;
 
     int mNumberPlaceIndex = 2;
-    int mDescriptionPlaceIndex = -1;
-    int mTypePlaceIndex = -1;
-    int mLocationPlaceIndex = -1;
-    int mProducerPlaceIndex = -1;
-    int mSupplierPlaceIndex = -1;
+    int mDescriptionPlaceIndex = Index.NO_DATA.getIndex();
+    int mTypePlaceIndex = Index.NO_DATA.getIndex();
+    int mLocationPlaceIndex = Index.NO_DATA.getIndex();
+    int mProducerPlaceIndex = Index.NO_DATA.getIndex();
+    int mSupplierPlaceIndex = Index.NO_DATA.getIndex();
 
     boolean mOverwriteOldPart = false;
 
     String mPartPrefix;
+
+    enum Index {
+        NO_DATA(-1);
+
+        private int index;
+
+        Index(int index) {
+            this.index = index;
+        }
+
+        public int getIndex() {
+            return index;
+        }
+    }
 }

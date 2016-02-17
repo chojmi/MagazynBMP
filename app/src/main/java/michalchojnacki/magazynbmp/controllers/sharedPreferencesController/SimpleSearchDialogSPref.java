@@ -16,14 +16,17 @@ public class SimpleSearchDialogSPref {
     }
 
     public void saveToSPref(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences =
+                context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
         sharedPreferences.edit()
                 .putString(SEARCH_TEXT, mSimpleSearchDialogModel.getSearchText())
                 .apply();
     }
 
     public void readFromSPref(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        mSimpleSearchDialogModel.setSearchText(sharedPreferences.getString(SEARCH_TEXT, mSimpleSearchDialogModel.getSearchText()));
+        SharedPreferences sharedPreferences =
+                context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        mSimpleSearchDialogModel.setSearchText(
+                sharedPreferences.getString(SEARCH_TEXT, mSimpleSearchDialogModel.getSearchText()));
     }
 }

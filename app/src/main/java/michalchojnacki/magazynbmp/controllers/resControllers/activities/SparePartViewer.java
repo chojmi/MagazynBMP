@@ -36,7 +36,8 @@ public class SparePartViewer extends AppCompatActivity {
         addSpPartToBasket.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                AddToBasketDialog.newInstance(mSparePart).show(getSupportFragmentManager(), "fragment_add_to_basket");
+                AddToBasketDialog.newInstance(mSparePart)
+                        .show(getSupportFragmentManager(), "fragment_add_to_basket");
                 return false;
             }
         });
@@ -62,7 +63,8 @@ public class SparePartViewer extends AppCompatActivity {
     }
 
     private BasketController readBasketController() {
-        BasketController basketController = (BasketController) getIntent().getSerializableExtra(BASKET_CONTROLLER);
+        BasketController basketController =
+                (BasketController) getIntent().getSerializableExtra(BASKET_CONTROLLER);
         if (basketController == null) {
             basketController = new BasketController();
         }

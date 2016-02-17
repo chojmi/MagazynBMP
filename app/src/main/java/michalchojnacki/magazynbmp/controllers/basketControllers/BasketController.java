@@ -13,13 +13,15 @@ public class BasketController implements Serializable {
 
     public void updateBasket(SparePart sparePart, int newQuantity, int oldQuantity) {
         deleteSparePart(sparePart, oldQuantity);
-        mSparePartsWithQuantities.add(new SparePartWithQuantity(sparePart).setQuantity(newQuantity));
+        mSparePartsWithQuantities.add(
+                new SparePartWithQuantity(sparePart).setQuantity(newQuantity));
     }
 
     public void deleteSparePart(SparePart sparePart, int quantity) {
-        for (Iterator<SparePartWithQuantity> it = mSparePartsWithQuantities.iterator(); it.hasNext(); ) {
+        for (Iterator<SparePartWithQuantity> it =
+             mSparePartsWithQuantities.iterator(); it.hasNext(); ) {
             SparePartWithQuantity sparePartWithQuantity = it.next();
-            if (sparePartWithQuantity.equalToSparePart(sparePart, quantity)) {
+            if (sparePartWithQuantity.equalToSparePartAndQuantity(sparePart, quantity)) {
                 it.remove();
                 return;
             }
@@ -55,9 +57,16 @@ public class BasketController implements Serializable {
             mSparePart = sparePart;
         }
 
-        public boolean equalToSparePart(SparePart sparePart, int quantity) {
-            return getSparePart().getNumber().equals(sparePart.getNumber())
-                    && getQuantity() == quantity;
+        public boolean equalToSparePartAndQuantity(SparePart sparePart, int quantity) {
+            return isEqualTo(sparePart) && isEqualTo(quantity);
+        }
+
+        private boolean isEqualTo(SparePart sparePart) {
+            return getSparePart().getNumber().equals(sparePart.getNumber());
+        }
+
+        private boolean isEqualTo(int quantity) {
+            return getQuantity() == quantity;
         }
 
         public SparePart getSparePart() {

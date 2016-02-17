@@ -35,7 +35,9 @@ public final class SparePartsDbController {
         } else if (overwrite) {
             SQLiteDatabase db = mFavDbHelper.getWritableDatabase();
             ContentValues values = getContentValues(sparePart);
-            db.update(SparePartsDbEntry.TABLE_NAME, values, SparePartsDbEntry.COLUMN_NAME_SPARE_PART_NUMBER + "='" + sparePart.getNumber() + "'", null);
+            db.update(SparePartsDbEntry.TABLE_NAME, values,
+                      SparePartsDbEntry.COLUMN_NAME_SPARE_PART_NUMBER + "='" + sparePart.getNumber() + "'",
+                      null);
             db.close();
             return true;
         }
@@ -57,7 +59,8 @@ public final class SparePartsDbController {
     private ContentValues getContentValues(SparePart sparePart) {
         ContentValues values = new ContentValues();
         values.put(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_NUMBER, sparePart.getNumber());
-        values.put(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_DESCRIPTION, sparePart.getDescription());
+        values.put(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_DESCRIPTION,
+                   sparePart.getDescription());
         values.put(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_TYPE, sparePart.getType());
         values.put(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_PRODUCER, sparePart.getProducer());
         values.put(SparePartsDbEntry.COLUMN_NAME_SPARE_PART_LOCATION, sparePart.getLocation());
@@ -68,7 +71,8 @@ public final class SparePartsDbController {
     private boolean sparePartExist(SparePart sparePart) {
         SQLiteDatabase db = mFavDbHelper.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery(SparePartsDbCommands.sqlCheckEntry(new SparePart.Builder().number(sparePart.getNumber()).build()), null);
+        Cursor cursor = db.rawQuery(SparePartsDbCommands.sqlCheckEntry(
+                new SparePart.Builder().number(sparePart.getNumber()).build()), null);
         if (CursorUnderZero(db, cursor)) {
             return false;
         }
@@ -125,8 +129,7 @@ public final class SparePartsDbController {
 
     @NonNull
     private SparePart getSparePart(Cursor cursor) {
-        return new SparePart.Builder()
-                .number(cursor.getString(2))
+        return new SparePart.Builder().number(cursor.getString(2))
                 .description(cursor.getString(1))
                 .type(cursor.getString(3))
                 .location(cursor.getString(5))

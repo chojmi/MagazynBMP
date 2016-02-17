@@ -26,7 +26,8 @@ public class SearchDialogSPref {
     }
 
     public void saveToSPref(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences =
+                context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
         sharedPreferences.edit()
                 .putString(NUMBER_VALUE, mSearchDialogModel.getPartNumber())
                 .putBoolean(NUMBER_CHECKBOX, mSearchDialogModel.isPartNumberChecked())
@@ -42,16 +43,28 @@ public class SearchDialogSPref {
     }
 
     public void readFromSPref(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        mSearchDialogModel.setPartNumberChecked(sharedPreferences.getBoolean(NUMBER_CHECKBOX, mSearchDialogModel.isPartNumberChecked()));
-        mSearchDialogModel.setPartNumber(sharedPreferences.getString(NUMBER_VALUE, mSearchDialogModel.getPartNumber()));
-        mSearchDialogModel.setPartDescriptionChecked(sharedPreferences.getBoolean(DESCRIPTION_CHECKBOX, mSearchDialogModel.isPartDescriptionChecked()));
-        mSearchDialogModel.setPartDescription(sharedPreferences.getString(DESCRIPTION_VALUE, mSearchDialogModel.getPartDescription()));
-        mSearchDialogModel.setPartTypeChecked(sharedPreferences.getBoolean(TYPE_CHECKBOX, mSearchDialogModel.isPartTypeChecked()));
-        mSearchDialogModel.setPartType(sharedPreferences.getString(TYPE_VALUE, mSearchDialogModel.getPartType()));
-        mSearchDialogModel.setPartProducerChecked(sharedPreferences.getBoolean(PRODUCER_CHECKBOX, mSearchDialogModel.isPartProducerChecked()));
-        mSearchDialogModel.setPartProducer(sharedPreferences.getString(PRODUCER_VALUE, mSearchDialogModel.getPartProducer()));
-        mSearchDialogModel.setPartSupplierChecked(sharedPreferences.getBoolean(SUPPLIER_CHECKBOX, mSearchDialogModel.isPartSupplierChecked()));
-        mSearchDialogModel.setPartSupplier(sharedPreferences.getString(SUPPLIER_VALUE, mSearchDialogModel.getPartSupplier()));
+        SharedPreferences sharedPreferences =
+                context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        mSearchDialogModel.setPartNumberChecked(sharedPreferences.getBoolean(NUMBER_CHECKBOX,
+                                                                             mSearchDialogModel.isPartNumberChecked()));
+        mSearchDialogModel.setPartNumber(
+                sharedPreferences.getString(NUMBER_VALUE, mSearchDialogModel.getPartNumber()));
+        mSearchDialogModel.setPartDescriptionChecked(
+                sharedPreferences.getBoolean(DESCRIPTION_CHECKBOX,
+                                             mSearchDialogModel.isPartDescriptionChecked()));
+        mSearchDialogModel.setPartDescription(sharedPreferences.getString(DESCRIPTION_VALUE,
+                                                                          mSearchDialogModel.getPartDescription()));
+        mSearchDialogModel.setPartTypeChecked(sharedPreferences.getBoolean(TYPE_CHECKBOX,
+                                                                           mSearchDialogModel.isPartTypeChecked()));
+        mSearchDialogModel.setPartType(
+                sharedPreferences.getString(TYPE_VALUE, mSearchDialogModel.getPartType()));
+        mSearchDialogModel.setPartProducerChecked(sharedPreferences.getBoolean(PRODUCER_CHECKBOX,
+                                                                               mSearchDialogModel.isPartProducerChecked()));
+        mSearchDialogModel.setPartProducer(
+                sharedPreferences.getString(PRODUCER_VALUE, mSearchDialogModel.getPartProducer()));
+        mSearchDialogModel.setPartSupplierChecked(sharedPreferences.getBoolean(SUPPLIER_CHECKBOX,
+                                                                               mSearchDialogModel.isPartSupplierChecked()));
+        mSearchDialogModel.setPartSupplier(
+                sharedPreferences.getString(SUPPLIER_VALUE, mSearchDialogModel.getPartSupplier()));
     }
 }

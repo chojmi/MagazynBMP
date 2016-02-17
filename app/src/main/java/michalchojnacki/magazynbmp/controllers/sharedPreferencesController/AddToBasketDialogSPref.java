@@ -15,14 +15,16 @@ public class AddToBasketDialogSPref {
     }
 
     public void saveToSPref(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences =
+                context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
         sharedPreferences.edit()
                 .putInt(QUANTITY, Integer.valueOf(mQuantity.getText().toString()))
                 .apply();
     }
 
     public void readFromSPref(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences =
+                context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
         int quantity = sharedPreferences.getInt(QUANTITY, -1);
         if (quantity >= 0) {
             mQuantity.setText(String.valueOf(quantity));
