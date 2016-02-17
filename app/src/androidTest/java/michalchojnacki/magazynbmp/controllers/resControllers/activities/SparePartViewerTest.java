@@ -2,6 +2,7 @@ package michalchojnacki.magazynbmp.controllers.resControllers.activities;
 
 import android.content.Intent;
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.action.ViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -10,11 +11,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import michalchojnacki.magazynbmp.R;
+import michalchojnacki.magazynbmp.controllers.basketControllers.BasketController;
 import michalchojnacki.magazynbmp.model.SparePart;
 
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 
 @RunWith(AndroidJUnit4.class)
@@ -52,6 +56,27 @@ public class SparePartViewerTest {
 
         Intent intent = new Intent().putExtra(SparePartViewer.SPARE_PART, sparePart);
         mSparePartViewer.launchActivity(intent);
+    }
+
+    @Test
+    public void addToBasketTest() {
+        BasketController basketController = new BasketController();
+        SparePart sparePart = new SparePart.Builder().number(numberText).build();
+
+        Intent intent = new Intent().putExtra(SparePartViewer.SPARE_PART, sparePart);
+        intent.putExtra(SparePartViewer.BASKET_CONTROLLER, basketController);
+        mSparePartViewer.launchActivity(intent);
+
+        Espresso.onView(withId(R.id.MenuAddSparePartToTray)).perform(ViewActions.click());
+        Espresso.onView(withId(R.id.changeBasketQuantity))
+                .perform(ViewActions.replaceText(String.valueOf(10)));
+        Espresso.onView(withText(R.string.AddLabel)).perform(ViewActions.click());
+
+        basketController = (BasketController) mSparePartViewer.getActivity()
+                .getIntent()
+                .getSerializableExtra(SparePartViewer.BASKET_CONTROLLER);
+        assertThat(basketController.getQuantity(0), equalTo(10));
+        assertThat(basketController.getSparePart(0).getNumber(), equalTo(numberText));
     }
 
     @Test
