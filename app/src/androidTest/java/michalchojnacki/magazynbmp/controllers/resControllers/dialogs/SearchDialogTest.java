@@ -1,9 +1,10 @@
 package michalchojnacki.magazynbmp.controllers.resControllers.dialogs;
 
 import android.support.test.espresso.Espresso;
-import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.rule.ActivityTestRule;
+
+import junit.framework.AssertionFailedError;
 
 import org.junit.After;
 import org.junit.Before;
@@ -21,6 +22,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.doesNotExis
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isNotChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
@@ -49,8 +51,44 @@ public class SearchDialogTest {
         searchDialog.setSparePartsDbController(sparePartsDbController);
         searchDialog.show(mStartActivity.getActivity().getSupportFragmentManager(),
                           "fragment_search_for_part");
+        clearCheckboxes();
+    }
 
+    private void clearCheckboxes() {
+        try {
+            Espresso.onView(withId(R.id.searchingPartDescriptionCheckbox))
+                    .check(matches(isNotChecked()));
+        } catch (AssertionFailedError e) {
+            Espresso.onView(withId(R.id.searchingPartDescriptionCheckbox))
+                    .perform(ViewActions.click());
+        }
 
+        try {
+            Espresso.onView(withId(R.id.searchingPartNumberCheckbox))
+                    .check(matches(isNotChecked()));
+        } catch (AssertionFailedError e) {
+            Espresso.onView(withId(R.id.searchingPartNumberCheckbox)).perform(ViewActions.click());
+        }
+
+        try {
+            Espresso.onView(withId(R.id.DialogSearchTypeCheckbox)).check(matches(isNotChecked()));
+        } catch (AssertionFailedError e) {
+            Espresso.onView(withId(R.id.DialogSearchTypeCheckbox)).perform(ViewActions.click());
+        }
+
+        try {
+            Espresso.onView(withId(R.id.DialogSearchProducerCheckbox))
+                    .check(matches(isNotChecked()));
+        } catch (AssertionFailedError e) {
+            Espresso.onView(withId(R.id.DialogSearchProducerCheckbox)).perform(ViewActions.click());
+        }
+
+        try {
+            Espresso.onView(withId(R.id.DialogSearchSupplierCheckbox))
+                    .check(matches(isNotChecked()));
+        } catch (AssertionFailedError e) {
+            Espresso.onView(withId(R.id.DialogSearchSupplierCheckbox)).perform(ViewActions.click());
+        }
     }
 
     @Test
@@ -61,7 +99,7 @@ public class SearchDialogTest {
 
         try {
             Espresso.onView(withId(R.id.searchingPartNumberCheckbox)).check(matches(isChecked()));
-        } catch (NoMatchingViewException e) {
+        } catch (AssertionFailedError e) {
             Espresso.onView(withId(R.id.searchingPartNumberCheckbox)).perform(ViewActions.click());
         }
 
@@ -90,11 +128,184 @@ public class SearchDialogTest {
     }
 
     @Test
-    public void searchByOnlyNumberWhenNothFound() {
+    public void searchByOnlyTypeWhenSthFound() {
+        spareParts = getSparePartsWithDiffValues(sparePartsDbController);
+        Espresso.onView(withId(R.id.DialogSearchTypeText))
+                .perform(ViewActions.replaceText(spareParts.get(0).getType()));
+
+        try {
+            Espresso.onView(withId(R.id.DialogSearchTypeCheckbox)).check(matches(isChecked()));
+        } catch (AssertionFailedError e) {
+            Espresso.onView(withId(R.id.DialogSearchTypeCheckbox)).perform(ViewActions.click());
+        }
+
+        Espresso.onView(withText(R.string.OkLabel)).perform(ViewActions.click());
+
+        Espresso.onView(withText(R.string.NoSparePartFoundLabel)).check(doesNotExist());
+        Espresso.onView(withId(R.id.SparePartNumberText)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void searchByOnlyProducerWhenSthFound() {
+        spareParts = getSparePartsWithDiffValues(sparePartsDbController);
+        Espresso.onView(withId(R.id.DialogSearchProducerText))
+                .perform(ViewActions.replaceText(spareParts.get(0).getProducer()));
+
+        try {
+            Espresso.onView(withId(R.id.DialogSearchProducerCheckbox)).check(matches(isChecked()));
+        } catch (AssertionFailedError e) {
+            Espresso.onView(withId(R.id.DialogSearchProducerCheckbox)).perform(ViewActions.click());
+        }
+
+        Espresso.onView(withText(R.string.OkLabel)).perform(ViewActions.click());
+
+        Espresso.onView(withText(R.string.NoSparePartFoundLabel)).check(doesNotExist());
+        Espresso.onView(withId(R.id.SparePartNumberText)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void searchByOnlySupplierWhenSthFound() {
+        spareParts = getSparePartsWithDiffValues(sparePartsDbController);
+        Espresso.onView(withId(R.id.DialogSearchSupplierText))
+                .perform(ViewActions.replaceText(spareParts.get(0).getSupplier()));
+
+        try {
+            Espresso.onView(withId(R.id.DialogSearchSupplierCheckbox)).check(matches(isChecked()));
+        } catch (AssertionFailedError e) {
+            Espresso.onView(withId(R.id.DialogSearchSupplierCheckbox)).perform(ViewActions.click());
+        }
+
+        Espresso.onView(withText(R.string.OkLabel)).perform(ViewActions.click());
+
+        Espresso.onView(withText(R.string.NoSparePartFoundLabel)).check(doesNotExist());
+        Espresso.onView(withId(R.id.SparePartNumberText)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void searchByOnlyDescriptionWhenSthFound() {
+        spareParts = getSparePartsWithDiffValues(sparePartsDbController);
+        Espresso.onView(withId(R.id.searchingPartDescription))
+                .perform(ViewActions.replaceText(spareParts.get(0).getDescription()));
+
+        try {
+            Espresso.onView(withId(R.id.searchingPartDescriptionCheckbox))
+                    .check(matches(isChecked()));
+        } catch (AssertionFailedError e) {
+            Espresso.onView(withId(R.id.searchingPartDescriptionCheckbox))
+                    .perform(ViewActions.click());
+        }
+
+        Espresso.onView(withText(R.string.OkLabel)).perform(ViewActions.click());
+
+        Espresso.onView(withText(R.string.NoSparePartFoundLabel)).check(doesNotExist());
+        Espresso.onView(withId(R.id.SparePartNumberText)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void searchByOnlyDescriptionWhenSparePartsFound() {
+        spareParts = getSparePartsWithDiffValues(sparePartsDbController);
+        Espresso.onView(withId(R.id.searchingPartDescription))
+                .perform(ViewActions.replaceText(descText));
+
+        try {
+            Espresso.onView(withId(R.id.searchingPartDescriptionCheckbox))
+                    .check(matches(isChecked()));
+        } catch (AssertionFailedError e) {
+            Espresso.onView(withId(R.id.searchingPartDescriptionCheckbox))
+                    .perform(ViewActions.click());
+        }
+
+        Espresso.onView(withText(R.string.OkLabel)).perform(ViewActions.click());
+
+        Espresso.onView(withText(R.string.NoSparePartFoundLabel)).check(doesNotExist());
+        Espresso.onView(withId(R.id.SparePartsRecyclerView)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void searchWithTwoConditionsWhenSthFound() {
+        spareParts = getSparePartsWithDiffValues(sparePartsDbController);
+        Espresso.onView(withId(R.id.searchingPartDescription))
+                .perform(ViewActions.replaceText(spareParts.get(0).getDescription()));
+
+        Espresso.onView(withId(R.id.searchingPartNumber))
+                .perform(ViewActions.replaceText(spareParts.get(0).getNumber()));
+
+        try {
+            Espresso.onView(withId(R.id.searchingPartNumberCheckbox)).check(matches(isChecked()));
+        } catch (AssertionFailedError e) {
+            Espresso.onView(withId(R.id.searchingPartNumberCheckbox)).perform(ViewActions.click());
+        }
+
+        try {
+            Espresso.onView(withId(R.id.searchingPartDescriptionCheckbox))
+                    .check(matches(isChecked()));
+        } catch (AssertionFailedError e) {
+            Espresso.onView(withId(R.id.searchingPartDescriptionCheckbox))
+                    .perform(ViewActions.click());
+        }
+
+        Espresso.onView(withText(R.string.OkLabel)).perform(ViewActions.click());
+
+        Espresso.onView(withText(R.string.NoSparePartFoundLabel)).check(doesNotExist());
+        Espresso.onView(withId(R.id.SparePartNumberText)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void searchWithTwoConditionsWhenOnlyOneMatch() {
+        spareParts = getSparePartsWithDiffValues(sparePartsDbController);
+        Espresso.onView(withId(R.id.searchingPartDescription))
+                .perform(ViewActions.replaceText(spareParts.get(0).getDescription()));
+
+        Espresso.onView(withId(R.id.searchingPartNumber)).perform(ViewActions.replaceText("xx"));
+
+        try {
+            Espresso.onView(withId(R.id.searchingPartNumberCheckbox)).check(matches(isChecked()));
+        } catch (AssertionFailedError e) {
+            Espresso.onView(withId(R.id.searchingPartNumberCheckbox)).perform(ViewActions.click());
+        }
+
+        try {
+            Espresso.onView(withId(R.id.searchingPartDescriptionCheckbox))
+                    .check(matches(isChecked()));
+        } catch (AssertionFailedError e) {
+            Espresso.onView(withId(R.id.searchingPartDescriptionCheckbox))
+                    .perform(ViewActions.click());
+        }
+
+        Espresso.onView(withText(R.string.OkLabel)).perform(ViewActions.click());
+
+        Espresso.onView(withText(R.string.NoSparePartFoundLabel)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void searchByOnlyDescWhenNthFound() {
+        spareParts = getSparePartsWithDiffValues(sparePartsDbController);
+        Espresso.onView(withId(R.id.searchingPartDescription))
+                .perform(ViewActions.replaceText("xx"));
+
+        try {
+            Espresso.onView(withId(R.id.searchingPartDescriptionCheckbox))
+                    .check(matches(isChecked()));
+        } catch (AssertionFailedError e) {
+            Espresso.onView(withId(R.id.searchingPartDescriptionCheckbox))
+                    .perform(ViewActions.click());
+        }
+
+        Espresso.onView(withText(R.string.OkLabel)).perform(ViewActions.click());
+
+        Espresso.onView(withText(R.string.NoSparePartFoundLabel)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void searchByOnlyNumberWhenNthFound() {
         spareParts = getSparePartsWithDiffValues(sparePartsDbController);
         Espresso.onView(withId(R.id.searchingPartNumber)).perform(ViewActions.replaceText("xx"));
 
-        Espresso.onView(withId(R.id.searchingPartNumberCheckbox)).perform(ViewActions.click());
+        try {
+            Espresso.onView(withId(R.id.searchingPartNumberCheckbox)).check(matches(isChecked()));
+        } catch (AssertionFailedError e) {
+            Espresso.onView(withId(R.id.searchingPartNumberCheckbox)).perform(ViewActions.click());
+        }
 
         Espresso.onView(withText(R.string.OkLabel)).perform(ViewActions.click());
 

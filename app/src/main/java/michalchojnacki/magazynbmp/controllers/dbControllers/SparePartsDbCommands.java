@@ -42,6 +42,7 @@ abstract class SparePartsDbCommands {
         }
 
         if (sparePart.getDescription() != null) {
+            builder.append(condition);
             appendDescriptionsToStringBuilder(builder, sparePart.getDescription());
             condition = AND_COMMAND;
         }
@@ -86,12 +87,12 @@ abstract class SparePartsDbCommands {
     private static void appendDescriptionsToStringBuilder(StringBuilder builder, String desc) {
         String[] descriptions = SqlCheckEntryBuilder.getWordsToCheck(desc);
 
-        builder.append("(");
+        builder.append(" (");
         for (String description : descriptions) {
             appendSqlConditionToStringBuilder(builder, "",
                                               SparePartsDbEntry.COLUMN_NAME_SPARE_PART_DESCRIPTION,
                                               description);
-            builder.append(PERCENT_SEP).append(OR_COMMAND);
+            builder.append(OR_COMMAND);
         }
         builder.delete(builder.length() - 4, builder.length());
         builder.append(")");
