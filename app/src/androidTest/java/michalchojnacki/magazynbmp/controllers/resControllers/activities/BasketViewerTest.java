@@ -22,9 +22,13 @@ import michalchojnacki.magazynbmp.R;
 import michalchojnacki.magazynbmp.controllers.basketControllers.BasketController;
 import michalchojnacki.magazynbmp.model.SparePart;
 
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 public class BasketViewerTest {
 
@@ -124,7 +128,50 @@ public class BasketViewerTest {
 
     @Test
     public void clearButtonWorks() {
+        initTest();
+        BasketController basketController = (BasketController) mBasketViewer.getActivity()
+                .getIntent()
+                .getSerializableExtra(SparePartViewer.BASKET_CONTROLLER);
+        assertThat(basketController.size(), equalTo(size));
+        Espresso.onView(withId(R.id.MenuClearBasket)).perform(ViewActions.click());
 
+        Espresso.onView(withText(R.string.ClearTheBasketLabel)).check(matches(isDisplayed()));
+        Espresso.onView(withText(R.string.OkLabel)).perform(ViewActions.click());
+
+        Espresso.onView(withText(R.string.ClearTheBasketLabel)).check(doesNotExist());
+        assertThat(basketController.size(), equalTo(0));
+    }
+
+    @Test
+    public void clearButtonNoButtonWorks() {
+        initTest();
+        BasketController basketController = (BasketController) mBasketViewer.getActivity()
+                .getIntent()
+                .getSerializableExtra(SparePartViewer.BASKET_CONTROLLER);
+        assertThat(basketController.size(), equalTo(size));
+
+        Espresso.onView(withId(R.id.MenuClearBasket)).perform(ViewActions.click());
+        Espresso.onView(withText(R.string.ClearTheBasketLabel)).check(matches(isDisplayed()));
+        Espresso.onView(withText(R.string.NoLabel)).perform(ViewActions.click());
+
+        Espresso.onView(withText(R.string.ClearTheBasketLabel)).check(doesNotExist());
+        assertThat(basketController.size(), equalTo(size));
+    }
+
+    @Test
+    public void clearButtonCancelButtonWorks() {
+        initTest();
+        BasketController basketController = (BasketController) mBasketViewer.getActivity()
+                .getIntent()
+                .getSerializableExtra(SparePartViewer.BASKET_CONTROLLER);
+        assertThat(basketController.size(), equalTo(size));
+
+        Espresso.onView(withId(R.id.MenuClearBasket)).perform(ViewActions.click());
+        Espresso.onView(withText(R.string.ClearTheBasketLabel)).check(matches(isDisplayed()));
+        Espresso.onView(withText(R.string.CancelLabel)).perform(ViewActions.click());
+
+        Espresso.onView(withText(R.string.ClearTheBasketLabel)).check(doesNotExist());
+        assertThat(basketController.size(), equalTo(size));
     }
 
     @After
